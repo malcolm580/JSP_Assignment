@@ -1,65 +1,111 @@
 package elearning.db;
 
-import elearning.bean.User;
-
+import java.io.IOException;
 import java.sql.*;
 
 public class UserDB {
-    String dburl;
-    String dbUser;
-    String dbPassword;
 
-    public UserDB(String dburl, String dbUser, String dbPassword) {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+    private String dburl = "";
+    private String dbUser = "";
+    private String dbPassword = "";
+
+    public UserDB( String dburl, String dbUser, String dbPassword) {
         this.dburl = dburl;
         this.dbUser = dbUser;
         this.dbPassword = dbPassword;
     }
 
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        System.setProperty("jdbc.drivers", "com.mysql.jdbc.Driver");
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+
+    public Connection getConnection() throws SQLException, IOException, ClassNotFoundException {
+        //System.setProperty("jdbc.drivers", "com.mysql.jdbc.Driver");
+        Class.forName( "com.mysql.jdbc.Driver");
         return DriverManager.getConnection(dburl, dbUser, dbPassword);
     }
 
-   public boolean isValidUser(String user, String pwd) {
-        boolean isValid = false;
-        Connection connection = null;
-        User userInfo = null;
-        try {
-            connection = getConnection();
-            PreparedStatement preparedStatement = null;
-            String preQueryStatement = "SELECT * FROM User WHERE Username=? AND Password=?";
 
-            preparedStatement = connection.prepareStatement(preQueryStatement);
-            preparedStatement.setString(1, user);
-            preparedStatement.setString(2, pwd);
-            ResultSet resultSet = null;
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
+    public void createCustTable()throws Exception {
+        Connection cnnct = null;
+        Statement stmnt = null;
+        try{
+            cnnct = getConnection();
+            stmnt = cnnct.createStatement();
+            String sql = "CREATE TABLE  IF NOT EXISTS USERINFO ("
+                    + "id varchar(5) NOT NULL,"
+                    + "username varchar(25) NOT NULL,"
+                    + "password varchar(25) NOT NULL,"
+                    + "PRIMARY KEY (id)"
+                    + ")";
+            stmnt.execute(sql);
+            stmnt.close();
+            cnnct.close();
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public boolean isValidUser(String user, String pwd) throws Exception {
+        boolean isValid = false;
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+
+        try{
+            cnnct = getConnection();
+            String preQueryStatement = "SELECT * FROM User WHERE username=? and password=?";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+
+            pStmnt.setString(1, user);
+            pStmnt.setString(2, pwd);
+
+            ResultSet rs = null;
+
+            rs = pStmnt.executeQuery();
+
+            if (rs.next()) {
                 isValid = true;
             }
-            preparedStatement.close();
-            connection.close();
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException ex) {
+            ex.printStackTrace();
         }
         return isValid;
     }
 
-    public void CreateUserInfoTable() {
-    }
-
-    public boolean addUserInfo(String id, String usr, String pwd) {
-        return false;
+    public boolean addUserInfo(String id, String user, String pwd)throws Exception {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        boolean isSuccess = false;
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "INSERT INTO USERINFO VALUES (?,?,?)";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setString(1, id);
+            pStmnt.setString(2, user);
+            pStmnt.setString(3, pwd);
+            int rowCount = pStmnt.executeUpdate();
+            if(rowCount >= 1) {
+                isSuccess = true;
+            }
+            pStmnt.close();
+            cnnct.close();
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+        return isSuccess;
     }
 
 }

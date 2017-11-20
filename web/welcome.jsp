@@ -11,7 +11,7 @@
     <title>Welcome</title>
 </head>
 <body>
-<jsp:useBean id="userInfo" class="ict.bean.UserInfo" scope="session"/>
+<jsp:useBean id="userInfo" class="elearning.bean.User" scope="session"/>
 <b>Hello, <jsp:getProperty name="userInfo" property="username"/>
 </b>
 <p>Welcome to the ICT</p>
