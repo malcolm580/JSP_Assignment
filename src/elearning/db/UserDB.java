@@ -37,7 +37,7 @@ public class UserDB {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement = null;
-            String preQueryStatement = "SELECT * FROM Useer WHERE Username=? AND Password=?";
+            String preQueryStatement = "SELECT * FROM User WHERE Username=? AND Password=?";
 
             preparedStatement = connection.prepareStatement(preQueryStatement);
             preparedStatement.setString(1, user);
