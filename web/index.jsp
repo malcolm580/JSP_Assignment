@@ -1,3 +1,4 @@
+<%@ page import="elearning.bean.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
@@ -6,6 +7,14 @@
 <head></head>
 
 <body>
+<%
+  User user = (User)request.getSession().getAttribute("userInfo");
+  if(user==null){
+     response.sendRedirect("login.jsp");
+  }else{
+    //response.sendRedirect("index.jsp?msg=You%20have%20been%20logined");
+  }
+%>
 <jsp:include page="header.jsp" />
 
 <!-- Page Container -->

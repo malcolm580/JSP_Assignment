@@ -1,18 +1,19 @@
 package elearning.db;
 
 import elearning.bean.Module;
+import elearning.bean.Quiz;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class UserModuleDB {
+public class UserQuizDB {
 
     private String dburl = "";
     private String dbUser = "";
     private String dbPassword = "";
 
-    public UserModuleDB(String dburl, String dbUser, String dbPassword) {
+    public UserQuizDB(String dburl, String dbUser, String dbPassword) {
         this.dburl = dburl;
         this.dbUser = dbUser;
         this.dbPassword = dbPassword;
@@ -26,23 +27,30 @@ public class UserModuleDB {
     }
 
 
-    public ArrayList getUserModule(int id)throws Exception {
+    public ArrayList<Quiz> getUserQuiz(int id)throws Exception {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
-        Module module = null;
-        ArrayList moduleList = new ArrayList();
+        Quiz quiz = null;
+        ArrayList<Quiz> quizList = new ArrayList<Quiz>();
 
         try {
             cnnct = getConnection();
-            String preQueryStatement = "Select MO.ModuleName  From UserModule UM , MODULE MO WHERE UM.ModuleID = MO.ModuleID AND UserID = ?";
+            String preQueryStatement = "Select UserUserID ,QuizQuizID  From UserQuiz WHERE UserUserID=?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             pStmnt.setInt(1, id);
 
             ResultSet rs = pStmnt.executeQuery();
             if( rs.next() ){
-                module = new Module();
-                module.setModuleName(rs.getString("ModuleName"));
-                moduleList.add(module);
+                String preQueryStatement2 = "Select *  From Quiz WHERE QuizID=?";
+                pStmnt = cnnct.prepareStatement(preQueryStatement);
+                pStmnt.setInt(1, rs.getInt("QuizQuizID"));
+                ResultSet rs2 = pStmnt.executeQuery();
+                quiz = new Quiz();
+                quiz.setQuizID(rs.getInt("QuizQuizID"));
+                quiz.setModuleID(rs2.getInt("ModuleID"));
+                quiz.setQuizName(rs2.getString("QuizName"));
+                quiz.setTimeLimit(rs2.getInt("TimeLimit"));
+                quizList.add(quiz);
             }
 
             pStmnt.close();
@@ -55,7 +63,7 @@ public class UserModuleDB {
         } catch(IOException ex) {
             ex.printStackTrace();
         }
-        return moduleList;
+        return quizList;
     }
 
 }
