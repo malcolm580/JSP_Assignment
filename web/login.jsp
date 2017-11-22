@@ -6,89 +6,25 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>E-Learning</title>
-
-
-    <link rel="stylesheet" href="CSS/login.css">
-    <link rel="stylesheet" href="CSS/login_2.css">
-
-    <style>
-        .signup{
-            margin-top: -30px;
-        }
-    </style>
-
-
+    <title>Login</title>
 </head>
-
-<body class="login-body">
-<div class="row">
-    <div class="input-cart col s12 m10 push-m1 z-depth-2 grey lighten-5">
-        <div class="col s12 m5 login">
-            <h4 class="center">Login</h4>
-            <br>
-            <form action="main" method="post">
-                <input type="hidden" name="action" value="authenticate">
-                <div class="row">
-                    <div class="input-field">
-                        <input type="text" id="user" name="username" class="validate" required="required" placeholder="UserName">
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field">
-                        <input type="password" id="pass" name="password" class="validate" required="required" placeholder="Password">
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="switch col s6">
-                        <label>
-                            <input type="checkbox">
-                            <span class="lever"></span>
-                            Show Password
-                        </label>
-                    </div>
-                    <div class="col s6">
-                        <button type="submit" name="login" class="btn waves-effect waves-light blue right">Log in
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <!-- Signup form -->
-        <div class="col s12 m7 signup">
-
-            <div class="signup-toggle center">
-
-                    <img src="image/moodle.gif" alt="" style="width: 200px;">
-
-                <h4 class="center">Moodle e-Learning <p>Management Platform</p></h4>
-            </div>
-        </div>
-
-        <div class="col s12">
-            <br>
-            <div class="legal center">
-            </div>
-            <div class="legal center">
-                <div class="col s12 m5">
-                    <p class="center grey-text" style="font-size: 14px;">Information Technology (IT) - E Learning</p>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-</div>
-
-
-
+<body>
+<p>The admin login name is admin and password is password</p>
+<form method="post" action="main">
+    <input type="hidden" name="action" value="authenticate"/>
+    <table border="0">
+        <tr><td><p align="right"><b>login:</b></p></td>
+            <td><p><input type="text" name="username" maxlength="10" size="15" ></p></td>
+        </tr>
+        <tr><td><p align="right"><b>password:</b></p></td>
+            <td><p><input type="password" name="password" maxlength="10" size="15" ></p></td>
+        </tr>
+        <tr>
+            <td colspan="2"><p align="center"><input type="submit" value="Login"></p></td>
+        </tr>
+    </table>
+</form>
 </body>
 </html>
-
