@@ -11,7 +11,7 @@
     <title>Login</title>
 </head>
 <body>
-<p>Login name is abc and password is "123</p>
+<p>The admin login name is admin and password is password</p>
 <form method="post" action="main">
     <input type="hidden" name="action" value="authenticate"/>
     <table border="0">
