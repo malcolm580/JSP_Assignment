@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet (name = "quizController" , urlPatterns = {"/quiz}"} )
+@WebServlet (name = "QuizController" , urlPatterns = {"/quiz}"} )
 public class QuizController extends HttpServlet {
 
     private UserQuizDB db;
