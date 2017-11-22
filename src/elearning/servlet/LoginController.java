@@ -65,7 +65,6 @@ public class LoginController extends HttpServlet {
             HttpSession session = request.getSession(true);
             User bean = new User();
             bean.setUsername(username);
-
             session.setAttribute("userInfo", bean);
             targetURL = "welcome.jsp";
         }else {
