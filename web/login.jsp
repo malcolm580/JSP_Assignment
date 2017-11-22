@@ -82,7 +82,7 @@
             </div>
             <div class="legal center">
                 <div class="col s12 m5">
-                    <p class="center grey-text" style="font-size: 14px;">Information Technology (IT) - E Learning</p>
+                    <p class="center grey-text" style="font-size: 14px;">Information Technology (IT) -- e-Learning  ( ￣▽￣)b</p>
                 </div>
             </div>
 
