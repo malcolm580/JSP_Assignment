@@ -20,7 +20,7 @@
         <a href="login.jsp" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Logo</a>
         <a href="http://ivefyp.ml/phpmyadmin" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i>PhpMyAdmin</a>
         <a href="quizList.jsp" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i>Quiz List</a>
-        <a href="reportMenu?action=list" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Course Reporting"><i class="fa fa-envelope"></i>Course Reporting</a>
+        <a href="reportMenu?action=getModuleList" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Course Reporting"><i class="fa fa-envelope"></i>Course Reporting</a>
         <div class="w3-dropdown-hover w3-hide-small">
             <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">3</span></button>
             <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">

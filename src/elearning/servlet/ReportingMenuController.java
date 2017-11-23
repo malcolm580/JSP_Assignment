@@ -1,6 +1,7 @@
 package elearning.servlet;
 
 import elearning.bean.User;
+import elearning.db.UserDB;
 import elearning.db.UserModuleDB;
 
 import javax.jms.Session;
@@ -18,15 +19,15 @@ import java.util.ArrayList;
 @WebServlet (name = "ReportingMenuController" , urlPatterns = {"/reportMenu"} )
 public class ReportingMenuController extends HttpServlet {
 
-    private UserModuleDB db;
+    String dbUser;
+    String dbPassword;
+    String dbUrl;
 
     @Override
     public void init() throws ServletException {
-        String dbUser = this.getServletContext().getInitParameter("dbUser");
-        String dbPassword = this.getServletContext().getInitParameter("dbPassword");
-        String dbUrl = this.getServletContext().getInitParameter("dbUrl");
-        db = new UserModuleDB (dbUrl, dbUser, dbPassword);
-
+         dbUser = this.getServletContext().getInitParameter("dbUser");
+         dbPassword = this.getServletContext().getInitParameter("dbPassword");
+         dbUrl = this.getServletContext().getInitParameter("dbUrl");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse
@@ -35,26 +36,24 @@ public class ReportingMenuController extends HttpServlet {
 
             String action = request.getParameter("action");
 
-            String targetURL;
+            String targetURL = "";
 
-            if ("list".equalsIgnoreCase(action)){
+            if ("getModuleList".equalsIgnoreCase(action)){
+                UserModuleDB db = new UserModuleDB (dbUrl, dbUser, dbPassword);
+
                 HttpSession session = request.getSession();
                 User userData = (User) session.getAttribute("userInfo") ;
                 ArrayList moduleList = db.getUserModule(userData.getUserID());
-//
-//                PrintWriter out = response.getWriter();
-//                out.println(userData);
-//                out.println(userData.getUserID());
-//                out.println(moduleList.size());
-
                 session.setAttribute("moduleList", moduleList);
+
                 targetURL = "ReportingMenu.jsp";
+            }else if("getModuleQuiz".equalsIgnoreCase(action)){
 
-
-                RequestDispatcher rd;
-                rd = getServletContext().getRequestDispatcher("/" + targetURL);
-                rd.forward(request, response);
             }
+
+            RequestDispatcher rd;
+            rd = getServletContext().getRequestDispatcher("/" + targetURL);
+            rd.forward(request, response);
 
 
         } catch (Exception e) {
