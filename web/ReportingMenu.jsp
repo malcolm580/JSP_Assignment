@@ -1,4 +1,3 @@
-
 <%--
   Created by IntelliJ IDEA.
   User: youma
@@ -6,14 +5,16 @@
   Time: 0:14
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" import="java.util.ArrayList" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" import=" elearning.bean.Module ,java.util.ArrayList" %>
+<%@ page import="elearning.bean.Module" %>
+<%@ page import="com.sun.org.apache.xpath.internal.operations.Mod" %>
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
 
-<jsp:include page="header.jsp" />
+<jsp:include page="header.jsp"/>
 
 
 <!-- Page Container -->
@@ -22,7 +23,7 @@
     <div class="w3-row">
 
         <!-- Left Column -->
-        <jsp:include page="leftContent.jsp" />
+        <jsp:include page="leftContent.jsp"/>
 
         <!-- Middle Column -->
         <div class="w3-col m7">
@@ -33,20 +34,34 @@
                         <div class="w3-container w3-padding">
                             <h6 class="w3-opacity">Social Media template by w3.css</h6>
                             <p contenteditable="true" class="w3-border w3-padding">Status: Feeling Blue</p>
-                            <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  Post</button>
+                            <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i> Post</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-                <img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+                <img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right"
+                     style="width:60px">
                 <span class="w3-right w3-opacity">1 min</span>
                 <h4>Module Reporting</h4><br>
                 <hr class="w3-clear">
 
-            </div>
+                <%
+                    ArrayList moduleList = (ArrayList) session.getAttribute("moduleList");
 
+                    for (Object bean : moduleList) {
+                        Module module = (Module) bean;
+                        out.print(module.getModuleName() + "\n");
+                        out.print("end");
+                    }
+
+                    if(moduleList.size() == 0){
+                        out.print("NO module");
+                    }
+
+                %>
+            </div>
 
 
             <!-- End Middle Column -->
@@ -60,7 +75,6 @@
 </div>
 
 
-
-        <jsp:include page="footer.jsp"/>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

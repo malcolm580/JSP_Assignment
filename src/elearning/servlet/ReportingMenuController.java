@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 @WebServlet (name = "ReportingMenuController" , urlPatterns = {"/reportMenu"} )
@@ -37,17 +38,20 @@ public class ReportingMenuController extends HttpServlet {
             String targetURL;
 
             if ("list".equalsIgnoreCase(action)){
-                HttpSession session = request.getSession(true);
+                HttpSession session = request.getSession(false);
                 User userData = (User) session.getAttribute("userInfo") ;
-                int userID = userData.getUserID();
-                ArrayList moduleList = db.getUserModule(userID);
+                ArrayList moduleList = db.getUserModule(userData.getUserID());
+
+                PrintWriter out = response.getWriter();
+                out.println(userData.getUserID());
+                out.println(moduleList.size());
 
                 session.setAttribute("moduleList", moduleList);
                 targetURL = "ReportingMenu.jsp";
 
-                RequestDispatcher rd;
-                rd = getServletContext().getRequestDispatcher("/" + targetURL);
-                rd.forward(request, response);
+//                RequestDispatcher rd;
+//                rd = getServletContext().getRequestDispatcher("/" + targetURL);
+//                rd.forward(request, response);
             }
 
 

@@ -80,7 +80,7 @@ public class LoginController extends HttpServlet {
 
         boolean result = false;
 
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
 
         if (session.getAttribute("userInfo") != null){
             result = true;
