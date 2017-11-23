@@ -39,7 +39,7 @@ public class UserModuleDB {
             pStmnt.setInt(1, id);
 
             ResultSet rs = pStmnt.executeQuery();
-            if( rs.next() ){
+            while( rs.next() ){
                 module = new Module();
                 module.setModuleName(rs.getString("ModuleName"));
                 moduleList.add(module);

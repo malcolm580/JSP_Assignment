@@ -53,12 +53,13 @@
                     for (Object bean : moduleList) {
                         Module module = (Module) bean;
                         out.print(module.getModuleName() + "\n");
-                        out.print("end");
                     }
 
                     if(moduleList.size() == 0){
                         out.print("NO module");
                     }
+
+                    out.print("end");
 
                 %>
             </div>

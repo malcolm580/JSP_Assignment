@@ -6,8 +6,7 @@ public class User implements Serializable {
     int userID;
     String username, password, role, email;
 
-    public User() {
-    }
+    public User() { }
 
     public String getUsername() {
         return username;
@@ -47,5 +46,10 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return this.userID + "";
     }
 }
