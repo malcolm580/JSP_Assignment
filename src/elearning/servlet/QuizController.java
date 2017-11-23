@@ -38,7 +38,7 @@ public class QuizController extends HttpServlet {
             String targetURL;
 
             if ("list".equalsIgnoreCase(action)){
-                HttpSession session = request.getSession(true);
+                HttpSession session = request.getSession();
                 User userData = (User) session.getAttribute("userInfo") ;
                 int userID = userData.getUserID();
                 ArrayList<Quiz> quizList = db.getUserQuiz(userID);

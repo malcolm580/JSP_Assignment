@@ -8,224 +8,353 @@
       <Visible>1</Visible>
     </schema>
     <table id="4" parent="3" name="Metrial"/>
-    <table id="5" parent="3" name="Module"/>
-    <table id="6" parent="3" name="Question"/>
-    <table id="7" parent="3" name="Quiz"/>
-    <table id="8" parent="3" name="QuizResult"/>
-    <table id="9" parent="3" name="User"/>
-    <table id="10" parent="3" name="UserModule"/>
-    <column id="11" parent="4" name="ModuleID">
+    <table id="5" parent="3" name="MetrialUser"/>
+    <table id="6" parent="3" name="Module"/>
+    <table id="7" parent="3" name="Question"/>
+    <table id="8" parent="3" name="Quiz"/>
+    <table id="9" parent="3" name="QuizResult"/>
+    <table id="10" parent="3" name="User"/>
+    <table id="11" parent="3" name="UserModule"/>
+    <table id="12" parent="3" name="UserQuiz"/>
+    <column id="13" parent="4" name="ModuleID">
       <Position>1</Position>
-      <DataType>INT(10)|4</DataType>
+      <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="12" parent="4" name="ContentType">
+    <column id="14" parent="4" name="ContentType">
       <Position>2</Position>
-      <DataType>VARCHAR(255)|12</DataType>
+      <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="13" parent="4" name="Content">
+    <column id="15" parent="4" name="Content">
       <Position>3</Position>
-      <DataType>VARCHAR(255)|12</DataType>
+      <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="14" parent="4" name="BlackListId_JSON">
-      <Position>4</Position>
-      <DataType>VARCHAR(255)|12</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <key id="15" parent="4" name="PRIMARY">
+    <index id="16" parent="4" name="FKMetrial663747">
+      <ColNames>ModuleID</ColNames>
+    </index>
+    <key id="17" parent="4" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ModuleID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="16" parent="4" name="FKMetrial663747">
+    <foreign-key id="18" parent="4" name="FKMetrial663747">
       <ColNames>ModuleID</ColNames>
       <RefSchemaName>jsp</RefSchemaName>
       <RefTableName>Module</RefTableName>
       <RefKeyName>PRIMARY</RefKeyName>
       <RefColNames>ModuleID</RefColNames>
     </foreign-key>
-    <column id="17" parent="5" name="ModuleID">
+    <column id="19" parent="5" name="MetrialModuleID">
       <Position>1</Position>
-      <DataType>INT(10)|4</DataType>
+      <DataType>int(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="20" parent="5" name="UserUserID">
+      <Position>2</Position>
+      <DataType>int(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="21" parent="5" name="isBlackListed">
+      <Position>3</Position>
+      <DataType>char(1)|0</DataType>
+    </column>
+    <index id="22" parent="5" name="FKMetrialUse318555">
+      <ColNames>UserUserID</ColNames>
+    </index>
+    <index id="23" parent="5" name="FKMetrialUse790696">
+      <ColNames>MetrialModuleID</ColNames>
+    </index>
+    <key id="24" parent="5" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>MetrialModuleID
+UserUserID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="25" parent="5" name="FKMetrialUse790696">
+      <ColNames>MetrialModuleID</ColNames>
+      <RefSchemaName>jsp</RefSchemaName>
+      <RefTableName>Metrial</RefTableName>
+      <RefColNames>ModuleID</RefColNames>
+    </foreign-key>
+    <foreign-key id="26" parent="5" name="FKMetrialUse318555">
+      <ColNames>UserUserID</ColNames>
+      <RefSchemaName>jsp</RefSchemaName>
+      <RefTableName>User</RefTableName>
+      <RefColNames>UserID</RefColNames>
+    </foreign-key>
+    <column id="27" parent="6" name="ModuleID">
+      <Position>1</Position>
+      <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="18" parent="5" name="ModuleName">
+    <column id="28" parent="6" name="ModuleName">
       <Position>2</Position>
-      <DataType>VARCHAR(255)|12</DataType>
+      <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="19" parent="5" name="PRIMARY">
+    <key id="29" parent="6" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ModuleID</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="20" parent="6" name="QuizID">
+    <column id="30" parent="7" name="QuizID">
       <Position>1</Position>
-      <DataType>INT(10)|4</DataType>
+      <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="21" parent="6" name="QuestionID">
+    <column id="31" parent="7" name="QuestionID">
       <Position>2</Position>
-      <DataType>INT(10)|4</DataType>
+      <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="22" parent="6" name="QuestionType">
+    <column id="32" parent="7" name="QuestionType">
       <Position>3</Position>
-      <DataType>VARCHAR(255)|12</DataType>
+      <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="23" parent="6" name="Question">
+    <column id="33" parent="7" name="Question">
       <Position>4</Position>
-      <DataType>VARCHAR(255)|12</DataType>
+      <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="24" parent="6" name="CorrectAnswer">
+    <column id="34" parent="7" name="CorrectAnswer">
       <Position>5</Position>
-      <DataType>VARCHAR(255)|12</DataType>
+      <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="25" parent="6" name="Options_JSON">
+    <column id="35" parent="7" name="Options_JSON">
       <Position>6</Position>
-      <DataType>VARCHAR(255)|12</DataType>
+      <DataType>varchar(255)|0</DataType>
     </column>
-    <key id="26" parent="6" name="PRIMARY">
+    <index id="36" parent="7" name="FKQuestion143290">
+      <ColNames>QuizID</ColNames>
+    </index>
+    <key id="37" parent="7" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>QuestionID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="27" parent="6" name="FKQuestion143290">
+    <foreign-key id="38" parent="7" name="FKQuestion143290">
       <ColNames>QuizID</ColNames>
       <RefSchemaName>jsp</RefSchemaName>
       <RefTableName>Quiz</RefTableName>
       <RefKeyName>PRIMARY</RefKeyName>
       <RefColNames>QuizID</RefColNames>
     </foreign-key>
-    <column id="28" parent="7" name="QuizID">
+    <column id="39" parent="8" name="QuizID">
       <Position>1</Position>
-      <DataType>INT(10)|4</DataType>
+      <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="29" parent="7" name="ModuleID">
+    <column id="40" parent="8" name="ModuleID">
       <Position>2</Position>
-      <DataType>INT(10)|4</DataType>
+      <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="30" parent="7" name="TimeLimit">
+    <column id="41" parent="8" name="TimeLimit">
       <Position>3</Position>
-      <DataType>INT(10)|4</DataType>
+      <DataType>int(10)|0</DataType>
     </column>
-    <column id="31" parent="7" name="QuizName">
+    <column id="42" parent="8" name="QuizName">
       <Position>4</Position>
-      <DataType>VARCHAR(255)|12</DataType>
+      <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="32" parent="7" name="PRIMARY">
+    <column id="43" parent="8" name="TotalQuestion">
+      <Position>5</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="44" parent="8" name="FKQuiz354528">
+      <ColNames>ModuleID</ColNames>
+    </index>
+    <key id="45" parent="8" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>QuizID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="33" parent="7" name="FKQuiz354528">
+    <foreign-key id="46" parent="8" name="FKQuiz354528">
       <ColNames>ModuleID</ColNames>
       <RefSchemaName>jsp</RefSchemaName>
       <RefTableName>Module</RefTableName>
       <RefKeyName>PRIMARY</RefKeyName>
       <RefColNames>ModuleID</RefColNames>
     </foreign-key>
-    <column id="34" parent="8" name="UserID">
+    <column id="47" parent="9" name="UserID">
       <Position>1</Position>
-      <DataType>INT(10)|4</DataType>
+      <DataType>int(10)|0</DataType>
     </column>
-    <column id="35" parent="8" name="CourseID">
+    <column id="48" parent="9" name="QuizID">
       <Position>2</Position>
-      <DataType>INT(10)|4</DataType>
-    </column>
-    <column id="36" parent="8" name="QuizID">
-      <Position>3</Position>
-      <DataType>INT(10)|4</DataType>
+      <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="37" parent="8" name="QuizResultID">
-      <Position>4</Position>
-      <DataType>INT(10)|4</DataType>
+    <column id="49" parent="9" name="QuizResultID">
+      <Position>3</Position>
+      <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="38" parent="8" name="Duration">
+    <column id="50" parent="9" name="Duration">
+      <Position>4</Position>
+      <DataType>int(20)|0</DataType>
+    </column>
+    <column id="51" parent="9" name="AnsweringQuestionState_JSON">
       <Position>5</Position>
-      <DataType>INT(10)|4</DataType>
+      <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="39" parent="8" name="AnsweringQuestionState_JSON">
+    <column id="52" parent="9" name="CorrectCount">
       <Position>6</Position>
-      <DataType>INT(10)|4</DataType>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
     </column>
-    <key id="40" parent="8" name="PRIMARY">
+    <index id="53" parent="9" name="FKQuizResult219291">
+      <ColNames>QuizID</ColNames>
+    </index>
+    <index id="54" parent="9" name="UserID">
+      <ColNames>UserID</ColNames>
+    </index>
+    <key id="55" parent="9" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>QuizResultID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="41" parent="8" name="FKQuizResult219291">
+    <foreign-key id="56" parent="9" name="quizresult_ibfk_1">
+      <ColNames>UserID</ColNames>
+      <RefSchemaName>jsp</RefSchemaName>
+      <RefTableName>User</RefTableName>
+      <RefColNames>UserID</RefColNames>
+    </foreign-key>
+    <foreign-key id="57" parent="9" name="FKQuizResult219291">
       <ColNames>QuizID</ColNames>
       <RefSchemaName>jsp</RefSchemaName>
       <RefTableName>Quiz</RefTableName>
       <RefKeyName>PRIMARY</RefKeyName>
       <RefColNames>QuizID</RefColNames>
     </foreign-key>
-    <column id="42" parent="9" name="UserID">
+    <column id="58" parent="10" name="UserID">
       <Position>1</Position>
-      <DataType>INT(10)|4</DataType>
+      <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="43" parent="9" name="Username">
+    <column id="59" parent="10" name="Username">
       <Position>2</Position>
-      <DataType>VARCHAR(255)|12</DataType>
+      <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="44" parent="9" name="Password">
+    <column id="60" parent="10" name="Password">
       <Position>3</Position>
-      <DataType>VARCHAR(255)|12</DataType>
+      <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="45" parent="9" name="Role">
+    <column id="61" parent="10" name="Role">
       <Position>4</Position>
-      <DataType>VARCHAR(255)|12</DataType>
+      <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="46" parent="9" name="Email">
+    <column id="62" parent="10" name="Email">
       <Position>5</Position>
-      <DataType>VARCHAR(255)|12</DataType>
+      <DataType>varchar(255)|0</DataType>
     </column>
-    <key id="47" parent="9" name="PRIMARY">
+    <index id="63" parent="10" name="Username">
+      <ColNames>Username</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="64" parent="10" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>UserID</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="48" parent="10" name="UserID">
+    <key id="65" parent="10" name="Username">
+      <ColNames>Username</ColNames>
+      <UnderlyingIndexName>Username</UnderlyingIndexName>
+    </key>
+    <column id="66" parent="11" name="id">
       <Position>1</Position>
-      <DataType>INT(10)|4</DataType>
+      <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="49" parent="10" name="ModuleID">
+    <column id="67" parent="11" name="UserID">
       <Position>2</Position>
-      <DataType>INT(10)|4</DataType>
+      <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <foreign-key id="50" parent="10" name="FKUserModule886446">
+    <column id="68" parent="11" name="ModuleID">
+      <Position>3</Position>
+      <DataType>int(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="69" parent="11" name="FKUserModule652649">
+      <ColNames>ModuleID</ColNames>
+    </index>
+    <index id="70" parent="11" name="FKUserModule886446">
+      <ColNames>UserID</ColNames>
+    </index>
+    <index id="71" parent="11" name="id">
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="72" parent="11" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="73" parent="11" name="id">
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>id</UnderlyingIndexName>
+    </key>
+    <foreign-key id="74" parent="11" name="FKUserModule886446">
       <ColNames>UserID</ColNames>
       <RefSchemaName>jsp</RefSchemaName>
       <RefTableName>User</RefTableName>
       <RefKeyName>PRIMARY</RefKeyName>
       <RefColNames>UserID</RefColNames>
     </foreign-key>
-    <foreign-key id="51" parent="10" name="FKUserModule652649">
+    <foreign-key id="75" parent="11" name="FKUserModule652649">
       <ColNames>ModuleID</ColNames>
       <RefSchemaName>jsp</RefSchemaName>
       <RefTableName>Module</RefTableName>
       <RefKeyName>PRIMARY</RefKeyName>
       <RefColNames>ModuleID</RefColNames>
+    </foreign-key>
+    <column id="76" parent="12" name="UserUserID">
+      <Position>1</Position>
+      <DataType>int(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="77" parent="12" name="QuizQuizID">
+      <Position>2</Position>
+      <DataType>int(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="78" parent="12" name="FKUserQuiz118044">
+      <ColNames>UserUserID</ColNames>
+    </index>
+    <index id="79" parent="12" name="FKUserQuiz572359">
+      <ColNames>QuizQuizID</ColNames>
+    </index>
+    <key id="80" parent="12" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>UserUserID
+QuizQuizID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="81" parent="12" name="FKUserQuiz118044">
+      <ColNames>UserUserID</ColNames>
+      <RefSchemaName>jsp</RefSchemaName>
+      <RefTableName>User</RefTableName>
+      <RefColNames>UserID</RefColNames>
+    </foreign-key>
+    <foreign-key id="82" parent="12" name="FKUserQuiz572359">
+      <ColNames>QuizQuizID</ColNames>
+      <RefSchemaName>jsp</RefSchemaName>
+      <RefTableName>Quiz</RefTableName>
+      <RefColNames>QuizID</RefColNames>
     </foreign-key>
   </database-model>
 </dataSource>
