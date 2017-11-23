@@ -4,6 +4,7 @@ import elearning.bean.User;
 import elearning.db.QuizDB;
 import elearning.db.UserDB;
 import elearning.db.UserModuleDB;
+import elearning.db.UserQuizDB;
 
 import javax.jms.Session;
 import javax.servlet.RequestDispatcher;
@@ -17,8 +18,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-@WebServlet (name = "ReportingMenuController" , urlPatterns = {"/reportMenu"} )
-public class ReportingMenuController extends HttpServlet {
+@WebServlet (name = "ReportingController" , urlPatterns = {"/reportMenu"} )
+public class ReportingController extends HttpServlet {
 
     String dbUser;
     String dbPassword;
@@ -35,14 +36,16 @@ public class ReportingMenuController extends HttpServlet {
             response) throws ServletException, IOException {
         try {
 
-            String action = request.getParameter("action");
+            PrintWriter out = response.getWriter();
 
+            String action = request.getParameter("action");
+            HttpSession session;
             String targetURL = "";
 
             if ("getModuleList".equalsIgnoreCase(action)){
                 UserModuleDB db = new UserModuleDB (dbUrl, dbUser, dbPassword);
 
-                HttpSession session = request.getSession();
+                session = request.getSession();
                 User userData = (User) session.getAttribute("userInfo") ;
                 ArrayList moduleList = db.getUserModule(userData.getUserID());
                 session.setAttribute("moduleList", moduleList);
@@ -51,10 +54,21 @@ public class ReportingMenuController extends HttpServlet {
             }else if("getModuleQuiz".equalsIgnoreCase(action)){
                 QuizDB db = new QuizDB(dbUrl, dbUser, dbPassword);
 
-                HttpSession session = request.getSession();
+                session = request.getSession();
                 String moduleID = request.getParameter("moduleID");
                 ArrayList quizList = db.getModuleQuiz(moduleID);
                 session.setAttribute("quizList", quizList);
+
+                targetURL = "ModuleQuiz.jsp";
+            }else if("getQuizStudent".equalsIgnoreCase(action)){
+                UserQuizDB db = new UserQuizDB(dbUrl, dbUser, dbPassword);
+
+                session = request.getSession();
+                String quizID = request.getParameter("quizID");
+                ArrayList quizStudentList = db.getQuizStudentList(quizID);
+                session.setAttribute("quizStudentList", quizStudentList);
+
+                targetURL = "QuizStudentList.jsp";
             }
 
             RequestDispatcher rd;

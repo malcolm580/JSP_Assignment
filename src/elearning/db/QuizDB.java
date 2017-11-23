@@ -39,7 +39,8 @@ public class QuizDB {
             pStmnt.setString(1, moduleID);
 
             ResultSet rs = pStmnt.executeQuery();
-            if( rs.next() ){
+            while ( rs.next() ){
+                quiz = new Quiz();
                 quiz.setQuizID(rs.getInt("QuizID"));
                 quiz.setQuizName(rs.getString("QuizName"));
                 quizList.add(quiz);

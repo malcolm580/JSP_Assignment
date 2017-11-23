@@ -2,6 +2,7 @@ package elearning.db;
 
 import elearning.bean.Module;
 import elearning.bean.Quiz;
+import elearning.bean.User;
 
 import java.io.IOException;
 import java.sql.*;
@@ -64,6 +65,39 @@ public class UserQuizDB {
             ex.printStackTrace();
         }
         return quizList;
+    }
+
+    public ArrayList<User> getQuizStudentList(String id)throws Exception {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        User user = null;
+        ArrayList<User> studentList = new ArrayList<User>();
+
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "Select UserUserID  , UserName From UserQuiz , User WHERE UserUserID = UserID AND QuizQuizID = ?";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setString(1, id);
+
+            ResultSet rs = pStmnt.executeQuery();
+            if( rs.next() ){
+                user = new User();
+                user.setUserID(rs.getInt("UserUserID"));
+                user.setUsername(rs.getString("UserName"));
+                studentList.add(user);
+            }
+
+            pStmnt.close();
+            cnnct.close();
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+        return studentList;
     }
 
 }
