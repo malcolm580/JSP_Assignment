@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="CSS/themeBlueGrey.css">
 <link rel='stylesheet' href='CSS/gFont.css'>
 <link rel="stylesheet" href="CSS/fontAwesome.css">
+<link rel="stylesheet" href="CSS/table.css">
+
 <script src="JS/jquery.js"></script>
 <style>
     html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}

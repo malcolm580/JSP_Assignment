@@ -105,7 +105,7 @@ public class UserQuizDB {
             pStmnt.setString(1, id);
 
             ResultSet rs = pStmnt.executeQuery();
-            if( rs.next() ){
+            while( rs.next() ){
                 user = new User();
                 user.setUserID(rs.getInt("UserUserID"));
                 user.setUsername(rs.getString("UserName"));
