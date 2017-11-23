@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "LoginController", urlPatterns = {"/main"} )
+@WebServlet(name = "LoginController", urlPatterns = {"/main"})
 public class LoginController extends HttpServlet {
 
     private UserDB db;
@@ -22,7 +22,7 @@ public class LoginController extends HttpServlet {
         String dbUser = this.getServletContext().getInitParameter("dbUser");
         String dbPassword = this.getServletContext().getInitParameter("dbPassword");
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
-        db = new UserDB (dbUrl, dbUser, dbPassword);
+        db = new UserDB(dbUrl, dbUser, dbPassword);
 
     }
 
@@ -61,34 +61,35 @@ public class LoginController extends HttpServlet {
         String targetURL;
 
         //if ("abc".equals(username) && "123".equals(password)){
-        User user=db.isValidUser(username,password);
-        if(null!=user){
+        User user = db.isValidUser(username, password);
+        if (null != user) {
             HttpSession session = request.getSession();
             session.setAttribute("userInfo", user);
             targetURL = "index.jsp";
-        }else {
+        } else {
             targetURL = "loginError.jsp";
         }
 
-        RequestDispatcher rd;
-        rd = getServletContext().getRequestDispatcher("/" + targetURL);
-        rd.forward(request, response);
+            RequestDispatcher rd;
+            rd = getServletContext().getRequestDispatcher("/" + targetURL);
+            rd.forward(request, response);
+
     }
 
-    private boolean isAuthenticated(HttpServletRequest request){
+    private boolean isAuthenticated(HttpServletRequest request) {
 
         boolean result = false;
 
         HttpSession session = request.getSession();
 
-        if (null!=session.getAttribute("userInfo") ){
+        if (null != session.getAttribute("userInfo")) {
             result = true;
         }
 
         return result;
     }
 
-    private void doLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+    private void doLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String targetURL = "login.jsp";
 
         RequestDispatcher rd;
@@ -97,11 +98,11 @@ public class LoginController extends HttpServlet {
         rd.forward(request, response);
     }
 
-    private void doLogout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+    private void doLogout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         HttpSession session = request.getSession(false);
 
-        if (session != null){
+        if (session != null) {
             session.removeAttribute("userInfo");
             session.invalidate();
         }

@@ -3,10 +3,11 @@
 <%
     ArrayList<Quiz> quizList = (ArrayList<Quiz>) session.getAttribute("quizList");
     if (quizList == null) {
-        response.sendRedirect("quiz?action=list");
+        RequestDispatcher rd = request.getRequestDispatcher("/quiz?action=list");
+        rd.forward(request, response);
     } else {
         for (Quiz quiz : quizList) {
-            out.print(quiz.getQuizID()+","+quiz.getQuizName()+"<br />");
+            out.print("<a href='quiz.jsp?id=" + quiz.getQuizID() + "'><p><i class=\"fa  fa-fw w3-margin-right w3-text-theme\"></i>" + quiz.getQuizName() + "</p></a>");
         }
     }
 %>

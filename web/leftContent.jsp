@@ -1,21 +1,16 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: youma
-  Date: 23/11/2017
-  Time: 0:22
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page buffer="5kb" autoFlush="false" %>
+
 <!-- Left Column -->
 <div class="w3-col m3">
     <!-- Profile -->
     <div class="w3-card w3-round w3-white">
         <div class="w3-container">
+            <jsp:useBean id="userInfo" class="elearning.bean.User" scope="session"/>
             <h4 class="w3-center">My Profile</h4>
             <p class="w3-center"><img src="/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
             <hr>
-            <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> Designer, UI</p>
-            <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> London, UK</p>
+            <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> <jsp:getProperty name="userInfo" property="role"/><b /></p>
+            <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> <jsp:getProperty name="userInfo" property="email"/></p>
             <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> April 1, 1988</p>
         </div>
     </div>
@@ -89,6 +84,13 @@
         <p><strong>Hey!</strong></p>
         <p>People are looking at your profile. Find out who.</p>
     </div>
-
-    <!-- End Left Column -->
+    <div class="w3-card w3-round w3-white w3-hide-small">
+        <div class="w3-container">
+            <p>Available Quiz</p>
+            <p>
+                <jsp:include page="quizList.jsp" />
+            </p>
+        </div>
+    </div>
+    <br>
 </div>

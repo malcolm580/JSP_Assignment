@@ -1,17 +1,9 @@
-<%@ page import="elearning.bean.User" %><%--
-  Created by IntelliJ IDEA.
-  User: LOC
-  Date: 20/11/2017
-  Time: 15:08
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="elearning.bean.User" %>
 <%
     User user = (User)request.getSession().getAttribute("userInfo");
-    if(user==null){
-       // response.sendRedirect("login.jsp");
-    }else{
+    if(null!=user){
         response.sendRedirect("index.jsp?msg=You%20have%20been%20logined");
+        out.flush();
     }
 %>
 <!DOCTYPE html>

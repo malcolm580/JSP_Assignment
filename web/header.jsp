@@ -1,6 +1,6 @@
 <%@ page import="elearning.bean.User" %>
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="CSS/basic.css">
@@ -13,7 +13,7 @@
 <style>
     html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 </style>
-<body class="w3-theme-l5">
+
 
 <!-- Navbar -->
 <div class="w3-top">

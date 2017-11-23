@@ -1,5 +1,11 @@
 <%@ page import="elearning.bean.User" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page buffer="16kb" %>
+<%
+  User user = (User)request.getSession().getAttribute("userInfo");
+  if(null==user){
+    response.sendRedirect("login.jsp");
+  }
+%>
 
 <!DOCTYPE html>
 <html>
@@ -7,14 +13,7 @@
 <head></head>
 
 <body>
-<%
-  User user = (User)request.getSession().getAttribute("userInfo");
-  if(null==user){
-     response.sendRedirect("login.jsp");
-  }else{
-    //response.sendRedirect("index.jsp?msg=You%20have%20been%20logined");
-  }
-%>
+
 <jsp:include page="header.jsp" />
 
 <!-- Page Container -->
@@ -23,6 +22,7 @@
   <div class="w3-row">
     <!-- Left Column -->
     <jsp:include page="leftContent.jsp"/>
+    <!-- End Left Column -->
 
     <!-- Middle Column -->
     <div class="w3-col m7">
