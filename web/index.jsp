@@ -9,7 +9,7 @@
 <body>
 <%
   User user = (User)request.getSession().getAttribute("userInfo");
-  if(user==null){
+  if(null==user){
      response.sendRedirect("login.jsp");
   }else{
     //response.sendRedirect("index.jsp?msg=You%20have%20been%20logined");

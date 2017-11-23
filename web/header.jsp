@@ -29,7 +29,7 @@
                 <a href="#" class="w3-bar-item w3-button">Jane likes your post</a>
             </div>
         </div>
-        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account"><%= ((User)request.getSession().getAttribute("userInfo")).getUsername()+" "%><img src="${pageContext.request.contextPath}/image/moodle.gif" class="w3-circle" style="height:25px;width:25px" alt="Avatar"></a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account"><% if(request.getSession().getAttribute("userInfo")!=null) out.print(((User)request.getSession().getAttribute("userInfo")).getUsername()+" "); %><img src="${pageContext.request.contextPath}/image/moodle.gif" class="w3-circle" style="height:25px;width:25px" alt="Avatar"></a>
     </div>
 </div>
 
