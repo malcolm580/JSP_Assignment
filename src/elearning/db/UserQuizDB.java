@@ -36,22 +36,13 @@ public class UserQuizDB {
 
         try {
             cnnct = getConnection();
-            String preQueryStatement = "Select UserUserID ,QuizQuizID  From UserQuiz WHERE UserUserID=?";
+            String preQueryStatement = "Select UserUserID ,QuizQuizID  From UserQuiz WHERE UserUserID=11";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setInt(1, id);
-
+            //pStmnt.setInt(1, id);
             ResultSet rs = pStmnt.executeQuery();
-            if( rs.next() ){
-                String preQueryStatement2 = "Select *  From Quiz WHERE QuizID=?";
-                pStmnt = cnnct.prepareStatement(preQueryStatement);
-                pStmnt.setInt(1, rs.getInt("QuizQuizID"));
-                ResultSet rs2 = pStmnt.executeQuery();
-                quiz = new Quiz();
-                quiz.setQuizID(rs.getInt("QuizQuizID"));
-                quiz.setModuleID(rs2.getInt("ModuleID"));
-                quiz.setQuizName(rs2.getString("QuizName"));
-                quiz.setTimeLimit(rs2.getInt("TimeLimit"));
-                quizList.add(quiz);
+            while ( rs.next() ){
+                quizList.add(getQuiz(rs.getInt("QuizQuizID")));
+
             }
 
             pStmnt.close();
@@ -65,6 +56,40 @@ public class UserQuizDB {
             ex.printStackTrace();
         }
         return quizList;
+    }
+    public Quiz getQuiz(int id){
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        Quiz quiz = null;
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "Select * From Quiz WHERE QuizID=? LIMIT 1";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, id);
+
+            ResultSet rs = pStmnt.executeQuery();
+            while( rs.next() ){
+                quiz = new Quiz();
+                quiz.setQuizID(rs.getInt("QuizID"));
+                quiz.setModuleID(rs.getInt("ModuleID"));
+                quiz.setTimeLimit(rs.getInt("TimeLimit"));
+                quiz.setQuizName(rs.getString("QuizName"));
+                quiz.setTotalQuestion(rs.getInt("TotalQuestion"));
+            }
+
+            pStmnt.close();
+            cnnct.close();
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return quiz;
     }
 
     public ArrayList<User> getQuizStudentList(String id)throws Exception {

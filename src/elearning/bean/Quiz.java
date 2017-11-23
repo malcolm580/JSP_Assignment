@@ -3,8 +3,16 @@ package elearning.bean;
 import java.io.Serializable;
 
 public class Quiz implements Serializable {
-    int quizID,moduleID,timeLimit;
+    int quizID,moduleID,timeLimit,totalQuestion;
     String quizName;
+
+    public int getTotalQuestion() {
+        return totalQuestion;
+    }
+
+    public void setTotalQuestion(int totalQuestion) {
+        this.totalQuestion = totalQuestion;
+    }
 
     public int getQuizID() {
         return quizID;
