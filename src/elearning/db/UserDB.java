@@ -1,5 +1,7 @@
 package elearning.db;
 
+import elearning.bean.User;
+
 import java.io.IOException;
 import java.sql.*;
 
@@ -48,8 +50,8 @@ public class UserDB {
         }
     }
 
-    public boolean isValidUser(String user, String pwd) throws Exception {
-        boolean isValid = false;
+    public User isValidUser(String user, String pwd) throws Exception {
+        User userBean=null;
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
 
@@ -66,7 +68,11 @@ public class UserDB {
             rs = pStmnt.executeQuery();
 
             if (rs.next()) {
-                isValid = true;
+                userBean=new User();
+                userBean.setUserID(rs.getInt("UserID"));
+                userBean.setUsername(rs.getString("Username"));
+                userBean.setRole(rs.getString("Role"));
+                userBean.setEmail(rs.getString("Email"));
             }
 
         } catch(SQLException ex) {
@@ -77,7 +83,7 @@ public class UserDB {
         } catch(IOException ex) {
             ex.printStackTrace();
         }
-        return isValid;
+        return userBean;
     }
 
     public boolean addUserInfo(String id, String user, String pwd)throws Exception {

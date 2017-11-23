@@ -1,8 +1,6 @@
 <component name="libraryTable">
   <library name="mysql-connector-java-5.1.44-bin">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../glassfish4/glassfish/domains/domain1/lib/ext/mysql-connector-java-5.1.44-bin.jar!/" />
-    </CLASSES>
+    <CLASSES />
     <JAVADOC />
     <SOURCES />
   </library>

@@ -61,11 +61,10 @@ public class LoginController extends HttpServlet {
         String targetURL;
 
         //if ("abc".equals(username) && "123".equals(password)){
-        if(db.isValidUser(username,password)){
+        User user=db.isValidUser(username,password);
+        if(null!=user){
             HttpSession session = request.getSession(true);
-            User bean = new User();
-            bean.setUsername(username);
-            session.setAttribute("userInfo", bean);
+            session.setAttribute("userInfo", user);
             targetURL = "index.jsp";
         }else {
             targetURL = "loginError.jsp";
