@@ -1,6 +1,7 @@
 package elearning.servlet;
 
 import elearning.bean.User;
+import elearning.db.QuizDB;
 import elearning.db.UserDB;
 import elearning.db.UserModuleDB;
 
@@ -48,7 +49,12 @@ public class ReportingMenuController extends HttpServlet {
 
                 targetURL = "ReportingMenu.jsp";
             }else if("getModuleQuiz".equalsIgnoreCase(action)){
+                QuizDB db = new QuizDB(dbUrl, dbUser, dbPassword);
 
+                HttpSession session = request.getSession();
+                String moduleID = request.getParameter("moduleID");
+                ArrayList quizList = db.getModuleQuiz(moduleID);
+                session.setAttribute("quizList", quizList);
             }
 
             RequestDispatcher rd;
