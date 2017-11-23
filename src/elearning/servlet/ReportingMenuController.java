@@ -41,18 +41,16 @@ public class ReportingMenuController extends HttpServlet {
                 HttpSession session = request.getSession();
                 User userData = (User) session.getAttribute("userInfo") ;
                 ArrayList moduleList = db.getUserModule(userData.getUserID());
-
-                PrintWriter out = response.getWriter();
-                out.println(userData);
-                out.println(userData.getUserID());
-                out.println(moduleList.size());
+//
+//                PrintWriter out = response.getWriter();
+//                out.println(userData);
+//                out.println(userData.getUserID());
+//                out.println(moduleList.size());
 
                 session.setAttribute("moduleList", moduleList);
                 targetURL = "ReportingMenu.jsp";
 
-                moduleList = (ArrayList) session.getAttribute("userInfo");
-                out.println(moduleList.size());
-//
+
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/" + targetURL);
                 rd.forward(request, response);

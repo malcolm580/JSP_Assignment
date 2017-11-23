@@ -46,22 +46,21 @@
                 <span class="w3-right w3-opacity">1 min</span>
                 <h4>Module Reporting</h4><br>
                 <hr class="w3-clear">
-
+                 <h3>
                 <%
                     ArrayList moduleList = (ArrayList) session.getAttribute("moduleList");
 
                     for (Object bean : moduleList) {
                         Module module = (Module) bean;
-                        out.print(module.getModuleName() + "\n");
+                        out.println(module.getModuleName() + "<br />");
                     }
 
                     if(moduleList.size() == 0){
-                        out.print("NO module");
+                        out.print("You have no any module");
                     }
 
-                    out.print("end");
-
                 %>
+                 </h3>
             </div>
 
 

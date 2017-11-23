@@ -34,13 +34,16 @@ public class UserModuleDB {
 
         try {
             cnnct = getConnection();
-            String preQueryStatement = "Select MO.ModuleName  From UserModule UM , MODULE MO WHERE UM.ModuleID = MO.ModuleID AND UserID = ?";
+            String preQueryStatement = "Select MO.ModuleName , MO.ModuleID  " +
+                    "From UserModule UM , MODULE MO " +
+                    "WHERE UM.ModuleID = MO.ModuleID AND UserID = ?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             pStmnt.setInt(1, id);
 
             ResultSet rs = pStmnt.executeQuery();
             while( rs.next() ){
                 module = new Module();
+                module.setModuleID(rs.getInt("ModuleID"));
                 module.setModuleName(rs.getString("ModuleName"));
                 moduleList.add(module);
             }
