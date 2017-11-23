@@ -52,7 +52,7 @@
 
                     for (Object bean : moduleList) {
                         Module module = (Module) bean;
-                        out.println(module.getModuleName() + "<br />");
+                        out.println("<a href='reportMenu?action=getModuleQuiz&moduleID="+ module.getModuleID()+"'>" +  module.getModuleName()+"</a><br />");
                     }
 
                     if(moduleList.size() == 0){
