@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "LoginController", urlPatterns = {"/main"})
+@WebServlet(name = "LoginController", urlPatterns = {"/main"} )
 public class LoginController extends HttpServlet {
 
     private UserDB db;
@@ -65,9 +65,8 @@ public class LoginController extends HttpServlet {
             HttpSession session = request.getSession(true);
             User bean = new User();
             bean.setUsername(username);
-
             session.setAttribute("userInfo", bean);
-            targetURL = "welcome.jsp";
+            targetURL = "index.jsp";
         }else {
             targetURL = "loginError.jsp";
         }
