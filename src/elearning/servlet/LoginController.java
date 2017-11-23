@@ -63,7 +63,7 @@ public class LoginController extends HttpServlet {
         //if ("abc".equals(username) && "123".equals(password)){
         User user=db.isValidUser(username,password);
         if(null!=user){
-            HttpSession session = request.getSession(true);
+            HttpSession session = request.getSession();
             session.setAttribute("userInfo", user);
             targetURL = "index.jsp";
         }else {
@@ -79,9 +79,9 @@ public class LoginController extends HttpServlet {
 
         boolean result = false;
 
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
 
-        if (session.getAttribute("userInfo") != null){
+        if (null!=session.getAttribute("userInfo") ){
             result = true;
         }
 
