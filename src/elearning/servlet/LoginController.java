@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "LoginController", urlPatterns = {"/main"})
+@WebServlet(name = "LoginController", urlPatterns = {"/main"} )
 public class LoginController extends HttpServlet {
 
     private UserDB db;

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet (name = "ReportingMenuController" , urlPatterns = {"/reportMenu}"} )
+@WebServlet (name = "ReportingMenuController" , urlPatterns = {"/reportMenu"} )
 public class ReportingMenuController extends HttpServlet {
 
     private UserModuleDB db;
