@@ -34,19 +34,16 @@
                 <div class="w3-col m12">
                     <div class="w3-card w3-round w3-white">
                         <div class="w3-container w3-padding">
-                            <h6 class="w3-opacity">Social Media template by w3.css</h6>
-                            <p contenteditable="true" class="w3-border w3-padding">Status: Feeling Blue</p>
-                            <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i> Post</button>
+                            <h3>Module Quiz Report -- Student Selection</h3>
+                            <h5>Please select any or a set of student</h5>
+                            <%--<button type="button" class="w3-button w3-theme" style="margin-left: 88.5%">Search</button>--%>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-                <img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right"
-                     style="width:60px">
-                <span class="w3-right w3-opacity">1 min</span>
-                <h4>Module Reporting</h4><br>
+                <h4>List of Student -- <%= session.getAttribute("quizName") %> </h4><br>
                 <hr class="w3-clear">
                  <h3>
                      <form action="reportMenu" method="get">
@@ -54,8 +51,8 @@
                          <table border="1" id="table">
                              <tr>
                                  <th></th>
-                                 <th>UserID</th>
-                                 <th>UserName</th>
+                                 <th>Student ID</th>
+                                 <th>Student Name</th>
                              </tr>
                              <%
                                  ArrayList quizStudentList = (ArrayList) session.getAttribute("quizStudentList");

@@ -15,6 +15,11 @@
     html, body, h1, h2, h3, h4, h5 {
         font-family: "Open Sans", sans-serif
     }
+
+    a {
+        text-decoration: none
+    }
+
 </style>
 
 
@@ -32,7 +37,7 @@
            title="Account Settings"><i class="fa fa-user"></i>Quiz List</a>
         <a href="reportMenu?action=getModuleList"
            class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Course Reporting"><i
-                class="fa fa-envelope"></i>Course Reporting</a>
+                class="fa fa-envelope"></i>Module Reporting</a>
         <div class="w3-dropdown-hover w3-hide-small">
             <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span
                     class="w3-badge w3-right w3-small w3-green">3</span></button>

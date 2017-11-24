@@ -72,7 +72,11 @@ public class ReportingController extends HttpServlet {
 
                 session = request.getSession();
                 String quizID = request.getParameter("quizID");
+                String quizName = request.getParameter("quizName");
+
                 session.setAttribute("quizID",quizID);
+                session.setAttribute("quizName",quizName);
+
                 ArrayList quizStudentList = db.getQuizStudentList(quizID);
                 session.setAttribute("quizStudentList", quizStudentList);
 
