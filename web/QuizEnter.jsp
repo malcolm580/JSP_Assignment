@@ -36,7 +36,7 @@
                 <span class="w3-right w3-opacity"></span>
                 <h4><%=((Module) session.getAttribute("currentModule")).getModuleName()%></h4><br>
                 <hr class="w3-clear">
-
+                <center>Attempts allowed: <%=currentQuiz.getAttemptLimit()%></center>
             </div>
         </div>
         <!-- End Middle Column -->

@@ -7,7 +7,6 @@
     if (user == null) {
         //response.sendRedirect("login.jsp");
         request.getRequestDispatcher("/login.jsp").forward(request, response);
-        out.flush();
     }
 %>
 

@@ -34,6 +34,10 @@ public class QuizController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse
             response) throws ServletException, IOException {
         try {
+            if (null==((User)request.getSession(false).getAttribute("userInfo"))) {//Check Is authorized
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                return;
+            }
 
             String action = request.getParameter("action");
 
