@@ -82,12 +82,8 @@
           //out.println("<a href='reportMenu?action=getModuleQuiz&moduleID="+ module.getModuleID()+"'>" +  module.getModuleName()+"</a><br />");
 
           out.println("<div class=\"w3-container w3-card w3-white w3-round w3-margin\"><br>");
-          out.println("<h4><a href='ModuleContent?moduleID="+ module.getModuleID()+"'>" + module.getModuleID()+ " - "+ module.getModuleName()+"</a></h4><br />");
+          out.println("<h4><a href='ModuleContent.jsp?moduleID="+ module.getModuleID()+"'>" + module.getModuleID()+ " - "+ module.getModuleName()+"</a></h4><br />");
           out.println("</div>");
-        }
-
-        if(moduleList.size() == 0){
-          out.print("You have no any module");
         }
 
       %>
