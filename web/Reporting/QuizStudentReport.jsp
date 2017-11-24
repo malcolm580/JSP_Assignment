@@ -34,7 +34,8 @@
                 <%--<img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right"--%>
                      <%--style="width:60px">--%>
                 <%--<span class="w3-right w3-opacity">1 min</span>--%>
-                <h4>Quiz Reporting -- <%= session.getAttribute("quizName")%></h4><br>
+                <h4>Quiz Reporting -- <%= session.getAttribute("quizName")%></h4>
+                <h5>Total question number -- <%= session.getAttribute("quizTotalQuestion") %> </h5>
                 <hr class="w3-clear">
                 <canvas id="myChart" width="300" height="200"></canvas>
 

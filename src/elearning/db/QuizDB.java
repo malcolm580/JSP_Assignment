@@ -99,6 +99,7 @@ public class QuizDB {
         }
         return quizList;
     }
+
     public Module getParentModule(Quiz quiz) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
@@ -129,6 +130,44 @@ public class QuizDB {
             e.printStackTrace();
         }
         return module;
+    }
+
+    // Use in reportingController --> QuizStudentReport.jsp (FKY)
+    public Quiz getQuizByID(int quizID) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        Module module = null;
+        Quiz quiz = null;
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "SELECT * FROM Quiz WHERE QuizID=? ";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, quizID );
+
+            ResultSet rs = pStmnt.executeQuery();
+            if (rs.next()) {
+                quiz = new Quiz();
+                quiz.setQuizID(rs.getInt("QuizID"));
+                quiz.setModuleID(rs.getInt("ModuleID"));
+                quiz.setQuizName(rs.getString("QuizName"));
+                quiz.setAttemptLimit(rs.getInt("AttemptLimit"));
+                quiz.setTimeLimit(rs.getInt("TimeLimit"));
+                quiz.setTotalQuestion(rs.getInt("TotalQuestion"));
+            }
+
+            pStmnt.close();
+            cnnct.close();
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return quiz;
     }
 
 }

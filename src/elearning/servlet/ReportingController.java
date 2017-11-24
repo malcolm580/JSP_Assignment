@@ -82,12 +82,6 @@ public class ReportingController extends HttpServlet {
                 targetURL = "Reporting/QuizStudentList.jsp";
             } else if ("getStudentQuizReport".equalsIgnoreCase(action)) {
 
-                QuizResultDB qrdb = new QuizResultDB(dbUrl, dbUser, dbPassword);
-                UserDB userDB = new UserDB(dbUrl, dbUser, dbPassword);
-
-                JSONArray nameArray = new JSONArray();
-                JSONArray scoreArray = new JSONArray();
-
                 String[] selectStudentID = request.getParameterValues("target");
 
                 if (selectStudentID == null) {
@@ -95,6 +89,13 @@ public class ReportingController extends HttpServlet {
                     targetURL = "Reporting/ReportingError.jsp";
 
                 } else {
+
+                    QuizResultDB qrdb = new QuizResultDB(dbUrl, dbUser, dbPassword);
+                    UserDB userDB = new UserDB(dbUrl, dbUser, dbPassword);
+                    QuizDB quizDB = new QuizDB(dbUrl, dbUser, dbPassword);
+
+                    JSONArray nameArray = new JSONArray();
+                    JSONArray scoreArray = new JSONArray();
 
                     session = request.getSession();
 
@@ -106,12 +107,14 @@ public class ReportingController extends HttpServlet {
                     QuizResult lowestResult = new QuizResult();
                     lowestResult.setCorrectCount(100);
 
+                    Quiz quiz = quizDB.getQuizByID(Integer.parseInt((String) session.getAttribute("quizID")));
+
                     for (String studentID : selectStudentID) {
 
                         User user = userDB.findUserByID(Integer.parseInt(studentID));
                         nameArray.put(user.getUsername());
 
-                        ArrayList<QuizResult> quizResultList = qrdb.getMQuizResult(Integer.parseInt(studentID), Integer.parseInt((String) session.getAttribute("quizID")));
+                        ArrayList<QuizResult> quizResultList = qrdb.getMQuizResult(Integer.parseInt(studentID), Integer.parseInt((String) session.getAttribute("quizID")) );
                         QuizResult userHighestResult = quizResultList.get(0);
 
                         for (QuizResult quizResult : quizResultList) {
@@ -144,6 +147,8 @@ public class ReportingController extends HttpServlet {
                     session.setAttribute("scoreArrayString", scoreArrayString);
                     session.setAttribute("highestResultUser", highestResultUser);
                     session.setAttribute("lowestResultUser", lowestResultUser);
+                    session.setAttribute("quizTotalQuestion" , quiz.getTotalQuestion());
+
                     targetURL = "Reporting/QuizStudentReport.jsp";
 
                 }
