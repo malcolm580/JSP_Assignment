@@ -26,7 +26,43 @@ public class QuizDB {
         return DriverManager.getConnection(dburl, dbUser, dbPassword);
     }
 
+    public ArrayList<Quiz> getQuiz() {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        Quiz quiz = null;
+        ArrayList<Quiz> quizList = new ArrayList<Quiz>();
 
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "Select * From Quiz";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+
+            ResultSet rs = pStmnt.executeQuery();
+            while ( rs.next() ){
+                quiz = new Quiz();
+                quiz.setQuizID(rs.getInt("QuizID"));
+                quiz.setModuleID(rs.getInt("ModuleID"));
+                quiz.setQuizName(rs.getString("QuizName"));
+                quiz.setAttemptLimit(rs.getInt("AttemptLimit"));
+                quiz.setTimeLimit(rs.getInt("TimeLimit"));
+                quiz.setTotalQuestion(rs.getInt("TotalQuestion"));
+                quizList.add(quiz);
+            }
+
+            pStmnt.close();
+            cnnct.close();
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return quizList;
+    }
     public ArrayList<Quiz> getModuleQuiz(String moduleID)throws Exception {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
@@ -35,7 +71,7 @@ public class QuizDB {
 
         try {
             cnnct = getConnection();
-            String preQueryStatement = "Select QuizID , QuizName From Quiz WHERE ModuleID=?";
+            String preQueryStatement = "Select * From Quiz WHERE ModuleID=?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             pStmnt.setString(1, moduleID);
 
@@ -43,7 +79,11 @@ public class QuizDB {
             while ( rs.next() ){
                 quiz = new Quiz();
                 quiz.setQuizID(rs.getInt("QuizID"));
+                quiz.setModuleID(rs.getInt("ModuleID"));
                 quiz.setQuizName(rs.getString("QuizName"));
+                quiz.setAttemptLimit(rs.getInt("AttemptLimit"));
+                quiz.setTimeLimit(rs.getInt("TimeLimit"));
+                quiz.setTotalQuestion(rs.getInt("TotalQuestion"));
                 quizList.add(quiz);
             }
 
@@ -90,4 +130,5 @@ public class QuizDB {
         }
         return module;
     }
+
 }

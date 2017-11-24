@@ -33,7 +33,7 @@
         <a href="http://ivefyp.ml/phpmyadmin"
            class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i
                 class="fa fa-globe"></i>PhpMyAdmin</a>
-        <a href="QuizList.jsp" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
+        <a href="./quiz?action=QuizManagement" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
            title="Account Settings"><i class="fa fa-user"></i>Quiz List</a>
         <a href="reportMenu?action=getModuleList"
            class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Course Reporting"><i

@@ -103,7 +103,30 @@ public class QuizController extends HttpServlet {
                 session.setAttribute("currentQuiz", currentQuiz);
                 session.setAttribute("currentQuizResultList", currentQuizResultList);
                 RequestDispatcher rd;
-                rd = getServletContext().getRequestDispatcher("/Quiz/QuizEnter.jsp");
+                rd = getServletContext().getRequestDispatcher("/QuizEnter.jsp");
+                rd.forward(request, response);
+            }else if("QuizManagement".equalsIgnoreCase(action)){
+                HttpSession session = request.getSession();
+
+                //Get Current User Data
+                User userData = (User) session.getAttribute("userInfo");
+                int userID = userData.getUserID();
+                if((!"Admin".equalsIgnoreCase(userData.getRole()))&&(!"teacher".equalsIgnoreCase(userData.getRole()))){//It means no permission
+                    RequestDispatcher rd;
+                    rd = getServletContext().getRequestDispatcher("/index.jsp");
+                    rd.forward(request, response);
+                    return;
+                }
+                ArrayList<Quiz> quizList=null;
+                if("Admin".equalsIgnoreCase(userData.getRole())) {
+                    quizList=quizDB.getQuiz();
+                }else if("teacher".equalsIgnoreCase(userData.getRole())){
+                    quizList=userQuizDB.getUserQuiz(userID);
+                }
+
+                session.setAttribute("currentQuiz", quizList);
+                RequestDispatcher rd;
+                rd = getServletContext().getRequestDispatcher("/QuizManagement.jsp");
                 rd.forward(request, response);
             }
 
