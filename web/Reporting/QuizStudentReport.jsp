@@ -12,12 +12,12 @@
 <html>
 <head>
     <title>Title</title>
+
 </head>
+
 <body>
 
 <jsp:include page="../header.jsp"/>
-
-
 
 <!-- Page Container -->
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
@@ -48,35 +48,31 @@
                 <span class="w3-right w3-opacity">1 min</span>
                 <h4>Module Reporting</h4><br>
                 <hr class="w3-clear">
-                 <h3>
-                     <form action="quizReport" method="get">
-                         <table border="1" id="table">
-                             <tr>
-                                 <th></th>
-                                 <th>UserID</th>
-                                 <th>UserName</th>
-                             </tr>
-                             <%
-                                 ArrayList quizStudentList = (ArrayList) session.getAttribute("quizStudentList");
+                <canvas id="myChart" width="400" height="400"></canvas>
 
-                                 for (Object bean : quizStudentList) {
-                                     User student = (User) bean;
-                                     out.println("<tr>");
-                                     out.println("<td><input type='checkbox' value='"+
-                                             student.getUserID()+"' name='target' /></td><td>"
-                                             + student.getUserID()+"</td><td>"+student.getUsername()+"</td>");
-                                     out.println("</tr>");
-                                 }
-
-                                 if(quizStudentList.size() == 0){
-                                     out.print("This quiz have no any student");
-                                 }
-
-                             %>
-                         </table>
-                     </form>
-                     <a href="reportMenu?action=getStudentQuizReport">Test</a>
-                 </h3>
+                <script type="text/javascript">
+                    <%--Get Json form the servlet--%>
+                    var ctx = document.getElementById("myChart");
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: <%= request.getSession().getAttribute("labels") %>,
+                            datasets: [{
+                                label: 'out of # Total Question',
+                                data: <%= request.getSession().getAttribute("QuizReportJson") %>
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero:true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                </script>
             </div>
 
 
@@ -92,5 +88,9 @@
 
 
 <jsp:include page="../footer.jsp"/>
+
 </body>
+
+
+
 </html>

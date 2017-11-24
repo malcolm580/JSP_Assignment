@@ -1,6 +1,8 @@
 <%@ page import="elearning.bean.User" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="elearning.bean.Module" %>
+
+
 <%@page buffer="16kb" autoFlush="false" %>
 <%
   User user = (User)request.getSession(false).getAttribute("userInfo");
