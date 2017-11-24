@@ -50,6 +50,12 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return this.userID + "";
+        return "User{" +
+                "userID=" + userID +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

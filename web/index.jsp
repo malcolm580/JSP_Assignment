@@ -1,9 +1,10 @@
 <%@ page import="elearning.bean.User" %>
-<%@page buffer="16kb" %>
+<%@page buffer="16kb" autoFlush="false" %>
 <%
-  User user = (User)request.getSession().getAttribute("userInfo");
-  if(null==user){
-    response.sendRedirect("login.jsp");
+  User user = (User)request.getSession(false).getAttribute("userInfo");
+  if(user==null){
+    //response.sendRedirect("login.jsp");
+    request.getRequestDispatcher("/login.jsp").forward(request,response);
   }
 %>
 
@@ -13,7 +14,6 @@
 <head></head>
 
 <body>
-
 <jsp:include page="header.jsp" />
 
 <!-- Page Container -->
