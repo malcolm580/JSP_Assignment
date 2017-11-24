@@ -37,6 +37,10 @@
                 <h4><%=((Module) session.getAttribute("currentModule")).getModuleName()%></h4><br>
                 <hr class="w3-clear">
                 <center>Attempts allowed: <%=currentQuiz.getAttemptLimit()%></center>
+                <h5>Summary of your previous attempts</h5>
+                <table width="100%">
+                    <tr><th>State</th><th>Grade / <%=currentQuiz.getTotalQuestion()%></th><th>Review</th></tr>
+                </table>
             </div>
         </div>
         <!-- End Middle Column -->

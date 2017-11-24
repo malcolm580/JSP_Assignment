@@ -3,7 +3,15 @@ package elearning.bean;
 import java.io.Serializable;
 
 public class QuizResult implements Serializable {
-    int userID,courseID,quizID,quizResultID,duration,answeringQuestionState_JSON;
+    int userID,quizID,quizResultID,duration,answeringQuestionState_JSON,correctCount;
+
+    public int getCorrectCount() {
+        return correctCount;
+    }
+
+    public void setCorrectCount(int correctCount) {
+        this.correctCount = correctCount;
+    }
 
     public int getUserID() {
         return userID;
@@ -13,13 +21,6 @@ public class QuizResult implements Serializable {
         this.userID = userID;
     }
 
-    public int getCourseID() {
-        return courseID;
-    }
-
-    public void setCourseID(int courseID) {
-        this.courseID = courseID;
-    }
 
     public int getQuizID() {
         return quizID;
