@@ -50,7 +50,7 @@ public class ReportingController extends HttpServlet {
                 ArrayList moduleList = db.getUserModule(userData.getUserID());
                 session.setAttribute("moduleList", moduleList);
 
-                targetURL = "ReportingMenu.jsp";
+                targetURL = "Reporting/ReportingMenu.jsp";
             }else if("getModuleQuiz".equalsIgnoreCase(action)){
                 QuizDB db = new QuizDB(dbUrl, dbUser, dbPassword);
 
@@ -59,7 +59,7 @@ public class ReportingController extends HttpServlet {
                 ArrayList quizList = db.getModuleQuiz(moduleID);
                 session.setAttribute("quizList", quizList);
 
-                targetURL = "ModuleQuiz.jsp";
+                targetURL = "Reporting/ModuleQuiz.jsp";
             }else if("getQuizStudent".equalsIgnoreCase(action)){
                 UserQuizDB db = new UserQuizDB(dbUrl, dbUser, dbPassword);
 
@@ -68,7 +68,7 @@ public class ReportingController extends HttpServlet {
                 ArrayList quizStudentList = db.getQuizStudentList(quizID);
                 session.setAttribute("quizStudentList", quizStudentList);
 
-                targetURL = "QuizStudentList.jsp";
+                targetURL = "Reporting/QuizStudentList.jsp";
             }
 
             RequestDispatcher rd;

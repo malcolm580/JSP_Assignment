@@ -9,13 +9,15 @@
 <%@ page import="elearning.bean.Module" %>
 <%@ page import="com.sun.org.apache.xpath.internal.operations.Mod" %>
 <%@ page import="elearning.bean.Quiz" %>
+<%@ page import="elearning.bean.User" %>
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
 
-<jsp:include page="header.jsp"/>
+<jsp:include page="../header.jsp"/>
+
 
 
 <!-- Page Container -->
@@ -24,7 +26,7 @@
     <div class="w3-row">
 
         <!-- Left Column -->
-        <jsp:include page="leftContent.jsp"/>
+        <jsp:include page="../leftContent.jsp"/>
 
         <!-- Middle Column -->
         <div class="w3-col m7">
@@ -48,19 +50,32 @@
                 <h4>Module Reporting</h4><br>
                 <hr class="w3-clear">
                  <h3>
-                <%
-                    ArrayList quizList = (ArrayList) session.getAttribute("quizList");
+                     <form action="quizReport" method="get">
+                         <table border="1" id="table">
+                             <tr>
+                                 <th></th>
+                                 <th>UserID</th>
+                                 <th>UserName</th>
+                             </tr>
+                             <%
+                                 ArrayList quizStudentList = (ArrayList) session.getAttribute("quizStudentList");
 
-                    for (Object bean : quizList) {
-                        Quiz quiz = (Quiz) bean;
-                        out.println("<a href='reportMenu?action=getQuizStudent&quizID="+ quiz.getQuizID()+"'>" +  quiz.getQuizName()+"</a><br />");
-                    }
+                                 for (Object bean : quizStudentList) {
+                                     User student = (User) bean;
+                                     out.println("<tr>");
+                                     out.println("<td><input type='checkbox' value='"+
+                                             student.getUserID()+"' name='target' /></td><td>"
+                                             + student.getUserID()+"</td><td>"+student.getUsername()+"</td>");
+                                     out.println("</tr>");
+                                 }
 
-                    if(quizList.size() == 0){
-                        out.print("This module have no any quiz");
-                    }
+                                 if(quizStudentList.size() == 0){
+                                     out.print("This quiz have no any student");
+                                 }
 
-                %>
+                             %>
+                         </table>
+                     </form>
                  </h3>
             </div>
 
@@ -76,6 +91,6 @@
 </div>
 
 
-<jsp:include page="footer.jsp"/>
+<jsp:include page="../footer.jsp"/>
 </body>
 </html>
