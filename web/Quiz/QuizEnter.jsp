@@ -5,7 +5,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%
     User user = (User) request.getSession().getAttribute("userInfo");
-    if (null == user) {
+    if (request.getSession().isNew()||null == user) {
         request.getRequestDispatcher("/login.jsp").forward(request, response);
     }
     Quiz currentQuiz = (Quiz) request.getSession().getAttribute("currentQuiz");
@@ -23,12 +23,12 @@
     <title>Quiz</title>
 </head>
 <body>
-<jsp:include page="header.jsp"/>
+<jsp:include page="../header.jsp"/>
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
     <!-- The Grid -->
     <div class="w3-row">
         <!-- Left Column -->
-        <jsp:include page="leftContent.jsp"/>
+        <jsp:include page="../leftContent.jsp"/>
         <!-- End Left Column -->
 
         <!-- Middle Column -->
@@ -78,7 +78,7 @@
 <!-- End Page Container -->
 </div>
 <br>
-<jsp:include page="footer.jsp"/>
+<jsp:include page="../footer.jsp"/>
 
 </body>
 </html>

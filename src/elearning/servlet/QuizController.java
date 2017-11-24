@@ -103,7 +103,7 @@ public class QuizController extends HttpServlet {
                 session.setAttribute("currentQuiz", currentQuiz);
                 session.setAttribute("currentQuizResultList", currentQuizResultList);
                 RequestDispatcher rd;
-                rd = getServletContext().getRequestDispatcher("/QuizEnter.jsp");
+                rd = getServletContext().getRequestDispatcher("/Quiz/QuizEnter.jsp");
                 rd.forward(request, response);
             }
 
