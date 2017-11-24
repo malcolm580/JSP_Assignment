@@ -75,6 +75,7 @@ public class UserQuizDB {
                 quiz.setTimeLimit(rs.getInt("TimeLimit"));
                 quiz.setQuizName(rs.getString("QuizName"));
                 quiz.setTotalQuestion(rs.getInt("TotalQuestion"));
+                quiz.setAttemptLimit(rs.getInt("AttemptLimit"));
             }
 
             pStmnt.close();

@@ -2,6 +2,7 @@ package elearning.servlet;
 
 import elearning.bean.Module;
 import elearning.bean.Quiz;
+import elearning.bean.QuizResult;
 import elearning.bean.User;
 import elearning.db.QuizDB;
 import elearning.db.UserQuizDB;
@@ -34,6 +35,10 @@ public class QuizController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse
             response) throws ServletException, IOException {
         try {
+            if (null==((User)request.getSession(false).getAttribute("userInfo"))) {//Check Is authorized
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                return;
+            }
 
             String action = request.getParameter("action");
 
@@ -88,6 +93,7 @@ public class QuizController extends HttpServlet {
                     return;
                 }
                 Module currentModule = quizDB.getParentModule(currentQuiz);
+              //  QuizResult quizResult=
                 session.setAttribute("currentModule", currentModule);
                 session.setAttribute("currentQuiz", currentQuiz);
                 RequestDispatcher rd;

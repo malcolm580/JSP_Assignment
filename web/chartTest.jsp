@@ -11,6 +11,8 @@
     <title>Title</title>
 </head>
 <script src="./JS/Chart.js"></script>
+
+
 <body>
 
 <canvas id="myChart" width="400" height="400"></canvas>

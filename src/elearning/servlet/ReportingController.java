@@ -18,7 +18,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-@WebServlet (name = "ReportingController" , urlPatterns = {"/reportMenu"} )
+
+@WebServlet(name = "ReportingController", urlPatterns = {"/reportMenu"})
 public class ReportingController extends HttpServlet {
 
     String dbUser;
@@ -27,31 +28,33 @@ public class ReportingController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-         dbUser = this.getServletContext().getInitParameter("dbUser");
-         dbPassword = this.getServletContext().getInitParameter("dbPassword");
-         dbUrl = this.getServletContext().getInitParameter("dbUrl");
+        dbUser = this.getServletContext().getInitParameter("dbUser");
+        dbPassword = this.getServletContext().getInitParameter("dbPassword");
+        dbUrl = this.getServletContext().getInitParameter("dbUrl");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse
             response) throws ServletException, IOException {
         try {
-
+            if (request.getSession(false).getAttribute("userInfo")== null) {//Check Is authorized
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
+            }
             PrintWriter out = response.getWriter();
 
             String action = request.getParameter("action");
             HttpSession session;
             String targetURL = "";
 
-            if ("getModuleList".equalsIgnoreCase(action)){
-                UserModuleDB db = new UserModuleDB (dbUrl, dbUser, dbPassword);
+            if ("getModuleList".equalsIgnoreCase(action)) {
+                UserModuleDB db = new UserModuleDB(dbUrl, dbUser, dbPassword);
 
                 session = request.getSession();
-                User userData = (User) session.getAttribute("userInfo") ;
+                User userData = (User) session.getAttribute("userInfo");
                 ArrayList moduleList = db.getUserModule(userData.getUserID());
                 session.setAttribute("moduleList", moduleList);
 
                 targetURL = "Reporting/ReportingMenu.jsp";
-            }else if("getModuleQuiz".equalsIgnoreCase(action)){
+            } else if ("getModuleQuiz".equalsIgnoreCase(action)) {
                 QuizDB db = new QuizDB(dbUrl, dbUser, dbPassword);
 
                 session = request.getSession();
@@ -60,7 +63,7 @@ public class ReportingController extends HttpServlet {
                 session.setAttribute("quizList", quizList);
 
                 targetURL = "Reporting/ModuleQuiz.jsp";
-            }else if("getQuizStudent".equalsIgnoreCase(action)){
+            } else if ("getQuizStudent".equalsIgnoreCase(action)) {
                 UserQuizDB db = new UserQuizDB(dbUrl, dbUser, dbPassword);
 
                 session = request.getSession();
@@ -69,6 +72,15 @@ public class ReportingController extends HttpServlet {
                 session.setAttribute("quizStudentList", quizStudentList);
 
                 targetURL = "Reporting/QuizStudentList.jsp";
+            } else if ("getStudentQuizReport".equalsIgnoreCase(action)) {
+                String labels = "[\"Red\", \"Blue\", \"Yellow\", \"Green\", \"Purple\", \"Orange\" , \"Red\", \"Blue\", \"Yellow\", \"Green\", \"Purple\", \"Orange\"]";
+                String json = "[1, 2, 3, 5, 2, 3 ,1,1,1,1 ,1 , 1]";
+
+                session = request.getSession();
+                session.setAttribute("QuizReportJson", json);
+                session.setAttribute("labels", labels);
+
+                targetURL = "Reporting/QuizStudentReport.jsp";
             }
 
             RequestDispatcher rd;
