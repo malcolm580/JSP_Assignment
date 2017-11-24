@@ -87,8 +87,15 @@
     <div class="w3-card w3-round w3-white w3-hide-small">
         <div class="w3-container">
             <p>Available Quiz</p>
-            <p>
-                <jsp:include page="quizList.jsp" />
+            <p id="quizList">
+               <script>
+                   $(function () {
+
+                           $.get("quizList.jsp",function(data,status){
+                               $("#quizList").html(data);
+                           });
+                   });
+               </script>
             </p>
         </div>
     </div>
