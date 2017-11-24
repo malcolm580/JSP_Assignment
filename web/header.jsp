@@ -47,7 +47,7 @@
                 out.print(((User) request.getSession().getAttribute("userInfo")).getUsername() + " "); %><img
                     src="${pageContext.request.contextPath}/image/moodle.gif" class="w3-circle"
                     style="height:25px;width:25px" alt="Avatar"></a>
-            <div class="w3-dropdown-content w3-card-4 w3-bar-block " style="width:300px">
+            <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
                 <a href="./main?action=logout" class="w3-bar-item w3-button ">Logout</a>
                 <a href="#" class="w3-bar-item w3-button ">John Doe posted on your wall</a>
                 <a href="#" class="w3-bar-item w3-button">Jane likes your post</a>
