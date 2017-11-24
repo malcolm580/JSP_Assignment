@@ -1,10 +1,9 @@
 package elearning.servlet;
 
+import elearning.bean.Quiz;
+import elearning.bean.QuizResult;
 import elearning.bean.User;
-import elearning.db.QuizDB;
-import elearning.db.UserDB;
-import elearning.db.UserModuleDB;
-import elearning.db.UserQuizDB;
+import elearning.db.*;
 
 import javax.jms.Session;
 import javax.servlet.RequestDispatcher;
@@ -38,8 +37,8 @@ public class ReportingController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse
             response) throws ServletException, IOException {
         try {
-            if (request.getSession().isNew()||
-                    null==((User)request.getSession(false).getAttribute("userInfo"))) {//Check Is authorized
+            if (request.getSession().isNew() ||
+                    null == ((User) request.getSession(false).getAttribute("userInfo"))) {//Check Is authorized
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
                 return;
             }
@@ -74,8 +73,8 @@ public class ReportingController extends HttpServlet {
                 String quizID = request.getParameter("quizID");
                 String quizName = request.getParameter("quizName");
 
-                session.setAttribute("quizID",quizID);
-                session.setAttribute("quizName",quizName);
+                session.setAttribute("quizID", quizID);
+                session.setAttribute("quizName", quizName);
 
                 ArrayList quizStudentList = db.getQuizStudentList(quizID);
                 session.setAttribute("quizStudentList", quizStudentList);
@@ -83,26 +82,68 @@ public class ReportingController extends HttpServlet {
                 targetURL = "Reporting/QuizStudentList.jsp";
             } else if ("getStudentQuizReport".equalsIgnoreCase(action)) {
 
-                JSONArray jsonArray = new JSONArray();
+                QuizResultDB qrdb = new QuizResultDB(dbUrl, dbUser, dbPassword);
+                UserDB userDB = new UserDB(dbUrl, dbUser, dbPassword);
 
-                String[] selectStudentID = request.getParameterValues("target") ;
+                JSONArray nameArray = new JSONArray();
+                JSONArray scoreArray = new JSONArray();
 
-                if(selectStudentID == null){
+                String[] selectStudentID = request.getParameterValues("target");
+
+                if (selectStudentID == null) {
 
                     targetURL = "Reporting/ReportingError.jsp";
 
-                }else{
-
-                    for (String student: selectStudentID) {
-                        jsonArray.put(student);
-                    }
-
-                    String labels = jsonArray.toString();
-                    String jsonString = jsonArray.toString();
+                } else {
 
                     session = request.getSession();
-                    session.setAttribute("QuizReportJson", jsonString);
-                    session.setAttribute("labels", labels);
+
+                    User highestResultUser = new User();
+                    QuizResult highestResult = new QuizResult();
+                    highestResult.setCorrectCount(0);
+
+                    User lowestResultUser = new User();
+                    QuizResult lowestResult = new QuizResult();
+                    lowestResult.setCorrectCount(100);
+
+                    for (String studentID : selectStudentID) {
+
+                        User user = userDB.findUserByID(Integer.parseInt(studentID));
+                        nameArray.put(user.getUsername());
+
+                        ArrayList<QuizResult> quizResultList = qrdb.getMQuizResult(Integer.parseInt(studentID), Integer.parseInt((String) session.getAttribute("quizID")));
+                        QuizResult userHighestResult = quizResultList.get(0);
+
+                        for (QuizResult quizResult : quizResultList) {
+                            //Select the highest quiz result for this user
+                            if (quizResult.getCorrectCount() > userHighestResult.getCorrectCount()) {
+                                userHighestResult = quizResult;
+                            }
+                            //Set the highest result in all student
+                            if(quizResult.getCorrectCount() > highestResult.getCorrectCount()){
+                                highestResult = quizResult;
+                            }
+                            //Set the lowest result in all student
+                            if(quizResult.getCorrectCount() < lowestResult.getCorrectCount()){
+                                lowestResult = quizResult;
+                            }
+                        }
+
+                        scoreArray.put(userHighestResult.getCorrectCount());
+
+
+                    }
+
+                    highestResultUser = userDB.findUserByID(highestResult.getUserID());
+                    lowestResultUser = userDB.findUserByID(lowestResult.getUserID());
+
+                    String nameArrayString = nameArray.toString();
+                    String scoreArrayString = scoreArray.toString();
+
+                    session.setAttribute("nameArrayString", nameArrayString);
+                    session.setAttribute("scoreArrayString", scoreArrayString);
+                    session.setAttribute("highestResultUser", highestResultUser);
+                    session.setAttribute("lowestResultUser", lowestResultUser);
                     targetURL = "Reporting/QuizStudentReport.jsp";
 
                 }

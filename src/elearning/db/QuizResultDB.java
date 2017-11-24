@@ -64,6 +64,7 @@ public class QuizResultDB {
         }
         return quizResultArrayList;
     }
+
     public ArrayList<QuizResult> getMQuizResult(int userID)throws Exception {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
@@ -99,4 +100,7 @@ public class QuizResultDB {
         }
         return quizResultArrayList;
     }
+
+
+
 }

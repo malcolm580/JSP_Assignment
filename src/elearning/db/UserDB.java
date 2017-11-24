@@ -114,4 +114,37 @@ public class UserDB {
         return isSuccess;
     }
 
+    public User findUserByID(int id)throws Exception {
+
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        User user = null;
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "Select * From User Where UserID = ?";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, id);
+
+            ResultSet rs = null;
+
+            rs = pStmnt.executeQuery();
+
+            if(rs.next()) {
+                user = new User();
+                user.setUsername(rs.getString("UserName"));
+            }
+
+            pStmnt.close();
+            cnnct.close();
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+        return user;
+    }
+
 }
