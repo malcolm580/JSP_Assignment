@@ -91,7 +91,7 @@
                <script>
                    $(function () {
 
-                           $.get("QuizList.jsp",function(data,status){
+                           $.get("./quiz?action=list",function(data,status){
                                $("#quizList").html(data);
                            });
                    });

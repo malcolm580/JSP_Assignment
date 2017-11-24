@@ -1,6 +1,5 @@
 package elearning.db;
 
-import elearning.bean.Module;
 import elearning.bean.Quiz;
 import elearning.bean.User;
 
@@ -23,12 +22,12 @@ public class UserQuizDB {
 
     public Connection getConnection() throws SQLException, IOException, ClassNotFoundException {
         //System.setProperty("jdbc.drivers", "com.mysql.jdbc.Driver");
-        Class.forName( "com.mysql.jdbc.Driver");
+        Class.forName("com.mysql.jdbc.Driver");
         return DriverManager.getConnection(dburl, dbUser, dbPassword);
     }
 
 
-    public ArrayList<Quiz> getUserQuiz(int id)throws Exception {
+    public ArrayList<Quiz> getUserQuiz(int id) throws Exception {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
         Quiz quiz = null;
@@ -36,39 +35,40 @@ public class UserQuizDB {
 
         try {
             cnnct = getConnection();
-            String preQueryStatement = "Select UserUserID ,QuizQuizID  From UserQuiz WHERE UserUserID=11";
+            String preQueryStatement = "SELECT UserUserID ,QuizQuizID  FROM UserQuiz WHERE UserUserID=?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            //pStmnt.setInt(1, id);
+            pStmnt.setInt(1, id);
             ResultSet rs = pStmnt.executeQuery();
-            while ( rs.next() ){
+            while (rs.next()) {
                 quizList.add(getQuiz(rs.getInt("QuizQuizID")));
 
             }
 
             pStmnt.close();
             cnnct.close();
-        } catch(SQLException ex) {
+        } catch (SQLException ex) {
             while (ex != null) {
                 ex.printStackTrace();
                 ex = ex.getNextException();
             }
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         return quizList;
     }
-    public Quiz getQuiz(int id){
+
+    public Quiz getQuiz(int quizID) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
         Quiz quiz = null;
         try {
             cnnct = getConnection();
-            String preQueryStatement = "Select * From Quiz WHERE QuizID=? LIMIT 1";
+            String preQueryStatement = "SELECT * FROM Quiz WHERE QuizID=? LIMIT 1";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setInt(1, id);
+            pStmnt.setInt(1, quizID);
 
             ResultSet rs = pStmnt.executeQuery();
-            while( rs.next() ){
+            while (rs.next()) {
                 quiz = new Quiz();
                 quiz.setQuizID(rs.getInt("QuizID"));
                 quiz.setModuleID(rs.getInt("ModuleID"));
@@ -79,12 +79,12 @@ public class UserQuizDB {
 
             pStmnt.close();
             cnnct.close();
-        } catch(SQLException ex) {
+        } catch (SQLException ex) {
             while (ex != null) {
                 ex.printStackTrace();
                 ex = ex.getNextException();
             }
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -92,7 +92,7 @@ public class UserQuizDB {
         return quiz;
     }
 
-    public ArrayList<User> getQuizStudentList(String id)throws Exception {
+    public ArrayList<User> getQuizStudentList(String id) throws Exception {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
         User user = null;
@@ -100,12 +100,12 @@ public class UserQuizDB {
 
         try {
             cnnct = getConnection();
-            String preQueryStatement = "Select UserUserID  , UserName From UserQuiz , User WHERE UserUserID = UserID AND QuizQuizID = ?";
+            String preQueryStatement = "SELECT UserUserID ,UserName FROM UserQuiz ,User WHERE UserUserID = UserID AND QuizQuizID = ?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             pStmnt.setString(1, id);
 
             ResultSet rs = pStmnt.executeQuery();
-            while( rs.next() ){
+            while (rs.next()) {
                 user = new User();
                 user.setUserID(rs.getInt("UserUserID"));
                 user.setUsername(rs.getString("UserName"));
@@ -114,12 +114,12 @@ public class UserQuizDB {
 
             pStmnt.close();
             cnnct.close();
-        } catch(SQLException ex) {
+        } catch (SQLException ex) {
             while (ex != null) {
                 ex.printStackTrace();
                 ex = ex.getNextException();
             }
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         return studentList;
