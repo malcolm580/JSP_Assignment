@@ -23,12 +23,12 @@
     <title>Quiz</title>
 </head>
 <body>
-<jsp:include page="../header.jsp"/>
+<jsp:include page="header.jsp"/>
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
     <!-- The Grid -->
     <div class="w3-row">
         <!-- Left Column -->
-        <jsp:include page="../leftContent.jsp"/>
+        <jsp:include page="leftContent.jsp"/>
         <!-- End Left Column -->
 
         <!-- Middle Column -->
@@ -41,7 +41,7 @@
                 <center>Attempts allowed: <%=currentQuiz.getAttemptLimit()%>
                 </center>
                 <h5><b>Summary of your previous attempts</b></h5>
-                <table width="100%">
+                <table width="100%" class="w3-left-align">
                     <tr>
                         <th>State</th>
                         <th>Grade / <%=currentQuiz.getTotalQuestion()%>
@@ -54,7 +54,7 @@
                            for (QuizResult quizResult : quizResultList) {
                                out.print("<tr><td>" + quizResult.getAnsweringQuestionState_JSON() + "</td>");
                                out.print("<td>" + quizResult.getCorrectCount() + "</td>");
-                               out.print("<td>" + "Review" + "</td>");
+                               out.print("<td><a  href='./QuizAttempt.jsp?quizid="+quizResult.getQuizID()+"'><u>" + "Review" + "</u></a></td>");
                                out.println("</tr>");
                            }
                        }
@@ -78,7 +78,7 @@
 <!-- End Page Container -->
 </div>
 <br>
-<jsp:include page="../footer.jsp"/>
+<jsp:include page="footer.jsp"/>
 
 </body>
 </html>
