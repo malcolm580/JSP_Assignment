@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import org.json.*;
+
 
 @WebServlet(name = "ReportingController", urlPatterns = {"/reportMenu"})
 public class ReportingController extends HttpServlet {
@@ -70,19 +72,37 @@ public class ReportingController extends HttpServlet {
 
                 session = request.getSession();
                 String quizID = request.getParameter("quizID");
+                session.setAttribute("quizID",quizID);
                 ArrayList quizStudentList = db.getQuizStudentList(quizID);
                 session.setAttribute("quizStudentList", quizStudentList);
 
                 targetURL = "Reporting/QuizStudentList.jsp";
             } else if ("getStudentQuizReport".equalsIgnoreCase(action)) {
-                String labels = "[\"Red\", \"Blue\", \"Yellow\", \"Green\", \"Purple\", \"Orange\" , \"Red\", \"Blue\", \"Yellow\", \"Green\", \"Purple\", \"Orange\"]";
-                String json = "[1, 2, 3, 5, 2, 3 ,1,1,1,1 ,1 , 1]";
 
-                session = request.getSession();
-                session.setAttribute("QuizReportJson", json);
-                session.setAttribute("labels", labels);
+                JSONArray jsonArray = new JSONArray();
 
-                targetURL = "Reporting/QuizStudentReport.jsp";
+                String[] selectStudentID = request.getParameterValues("target") ;
+
+                if(selectStudentID == null){
+
+                    targetURL = "Reporting/ReportingError.jsp";
+
+                }else{
+
+                    for (String student: selectStudentID) {
+                        jsonArray.put(student);
+                    }
+
+                    String labels = jsonArray.toString();
+                    String jsonString = jsonArray.toString();
+
+                    session = request.getSession();
+                    session.setAttribute("QuizReportJson", jsonString);
+                    session.setAttribute("labels", labels);
+                    targetURL = "Reporting/QuizStudentReport.jsp";
+
+                }
+
             }
 
             RequestDispatcher rd;

@@ -46,38 +46,12 @@
                 <img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right"
                      style="width:60px">
                 <span class="w3-right w3-opacity">1 min</span>
-                <h4>Module Reporting</h4><br>
+                <h2>Module Reporting</h2><br>
                 <hr class="w3-clear">
-                 <h3>
-                     <form action="reportMenu" method="get">
-                         <input type="hidden" name="action" value="getStudentQuizReport">
-                         <table border="1" id="table">
-                             <tr>
-                                 <th></th>
-                                 <th>UserID</th>
-                                 <th>UserName</th>
-                             </tr>
-                             <%
-                                 ArrayList quizStudentList = (ArrayList) session.getAttribute("quizStudentList");
-
-                                 for (Object bean : quizStudentList) {
-                                     User student = (User) bean;
-                                     out.println("<tr>");
-                                     out.println("<td><input type='checkbox' value='"+
-                                             student.getUserID()+"' name='target' /></td><td>"
-                                             + student.getUserID()+"</td><td>"+student.getUsername()+"</td>");
-                                     out.println("</tr>");
-                                 }
-
-                                 if(quizStudentList.size() == 0){
-                                     out.print("This quiz have no any student");
-                                 }
-
-                             %>
-                         </table>
-                         <input type="submit" value="Submit your student list">
-                     </form>
-                 </h3>
+                <h3>Please select any or a set of student</h3>
+                <%
+                    out.println("<a href='"+request.getContextPath()+"/reportMenu?action=getQuizStudent&quizID="+ request.getSession().getAttribute("quizID") +"'>Back to student list</a>");
+                %>
             </div>
 
 
