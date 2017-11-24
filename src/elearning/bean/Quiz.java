@@ -3,8 +3,16 @@ package elearning.bean;
 import java.io.Serializable;
 
 public class Quiz implements Serializable {
-    int quizID,moduleID,timeLimit,totalQuestion;
+    int quizID, moduleID, attemptLimit, timeLimit, totalQuestion;
     String quizName;
+
+    public int getAttemptLimit() {
+        return attemptLimit;
+    }
+
+    public void setAttemptLimit(int attemptLimit) {
+        this.attemptLimit = attemptLimit;
+    }
 
     public int getTotalQuestion() {
         return totalQuestion;

@@ -7,7 +7,7 @@
         rd.forward(request, response);
     } else {
         for (Quiz quiz : quizList) {
-            out.print("<a href='quiz.jsp?id=" + quiz.getQuizID() + "'><p><i class=\"fa  fa-fw w3-margin-right w3-text-theme\"></i>" + quiz.getQuizName() + "</p></a>");
+            out.print("<u><a href='./quiz?action=EnterQuiz&quizid=" + quiz.getQuizID() + "'><p><i class=\"fa  fa-fw w3-margin-right w3-text-theme\"></i>" + quiz.getQuizName() + "</p></a></u>");
         }
     }
 %>

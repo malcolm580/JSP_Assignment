@@ -1,5 +1,6 @@
 package elearning.db;
 
+import elearning.bean.Module;
 import elearning.bean.Quiz;
 
 import java.io.IOException;
@@ -58,5 +59,35 @@ public class QuizDB {
         }
         return quizList;
     }
+    public Module getParentModule(Quiz quiz) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        Module module = null;
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "SELECT * FROM Module WHERE ModuleID=? LIMIT 1";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, quiz.getModuleID());
 
+            ResultSet rs = pStmnt.executeQuery();
+            while (rs.next()) {
+                module = new Module();
+                module.setModuleID(rs.getInt("ModuleID"));
+                module.setModuleName(rs.getString("ModuleName"));
+            }
+
+            pStmnt.close();
+            cnnct.close();
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return module;
+    }
 }

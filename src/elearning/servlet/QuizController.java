@@ -1,8 +1,9 @@
 package elearning.servlet;
 
+import elearning.bean.Module;
 import elearning.bean.Quiz;
 import elearning.bean.User;
-import elearning.db.UserModuleDB;
+import elearning.db.QuizDB;
 import elearning.db.UserQuizDB;
 
 import javax.servlet.RequestDispatcher;
@@ -15,18 +16,19 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet (name = "QuizController" , urlPatterns = {"/quiz"} )
+@WebServlet(name = "QuizController", urlPatterns = {"/quiz"})
 public class QuizController extends HttpServlet {
 
-    private UserQuizDB db;
+    private UserQuizDB userQuizDB;
+    private QuizDB quizDB;
 
     @Override
     public void init() throws ServletException {
         String dbUser = this.getServletContext().getInitParameter("dbUser");
         String dbPassword = this.getServletContext().getInitParameter("dbPassword");
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
-        db = new UserQuizDB (dbUrl, dbUser, dbPassword);
-
+        userQuizDB = new UserQuizDB(dbUrl, dbUser, dbPassword);
+        quizDB = new QuizDB(dbUrl, dbUser, dbPassword);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse
@@ -37,17 +39,59 @@ public class QuizController extends HttpServlet {
 
             String targetURL;
 
-            if ("list".equalsIgnoreCase(action)){
+            if ("list".equalsIgnoreCase(action)) {
+                //Init
                 HttpSession session = request.getSession();
-                User userData = (User) session.getAttribute("userInfo") ;
+
+                //Get Current User Data
+                User userData = (User) session.getAttribute("userInfo");
                 int userID = userData.getUserID();
-                ArrayList<Quiz> quizList = db.getUserQuiz(userID);
-
+                ArrayList<Quiz> quizList = userQuizDB.getUserQuiz(userID);
                 session.setAttribute("quizList", quizList);
-                targetURL = "quizList.jsp";
 
+                //Return
+                targetURL = request.getParameter("returnto");
+                if (targetURL == null || targetURL.length() <= 0) {
+                    targetURL = "QuizList.jsp";
+                }
+
+                //Execute Return
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/" + targetURL);
+                rd.forward(request, response);
+            } else if ("EnterQuiz".equalsIgnoreCase(action)) {
+                HttpSession session = request.getSession();
+                User userData = (User) session.getAttribute("userInfo");
+                int userID = userData.getUserID();
+                ArrayList<Quiz> quizList = userQuizDB.getUserQuiz(userID);
+
+                session.setAttribute("quizList", quizList);
+                String quizID_String = request.getParameter("quizid");
+                if (null == quizID_String || quizID_String.length() <= 0) {
+                    RequestDispatcher rd;
+                    rd = getServletContext().getRequestDispatcher("./index.jsp?msg=Please%20Select%20A%20Quiz!");
+                    rd.forward(request, response);
+                    return;
+                }
+                if (!isInteger(quizID_String)) {
+                    RequestDispatcher rd;
+                    rd = getServletContext().getRequestDispatcher("./index.jsp?msg=Please%20Input%20Valid%20Quiz%20ID!");
+                    rd.forward(request, response);
+                    return;
+                }
+                int quizID=Integer.parseInt(quizID_String);
+                Quiz currentQuiz = userQuizDB.getQuiz(quizID);
+                if(currentQuiz==null){
+                    RequestDispatcher rd;
+                    rd = getServletContext().getRequestDispatcher("./index.jsp?msg=Please%20Select%20A%20Quiz!");
+                    rd.forward(request, response);
+                    return;
+                }
+                Module currentModule = quizDB.getParentModule(currentQuiz);
+                session.setAttribute("currentModule", currentModule);
+                session.setAttribute("currentQuiz", currentQuiz);
+                RequestDispatcher rd;
+                rd = getServletContext().getRequestDispatcher("/QuizEnter.jsp");
                 rd.forward(request, response);
             }
 
@@ -57,4 +101,15 @@ public class QuizController extends HttpServlet {
         }
     }
 
+    public static boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            return false;
+        } catch (NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
 }
