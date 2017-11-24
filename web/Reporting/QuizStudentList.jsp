@@ -43,9 +43,8 @@
             </div>
 
             <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-                <h4>List of Student -- <%= session.getAttribute("quizName") %> </h4><br>
+                <h4>List of Student -- <%= session.getAttribute("quizName") %> </h4>
                 <hr class="w3-clear">
-                 <h3>
                      <form action="reportMenu" method="get">
                          <input type="hidden" name="action" value="getStudentQuizReport">
                          <table border="1" id="table">
@@ -72,9 +71,9 @@
 
                              %>
                          </table>
+                         <hr class="w3-clear">
                          <input type="submit" value="Submit your student list">
                      </form>
-                 </h3>
             </div>
 
 
