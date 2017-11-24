@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" import=" elearning.bean.Module ,java.util.ArrayList" %>
 <%@ page import="elearning.bean.Module" %>
-<%@ page import="com.sun.org.apache.xpath.internal.operations.Mod" %>
 <html>
 <head>
     <title>Title</title>

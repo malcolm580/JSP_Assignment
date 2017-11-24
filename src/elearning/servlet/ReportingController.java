@@ -36,8 +36,9 @@ public class ReportingController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse
             response) throws ServletException, IOException {
         try {
-            if (request.getSession(false).getAttribute("userInfo")== null) {//Check Is authorized
+            if (null==((User)request.getSession(false).getAttribute("userInfo"))) {//Check Is authorized
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
+                return;
             }
             PrintWriter out = response.getWriter();
 

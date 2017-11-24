@@ -5,6 +5,7 @@ import elearning.bean.Quiz;
 import elearning.bean.QuizResult;
 import elearning.bean.User;
 import elearning.db.QuizDB;
+import elearning.db.QuizResultDB;
 import elearning.db.UserQuizDB;
 
 import javax.servlet.RequestDispatcher;
@@ -22,6 +23,7 @@ public class QuizController extends HttpServlet {
 
     private UserQuizDB userQuizDB;
     private QuizDB quizDB;
+    private QuizResultDB quizResultDB;
 
     @Override
     public void init() throws ServletException {
@@ -30,6 +32,7 @@ public class QuizController extends HttpServlet {
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
         userQuizDB = new UserQuizDB(dbUrl, dbUser, dbPassword);
         quizDB = new QuizDB(dbUrl, dbUser, dbPassword);
+        quizResultDB=new QuizResultDB(dbUrl, dbUser, dbPassword);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse
@@ -93,9 +96,11 @@ public class QuizController extends HttpServlet {
                     return;
                 }
                 Module currentModule = quizDB.getParentModule(currentQuiz);
-              //  QuizResult quizResult=
+                ArrayList<QuizResult> currentQuizResultList=quizResultDB.getMQuizResult(userID,quizID);
+
                 session.setAttribute("currentModule", currentModule);
                 session.setAttribute("currentQuiz", currentQuiz);
+                session.setAttribute("currentQuizResultList", currentQuizResultList);
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/QuizEnter.jsp");
                 rd.forward(request, response);
