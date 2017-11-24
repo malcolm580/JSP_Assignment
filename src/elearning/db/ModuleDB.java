@@ -1,7 +1,5 @@
 package elearning.db;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
-import com.sun.tools.internal.xjc.model.Model;
 import elearning.bean.Module;
 import elearning.bean.Quiz;
 

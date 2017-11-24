@@ -39,7 +39,7 @@ public class QuizResultDB {
             String preQueryStatement = "Select * From QuizResult WHERE UserID=? AND QuizID=?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             pStmnt.setInt(1, userID);
-            pStmnt.setInt(1, quizID);
+            pStmnt.setInt(2, quizID);
 
             ResultSet rs = pStmnt.executeQuery();
             while ( rs.next() ){
