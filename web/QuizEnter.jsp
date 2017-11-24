@@ -1,19 +1,33 @@
 <%@ page import="elearning.bean.User" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ page import="elearning.bean.Quiz" %>
+<%@ page import="java.util.ArrayList" %>
+<%
+    User user = (User) request.getSession().getAttribute("userInfo");
+    if (null == user) {
+        request.getRequestDispatcher("/login.jsp").forward(request, response);
+    }
+    String quizID = request.getParameter("id");
+    if (quizID == null || quizID.length() <= 0) {
+%>
+<script>
+    window.onload = function () {
+        alert("Please Select the Quiz First");
+        window.history.back();
+    }
+</script>
+<%
+    }
+    ArrayList<Quiz> quizList = (ArrayList<Quiz>) session.getAttribute("quizList");
+    if (quizList == null) {
+        RequestDispatcher rd = request.getRequestDispatcher("/quiz?action=list&returnto=QuizEnter.jsp");
+        rd.forward(request, response);
+    }
+%>
 <html>
 <head>
     <title>Quiz</title>
 </head>
 <body>
-<%
-    User user = (User) request.getSession().getAttribute("userInfo");
-    if (null == user) {
-        response.sendRedirect("login.jsp");
-    } else {
-        //response.sendRedirect("index.jsp?msg=You%20have%20been%20logined");
-    }
-%>
 <jsp:include page="header.jsp"/>
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
     <!-- The Grid -->

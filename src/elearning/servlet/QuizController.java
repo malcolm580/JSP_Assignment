@@ -2,7 +2,6 @@ package elearning.servlet;
 
 import elearning.bean.Quiz;
 import elearning.bean.User;
-import elearning.db.UserModuleDB;
 import elearning.db.UserQuizDB;
 
 import javax.servlet.RequestDispatcher;
@@ -15,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet (name = "QuizController" , urlPatterns = {"/quiz"} )
+@WebServlet(name = "QuizController", urlPatterns = {"/quiz"})
 public class QuizController extends HttpServlet {
 
     private UserQuizDB db;
@@ -25,7 +24,7 @@ public class QuizController extends HttpServlet {
         String dbUser = this.getServletContext().getInitParameter("dbUser");
         String dbPassword = this.getServletContext().getInitParameter("dbPassword");
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
-        db = new UserQuizDB (dbUrl, dbUser, dbPassword);
+        db = new UserQuizDB(dbUrl, dbUser, dbPassword);
 
     }
 
@@ -37,18 +36,35 @@ public class QuizController extends HttpServlet {
 
             String targetURL;
 
-            if ("list".equalsIgnoreCase(action)){
+            if ("list".equalsIgnoreCase(action)) {
+                //Init
                 HttpSession session = request.getSession();
-                User userData = (User) session.getAttribute("userInfo") ;
+
+                //Get Current User Data
+                User userData = (User) session.getAttribute("userInfo");
+                int userID = userData.getUserID();
+                ArrayList<Quiz> quizList = db.getUserQuiz(userID);
+                session.setAttribute("quizList", quizList);
+
+                //Return
+                targetURL = request.getParameter("returnto");
+                if (targetURL == null || targetURL.length() <= 0) {
+                    targetURL = "QuizList.jsp";
+                }
+
+                //Execute Return
+                RequestDispatcher rd;
+                rd = getServletContext().getRequestDispatcher("/" + targetURL);
+                rd.forward(request, response);
+            } else if ("EnterQuiz".equalsIgnoreCase(action)) {
+                HttpSession session = request.getSession();
+                User userData = (User) session.getAttribute("userInfo");
                 int userID = userData.getUserID();
                 ArrayList<Quiz> quizList = db.getUserQuiz(userID);
 
                 session.setAttribute("quizList", quizList);
-                targetURL = "quizList.jsp";
 
-                RequestDispatcher rd;
-                rd = getServletContext().getRequestDispatcher("/" + targetURL);
-                rd.forward(request, response);
+
             }
 
 
