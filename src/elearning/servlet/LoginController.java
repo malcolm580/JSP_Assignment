@@ -2,6 +2,7 @@ package elearning.servlet;
 
 import elearning.bean.User;
 import elearning.db.UserDB;
+import elearning.db.UserModuleDB;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,11 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet(name = "LoginController", urlPatterns = {"/main"})
 public class LoginController extends HttpServlet {
 
     private UserDB db;
+    private UserModuleDB UMdb;
 
     @Override
     public void init() throws ServletException {
@@ -23,6 +26,7 @@ public class LoginController extends HttpServlet {
         String dbPassword = this.getServletContext().getInitParameter("dbPassword");
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
         db = new UserDB(dbUrl, dbUser, dbPassword);
+        UMdb = new UserModuleDB (dbUrl, dbUser, dbPassword);
 
     }
 
@@ -65,6 +69,12 @@ public class LoginController extends HttpServlet {
         if (null != user) {
             HttpSession session = request.getSession();
             session.setAttribute("userInfo", user);
+
+            session = request.getSession();
+            User userData = (User) session.getAttribute("userInfo") ;
+            ArrayList moduleList = UMdb.getUserModule(userData.getUserID());
+            session.setAttribute("moduleList", moduleList);
+
             targetURL = "index.jsp";
         } else {
             targetURL = "loginError.jsp";
