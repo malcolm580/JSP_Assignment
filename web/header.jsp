@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="CSS/fontAwesome.css">
 <link rel="stylesheet" href="CSS/table.css">
 
+<script type="text/javascript" src="JS/Chart.js"></script>
 <script src="JS/jquery.js"></script>
 <style>
     html, body, h1, h2, h3, h4, h5 {
