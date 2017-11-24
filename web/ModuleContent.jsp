@@ -41,7 +41,6 @@
                     <jsp:useBean id="moduleContent" scope="request" class="elearning.bean.Module" />
                     <%= moduleContent.getModuleName()%>
 
-
                 </h4><br>
             </div>
 
