@@ -3,7 +3,16 @@ package elearning.bean;
 import java.io.Serializable;
 
 public class QuizResult implements Serializable {
-    int userID,quizID,quizResultID,duration,answeringQuestionState_JSON,correctCount;
+    int userID, quizID, quizResultID, duration, correctCount;
+    String answeringQuestionState_JSON;
+
+    public String getAnsweringQuestionState_JSON() {
+        return answeringQuestionState_JSON;
+    }
+
+    public void setAnsweringQuestionState_JSON(String answeringQuestionState_JSON) {
+        this.answeringQuestionState_JSON = answeringQuestionState_JSON;
+    }
 
     public int getCorrectCount() {
         return correctCount;
@@ -46,11 +55,4 @@ public class QuizResult implements Serializable {
         this.duration = duration;
     }
 
-    public int getAnsweringQuestionState_JSON() {
-        return answeringQuestionState_JSON;
-    }
-
-    public void setAnsweringQuestionState_JSON(int answeringQuestionState_JSON) {
-        this.answeringQuestionState_JSON = answeringQuestionState_JSON;
-    }
 }
