@@ -3,6 +3,7 @@ package elearning.db;
 import elearning.bean.Module;
 import elearning.bean.Quiz;
 import elearning.bean.QuizResult;
+import elearning.bean.User;
 
 import java.io.IOException;
 import java.sql.*;
@@ -101,6 +102,38 @@ public class QuizResultDB {
         return quizResultArrayList;
     }
 
+    public ArrayList<User> getAttemptedStudentList(String quizID)throws Exception {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        User AttemptedStudent = null;
+        ArrayList<User> AttemptedStudentList = new ArrayList<User>();
+
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "Select UserName ,  QR.UserID , MAX(CorrectCount) From QuizResult QR, User UR WHERE QR.UserID = UR.UserID and quizID = ?  GROUP BY UserID ";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setString(1, quizID);
+
+            ResultSet rs = pStmnt.executeQuery();
+            while ( rs.next() ){
+                AttemptedStudent = new User();
+                AttemptedStudent.setUserID(rs.getInt("UserID"));
+                AttemptedStudent.setUsername(rs.getString("UserName"));
+                AttemptedStudentList.add(AttemptedStudent);
+            }
+
+            pStmnt.close();
+            cnnct.close();
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+        return AttemptedStudentList;
+    }
 
 
 }

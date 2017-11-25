@@ -54,9 +54,9 @@
                                  <th>Student Name</th>
                              </tr>
                              <%
-                                 ArrayList quizStudentList = (ArrayList) session.getAttribute("quizStudentList");
+                                 ArrayList AttemptedStudentList = (ArrayList) session.getAttribute("AttemptedStudentList");
 
-                                 for (Object bean : quizStudentList) {
+                                 for (Object bean : AttemptedStudentList) {
                                      User student = (User) bean;
                                      out.println("<tr>");
                                      out.println("<td><input type='checkbox' value='"+
@@ -65,7 +65,7 @@
                                      out.println("</tr>");
                                  }
 
-                                 if(quizStudentList.size() == 0){
+                                 if(AttemptedStudentList.size() == 0){
                                      out.print("This quiz have no any student");
                                  }
 
