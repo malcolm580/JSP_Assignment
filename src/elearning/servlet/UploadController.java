@@ -41,19 +41,6 @@ public class UploadController extends HttpServlet {
 
         if(ServletFileUpload.isMultipartContent(request)){
             try {
-                String path = (new File(".")).getAbsolutePath();
-
-                File theDir = new File(path + File.separator + ".." + File.separator + "material");
-
-                if (!theDir.exists()) {
-
-                    try {
-                        theDir.mkdir();
-                    } catch (SecurityException se) {
-                        se.printStackTrace();
-                    }
-                }
-
 
                 List <FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
 
@@ -65,12 +52,28 @@ public class UploadController extends HttpServlet {
 
                 }
 
+                String path = (new File(".")).getAbsolutePath();
+
+                File theDir = new File(path + File.separator + ".." + File.separator + "material" + File.separator  + moduleID);
+
+                if (!theDir.exists()) {
+
+                    try {
+                        theDir.mkdir();
+                    } catch (SecurityException se) {
+                        se.printStackTrace();
+                    }
+                }
+
+
+
+
                 for(FileItem item : multiparts){
 
 
                     if(!item.isFormField()){
 
-                        String savePath = path + File.separator + ".." + File.separator + "material";
+                        String savePath = path + File.separator + ".." + File.separator + "material" + File.separator  + moduleID;
                         name = new File(item.getName()).getName();
 
                         item.write( new File(savePath + File.separator + name));

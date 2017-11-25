@@ -1,6 +1,6 @@
 <%@ page import="elearning.bean.User" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="elearning.bean.Module" %>
+<%@ page import="elearning.bean.Metrial" %>
 <%@page buffer="16kb" autoFlush="false" %>
 <%
     User user = (User) request.getSession(false).getAttribute("userInfo");
@@ -68,6 +68,20 @@
                 <hr class="w3-clear">
 
             </div>
+
+            <jsp:useBean id="materialList" scope="request" class="java.util.ArrayList" />
+
+            <%
+                if (null != materialList) {
+                    for (Object bean : materialList) {
+                        Metrial metrial = (Metrial) bean;
+                        out.println("<div class=\"w3-container w3-card w3-white w3-round w3-margin\"><br>");
+                        out.println("<h4><a href=''>" + metrial.getContent() + "</a></h4><br />");
+                        out.println("</div>");
+                    }
+                }
+
+            %>
 
 
         </div>
