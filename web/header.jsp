@@ -44,8 +44,11 @@
         <a href="quiz?action=QuizManagement" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
            title="Account Settings"><i class="fa fa-user"></i>Quiz Management</a>
         <a href="reportMenu?action=getModuleList"
-           class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Course Reporting"><i
-                class="fa fa-envelope"></i>Module Reporting</a>
+           class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Module Quiz Reporting"><i
+                class="fa fa-envelope"></i>Module Quiz Reporting</a>
+        <a href="userManagement"
+           class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="User Management"><i
+                class="fa fa-envelope"></i>User Management</a>
         <div class="w3-dropdown-hover w3-hide-small">
             <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span
                     class="w3-badge w3-right w3-small w3-green">3</span></button>
