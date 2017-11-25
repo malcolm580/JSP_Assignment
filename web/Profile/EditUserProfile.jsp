@@ -48,25 +48,6 @@
                 <div class="w3-col m12">
                     <div class="w3-card w3-round w3-white">
                         <div class="w3-container w3-padding">
-                            <%--<form action="">--%>
-                                <%--<table>--%>
-                                    <%--<tr>--%>
-                                        <%--<td><b>Username:</b></td>--%>
-                                        <%--<td>--%>
-                                            <%--<input type="text" name="username" value="" placeholder="Press a username" >--%>
-                                        <%--</td>--%>
-                                    <%--</tr>--%>
-                                    <%--<tr>--%>
-                                        <%--<td><b>Password:</b></td>--%>
-                                        <%--<td><input type="text" name="password" value="" placeholder="Press a password"></td>--%>
-                                    <%--</tr>--%>
-                                    <%--<tr>--%>
-                                        <%--<td><b>Email:</b></td>--%>
-                                        <%--<td><input type="email" name="email" value="%" placeholder="Press a email"></td>--%>
-                                    <%--</tr>--%>
-                                <%--</table>--%>
-                            <%--</form>--%>
-
 
                                 <div id="form">
 
@@ -90,6 +71,10 @@
                                         </div>
 
                                         <input type="submit" value="Submit Your Edit" />
+
+                                        <% if(null != session.getAttribute("edited") ){
+                                            out.print("<label>Your profile has been updated successfully!</label>");
+                                        }%>
 
                                     </form>
                                 </div>
