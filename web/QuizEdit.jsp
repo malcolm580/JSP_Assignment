@@ -12,16 +12,10 @@
     if (currentQuiz == null) {
         out.print("<script> window.onload = function() { alert('Please Select the Quiz First'); window.history.back(); }</script >");
     }
-    ArrayList<Quiz> quizList = (ArrayList<Quiz>) session.getAttribute("quizList");
-    if (quizList == null) {
-        RequestDispatcher rd = request.getRequestDispatcher("/quiz?action=list&returnto=QuizEnter.jsp");
-        rd.forward(request, response);
-    }
 %>
-<%@ taglib uri="/WEB-INF/tlds/quizEnterTag.tld" prefix="quiz" %>
 <html>
 <head>
-    <title>Quiz</title>
+    <title>Quiz Edit</title>
 </head>
 <body>
 <jsp:include page="header.jsp"/>

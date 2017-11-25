@@ -6,6 +6,7 @@ import elearning.bean.QuizResult;
 import elearning.bean.User;
 import elearning.db.QuizDB;
 import elearning.db.QuizResultDB;
+import elearning.db.UserModuleDB;
 import elearning.db.UserQuizDB;
 
 import javax.servlet.RequestDispatcher;
@@ -24,6 +25,7 @@ public class QuizController extends HttpServlet {
     private UserQuizDB userQuizDB;
     private QuizDB quizDB;
     private QuizResultDB quizResultDB;
+    private UserModuleDB userModuleDB;
 
     @Override
     public void init() throws ServletException {
@@ -32,14 +34,15 @@ public class QuizController extends HttpServlet {
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
         userQuizDB = new UserQuizDB(dbUrl, dbUser, dbPassword);
         quizDB = new QuizDB(dbUrl, dbUser, dbPassword);
-        quizResultDB=new QuizResultDB(dbUrl, dbUser, dbPassword);
+        quizResultDB = new QuizResultDB(dbUrl, dbUser, dbPassword);
+        userModuleDB = new UserModuleDB(dbUrl, dbUser, dbPassword);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse
             response) throws ServletException, IOException {
         try {
-            if (request.getSession().isNew()||
-                    null==((User)request.getSession(false).getAttribute("userInfo"))) {//Check Is authorized
+            if (request.getSession().isNew() ||
+                    null == ((User) request.getSession(false).getAttribute("userInfo"))) {//Check Is authorized
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
                 return;
             }
@@ -88,16 +91,16 @@ public class QuizController extends HttpServlet {
                     rd.forward(request, response);
                     return;
                 }
-                int quizID=Integer.parseInt(quizID_String);
+                int quizID = Integer.parseInt(quizID_String);
                 Quiz currentQuiz = userQuizDB.getQuiz(quizID);
-                if(currentQuiz==null){
+                if (currentQuiz == null) {
                     RequestDispatcher rd;
                     rd = getServletContext().getRequestDispatcher("./index.jsp?msg=Please%20Select%20A%20Quiz!");
                     rd.forward(request, response);
                     return;
                 }
                 Module currentModule = quizDB.getParentModule(currentQuiz);
-                ArrayList<QuizResult> currentQuizResultList=quizResultDB.getMQuizResult(userID,quizID);
+                ArrayList<QuizResult> currentQuizResultList = quizResultDB.getMQuizResult(userID, quizID);
 
                 session.setAttribute("currentModule", currentModule);
                 session.setAttribute("currentQuiz", currentQuiz);
@@ -105,23 +108,22 @@ public class QuizController extends HttpServlet {
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/QuizEnter.jsp");
                 rd.forward(request, response);
-            }else if("QuizManagement".equalsIgnoreCase(action)){
+            } else if ("QuizManagement".equalsIgnoreCase(action)) {
+                if (!checkPermission(request, response)) {//Abort when no permission
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
+                }
                 HttpSession session = request.getSession();
 
                 //Get Current User Data
                 User userData = (User) session.getAttribute("userInfo");
                 int userID = userData.getUserID();
-                if((!"Admin".equalsIgnoreCase(userData.getRole()))&&(!"teacher".equalsIgnoreCase(userData.getRole()))){//It means no permission
-                    RequestDispatcher rd;
-                    rd = getServletContext().getRequestDispatcher("/index.jsp");
-                    rd.forward(request, response);
-                    return;
-                }
-                ArrayList<Quiz> quizList=null;
-                if("Admin".equalsIgnoreCase(userData.getRole())) {
-                    quizList=quizDB.getQuiz();
-                }else if("teacher".equalsIgnoreCase(userData.getRole())){
-                    quizList=userQuizDB.getUserQuiz(userID);
+
+                ArrayList<Quiz> quizList = null;
+                if ("Admin".equalsIgnoreCase(userData.getRole())) {
+                    quizList = quizDB.getQuiz();
+                } else if ("teacher".equalsIgnoreCase(userData.getRole())) {
+                    quizList = userQuizDB.getUserQuiz(userID);
                 }
 
                 session.setAttribute("currentQuiz", quizList);
@@ -129,14 +131,78 @@ public class QuizController extends HttpServlet {
                 rd = getServletContext().getRequestDispatcher("/QuizManagement.jsp");
                 rd.forward(request, response);
             }
+            else if ("RequestEdit".equalsIgnoreCase(action)) {
+                if (!checkPermission(request, response)) {//Abort when no permission
+                    response.sendError(HttpServletResponse.SC_ACCEPTED);
+                    return;
+                }
+                HttpSession session = request.getSession();
 
+                //Get Current User Data
+                User userData = (User) session.getAttribute("userInfo");
+                int userID = userData.getUserID();
+                String quizID_String = request.getParameter("quizid");
+
+                if (quizID_String == null || quizID_String.length() <= 0 || (!isInteger(quizID_String))) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    return;
+                }
+
+                int quizID = Integer.parseInt(quizID_String);
+                if (!isAuthenticated(request, response, userData, quizID)) {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
+                }
+
+                session.setAttribute("currentquiz", quizDB.getQuiz());
+
+                RequestDispatcher rd;
+                rd = getServletContext().getRequestDispatcher("/QuizEdit.jsp");
+                rd.forward(request, response);
+            }else {
+                response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static boolean isInteger(String s) {
+    private boolean checkPermission(HttpServletRequest request, HttpServletResponse
+            response) {
+        HttpSession session = request.getSession();
+
+        if (request.getSession().isNew() ||
+                null == (request.getSession(false).getAttribute("userInfo"))) {//Check Is authorized
+            return false;
+        }
+        //Get Current User Data
+        User userData = (User) session.getAttribute("userInfo");
+        if (("Admin".equalsIgnoreCase(userData.getRole())) || ("teacher".equalsIgnoreCase(userData.getRole()))) {//It means no permission
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isAuthenticated(HttpServletRequest request, HttpServletResponse
+            response, User userinfo, int quizID) {
+        if (userinfo.getRole().equalsIgnoreCase("admin")) {
+            return true;
+        }
+        if (!userinfo.getRole().equalsIgnoreCase("teacher")) {
+            return false;
+        }
+        ArrayList<Module> moduleArrayList = userModuleDB.getUserModule(userinfo.getUserID());
+        Module module = quizDB.getParentModule(quizDB.getQuizByID(quizID));
+        for (Module checkingModule : moduleArrayList) {
+            if (checkingModule.getModuleID() == module.getModuleID()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isInteger(String s) {
         try {
             Integer.parseInt(s);
         } catch (NumberFormatException e) {

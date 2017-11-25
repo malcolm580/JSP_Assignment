@@ -26,11 +26,11 @@ public class UserModuleDB {
     }
 
 
-    public ArrayList getUserModule(int id)throws Exception {
+    public ArrayList<Module> getUserModule(int userID) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
         Module module = null;
-        ArrayList moduleList = new ArrayList();
+        ArrayList<Module> moduleList = new ArrayList<Module>();
 
         try {
             cnnct = getConnection();
@@ -38,7 +38,7 @@ public class UserModuleDB {
                     "From UserModule UM , MODULE MO " +
                     "WHERE UM.ModuleID = MO.ModuleID AND UserID = ?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setInt(1, id);
+            pStmnt.setInt(1, userID);
 
             ResultSet rs = pStmnt.executeQuery();
             while( rs.next() ){
@@ -55,7 +55,7 @@ public class UserModuleDB {
                 ex.printStackTrace();
                 ex = ex.getNextException();
             }
-        } catch(IOException ex) {
+        } catch(IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
         }
         return moduleList;

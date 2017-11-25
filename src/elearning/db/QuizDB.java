@@ -2,6 +2,7 @@ package elearning.db;
 
 import elearning.bean.Module;
 import elearning.bean.Quiz;
+import elearning.bean.User;
 
 import java.io.IOException;
 import java.sql.*;
@@ -99,7 +100,6 @@ public class QuizDB {
         }
         return quizList;
     }
-
     public Module getParentModule(Quiz quiz) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
