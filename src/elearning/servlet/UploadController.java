@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import elearning.db.MaterialDB;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -18,8 +19,21 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 @WebServlet(name = "UploadController", urlPatterns = {"/upload"})
 public class UploadController extends HttpServlet {
 
+    private MaterialDB MLdb;
+
+    @Override
+    public void init() throws ServletException {
+        String dbUser = this.getServletContext().getInitParameter("dbUser");
+        String dbPassword = this.getServletContext().getInitParameter("dbPassword");
+        String dbUrl = this.getServletContext().getInitParameter("dbUrl");
+        MLdb = new MaterialDB(dbUrl, dbUser, dbPassword);
+
+    }
+
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+
         String moduleID = "";
 
         if(ServletFileUpload.isMultipartContent(request)){
@@ -37,7 +51,17 @@ public class UploadController extends HttpServlet {
                     }
                 }
 
+
                 List <FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+
+                for(FileItem item : multiparts){
+                    if(item.isFormField()){
+                        if ("module".equalsIgnoreCase(item.getFieldName()))
+                            moduleID = item.getString();
+                    }
+
+                }
+
                 for(FileItem item : multiparts){
 
 
@@ -47,10 +71,9 @@ public class UploadController extends HttpServlet {
                         String name = new File(item.getName()).getName();
 
                         item.write( new File(savePath + File.separator + name));
+                        String[] part = name.split(".");
+                        MLdb.addMaterial(Integer.parseInt(moduleID), part[0], part[1]);
 
-                    }else {
-                        if ("module".equalsIgnoreCase(item.getFieldName()))
-                            moduleID = item.getString();
                     }
 
                 }

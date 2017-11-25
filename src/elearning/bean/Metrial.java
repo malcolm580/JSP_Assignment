@@ -3,8 +3,8 @@ package elearning.bean;
 import java.io.Serializable;
 
 public class Metrial implements Serializable {
-    int moduleID;
-    String contentType,content,blackListId_JSON;
+    int moduleID, MaterialID;
+    String content,blackListId_JSON, ContentType;
 
     public int getModuleID() {
         return moduleID;
@@ -14,12 +14,20 @@ public class Metrial implements Serializable {
         this.moduleID = moduleID;
     }
 
+    public int getMaterialID() {
+        return MaterialID;
+    }
+
+    public void setMaterialID(int materialID) {
+        MaterialID = materialID;
+    }
+
     public String getContentType() {
-        return contentType;
+        return ContentType;
     }
 
     public void setContentType(String contentType) {
-        this.contentType = contentType;
+        ContentType = contentType;
     }
 
     public String getContent() {
