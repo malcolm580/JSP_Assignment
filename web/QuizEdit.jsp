@@ -28,8 +28,7 @@
         <div class="w3-col m7">
             <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
                 <span class="w3-right w3-opacity"></span>
-                <h4>
-                </h4>
+                <h4><%=currentQuiz.getQuizName()%></h4>
                 <h5>
                 </h5>
                 <br>
