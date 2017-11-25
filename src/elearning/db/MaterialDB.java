@@ -1,8 +1,7 @@
 package elearning.db;
 
 import elearning.bean.Metrial;
-import elearning.bean.Module;
-import elearning.bean.Quiz;
+
 
 import java.io.IOException;
 import java.sql.*;
@@ -46,6 +45,7 @@ public class MaterialDB {
                 metrial.setModuleID(rs.getInt("ModuleID"));
                 metrial.setMaterialID(rs.getInt("MaterialID"));
                 metrial.setContent(rs.getString("Content"));
+                metrial.setContentType(rs.getString("ContentType"));
                 metrialArrayList.add(metrial);
             }
 
@@ -62,20 +62,22 @@ public class MaterialDB {
         return metrialArrayList;
     }
 
-    public void addMaterial(int moduleID, String content, String contentType) {
+    public boolean addMaterial(int moduleID, String content, String contentType) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
+        boolean isSuccess = false;
 
         try {
             cnnct = getConnection();
-            String preQueryStatement = "INSERT INTO Metrial VALUES (?,NULL,?,?)";
+            String preQueryStatement = "INSERT INTO Metrial(ModuleID, ContentType, Content) VALUES (?,?,?)";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setInt(1, 1);
-            pStmnt.setString(2, "ITP4511_assignment1718_v5");
-            pStmnt.setString(3, "pdf");
-
+            pStmnt.setInt(1, moduleID);
+            pStmnt.setString(2, contentType);
+            pStmnt.setString(3, content);
             int rowCount = pStmnt.executeUpdate();
+
             if(rowCount >= 1) {
+                isSuccess = true;
             }
             pStmnt.close();
             cnnct.close();
@@ -89,6 +91,9 @@ public class MaterialDB {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        return isSuccess;
     }
+
+
 
 }

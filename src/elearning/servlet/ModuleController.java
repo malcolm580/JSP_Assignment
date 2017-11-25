@@ -1,7 +1,9 @@
 package elearning.servlet;
 
 
+import elearning.bean.Metrial;
 import elearning.bean.Module;
+import elearning.db.MaterialDB;
 import elearning.db.ModuleDB;
 
 import java.io.IOException;
@@ -15,15 +17,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet(name="BrandController", urlPatterns={"/moduleController"})
+@WebServlet(name="ModuleController", urlPatterns={"/moduleController"})
 public class ModuleController extends HttpServlet {
     private ModuleDB moduleDB;
+    private MaterialDB materialDB;
 
     public void init() {
         String dbUser = this.getServletContext().getInitParameter("dbUser");
         String dbPassword = this.getServletContext().getInitParameter("dbPassword");
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
         moduleDB = new ModuleDB(dbUrl, dbUser, dbPassword);
+        materialDB = new MaterialDB(dbUrl, dbUser, dbPassword);
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -35,6 +39,9 @@ public class ModuleController extends HttpServlet {
         if("list".equalsIgnoreCase(action)) {
             try {
                 Module module = moduleDB.getModule(moduleID);
+                ArrayList<Metrial> metrialArrayList = materialDB.getMaterial(moduleID);
+
+                request.setAttribute("materialList",metrialArrayList);
                 request.setAttribute("moduleContent",module);
                 RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/ModuleContent.jsp");
                 rd.forward(request, response);
