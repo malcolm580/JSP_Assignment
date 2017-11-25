@@ -148,19 +148,22 @@ public class UserDB {
         return user;
     }
 
-    public boolean editUserInfo(String id, String user, String pwd) {
+    public boolean editUserInfo(int id, String username, String password , String email) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
         boolean isSuccess = false;
         try {
             cnnct = getConnection();
             String preQueryStatement = "UPDATE User " +
-                    "SET column1 = value1, column2 = value2 " +
+                    "SET username = ?, password = ? , email = ? " +
                     "WHERE UserID = ?;";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setString(1, id);
-            pStmnt.setString(2, user);
-            pStmnt.setString(3, pwd);
+
+            pStmnt.setString(1, username);
+            pStmnt.setString(2, password);
+            pStmnt.setString(3, email);
+            pStmnt.setInt(4, id);
+
             int rowCount = pStmnt.executeUpdate();
             if(rowCount >= 1) {
                 isSuccess = true;

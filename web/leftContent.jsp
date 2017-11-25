@@ -9,8 +9,8 @@
             <h4 class="w3-center">My Profile</h4>
                 <p class="w3-center"><img src="https://www.w3schools.com/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
             <hr>
-            <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> <jsp:getProperty name="userInfo" property="role"/><b /></p>
-            <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> <jsp:getProperty name="userInfo" property="email"/></p>
+            <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> <%= userInfo.getRole() %> <b /></p>
+            <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i>  <%= userInfo.getEmail() %> </p>
             <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> April 1, 1988</p>
         </div>
     </div>

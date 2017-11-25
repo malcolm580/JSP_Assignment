@@ -67,7 +67,7 @@ public class ReportingController extends HttpServlet {
 
                 targetURL = "Reporting/ModuleQuiz.jsp";
             } else if ("getQuizStudent".equalsIgnoreCase(action)) {
-                UserQuizDB db = new UserQuizDB(dbUrl, dbUser, dbPassword);
+                QuizResultDB db = new QuizResultDB(dbUrl, dbUser, dbPassword);
 
                 session = request.getSession();
                 String quizID = request.getParameter("quizID");
@@ -76,8 +76,8 @@ public class ReportingController extends HttpServlet {
                 session.setAttribute("quizID", quizID);
                 session.setAttribute("quizName", quizName);
 
-                ArrayList quizStudentList = db.getQuizStudentList(quizID);
-                session.setAttribute("quizStudentList", quizStudentList);
+                ArrayList AttemptedStudentList = db.getAttemptedStudentList(quizID);
+                session.setAttribute("AttemptedStudentList", AttemptedStudentList);
 
                 targetURL = "Reporting/QuizStudentList.jsp";
             } else if ("getStudentQuizReport".equalsIgnoreCase(action)) {

@@ -34,25 +34,32 @@ public class ProfileController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String action = request.getParameter("action");
-
+        String targetURL = "Profile/EditUserProfile.jsp";
         if("view".equalsIgnoreCase(action)){
-            String targetURL = "Profile/EditUserProfile.jsp";
+             targetURL = "Profile/EditUserProfile.jsp";
 
-            RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/" + targetURL);
-            rd.forward(request, response);
         }else if("edit".equalsIgnoreCase(action)){
 
-            User user = (User)request.getSession().getAttribute("userInfor");
+            User user = (User)request.getSession().getAttribute("userInfo");
 
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             String email = request.getParameter("email");
             int userID = user.getUserID();
 
+            if(db.editUserInfo(userID , username, password , email)){
+                request.getSession().setAttribute("userInfo" , db.isValidUser(username , password ) );
+                request.getSession().setAttribute("edited","edited");
+            }
 
 
+
+            targetURL = "Profile/EditUserProfile.jsp";
         }
+
+        RequestDispatcher rd;
+        rd = getServletContext().getRequestDispatcher("/" + targetURL);
+        rd.forward(request, response);
     }
 
 
