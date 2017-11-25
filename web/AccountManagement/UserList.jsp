@@ -17,6 +17,13 @@
 
 <jsp:include page="../header.jsp"/>
 
+<style>
+    img {
+        width: 20px ;
+        height: 20px;
+    }
+
+</style>
 
 
 <!-- Page Container -->
@@ -56,8 +63,9 @@
                                         + user.getUserID()+"</td><td>"+user.getUsername()
                                         +"</td><td>"+ user.getEmail()+ "</td><td>" + user.getRole()+ "</td>");
                                 out.print("<td><a href='accountManagement?action=view&userID="
-                                        + user.getUserID() + "' ><img src='../image/edit.png'></a></td>");
-                                out.print("<td><a href='accountManagement?action=delete&userID="+ user.getUserID() + "' ><img src='../image/delete.png'></a></td>");
+                                        + user.getUserID() + "' ><img src='image/edit.png' ></a></td>");
+                                out.print("<td><a href='accountManagement?action=delete&userID="+ user.getUserID() +
+                                        "' ><img src='image/delete.png'></a></td>");
                                 out.println("</tr>");
                             }
                         }
