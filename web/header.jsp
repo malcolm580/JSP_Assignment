@@ -50,7 +50,7 @@
         <a href="reportMenu?action=getModuleList"
            class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Module Quiz Reporting"><i
                 class="fa fa-envelope"></i>Module Quiz Reporting</a>
-        <a href="userManagement"
+        <a href="accountManagement?action=list"
            class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="User Management"><i
                 class="fa fa-envelope"></i>User Management</a>
         <div class="w3-dropdown-hover w3-hide-small">
