@@ -1,8 +1,7 @@
 package elearning.db;
 
 import elearning.bean.Metrial;
-import elearning.bean.Module;
-import elearning.bean.Quiz;
+
 
 import java.io.IOException;
 import java.sql.*;
@@ -62,20 +61,21 @@ public class MaterialDB {
         return metrialArrayList;
     }
 
-    public void addMaterial(int moduleID, String content, String contentType) {
+    public boolean addMaterial(int moduleID, String content, String contentType) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
+        boolean isSuccess = false;
 
         try {
             cnnct = getConnection();
             String preQueryStatement = "INSERT INTO Metrial VALUES (?,NULL,?,?)";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setInt(1, 1);
-            pStmnt.setString(2, "ITP4511_assignment1718_v5");
-            pStmnt.setString(3, "pdf");
-
+            pStmnt.setInt(1, moduleID);
+            pStmnt.setString(2, content);
+            pStmnt.setString(3, contentType);
             int rowCount = pStmnt.executeUpdate();
             if(rowCount >= 1) {
+                isSuccess = true;
             }
             pStmnt.close();
             cnnct.close();
@@ -89,6 +89,9 @@ public class MaterialDB {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        return isSuccess;
     }
+
+
 
 }
