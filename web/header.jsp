@@ -10,7 +10,15 @@
 <link rel="stylesheet" href="CSS/table.css">
 
 <script type="text/javascript" src="JS/Chart.js"></script>
+
+<link type="text/css" rel="stylesheet" href="JS/jsgrid/jsgrid.min.css" />
+<link type="text/css" rel="stylesheet" href="JS/jsgrid/jsgrid-theme.min.css" />
+
 <script src="JS/jquery.js"></script>
+
+<script type="text/javascript" src="JS/jsgrid/jsgrid.min.js"></script>
+<script type="text/javascript" src="JS/jsgrid/i18n/jsgrid-zh-tw.js"></script>
+
 <style>
     html, body, h1, h2, h3, h4, h5 {
         font-family: "Open Sans", sans-serif
@@ -33,8 +41,8 @@
         <a href="http://ivefyp.ml/phpmyadmin"
            class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i
                 class="fa fa-globe"></i>PhpMyAdmin</a>
-        <a href="./quiz?action=QuizManagement" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
-           title="Account Settings"><i class="fa fa-user"></i>Quiz List</a>
+        <a href="quiz?action=QuizManagement" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
+           title="Account Settings"><i class="fa fa-user"></i>Quiz Management</a>
         <a href="reportMenu?action=getModuleList"
            class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Course Reporting"><i
                 class="fa fa-envelope"></i>Module Reporting</a>
