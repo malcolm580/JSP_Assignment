@@ -19,6 +19,9 @@
 <script type="text/javascript" src="JS/jsgrid/jsgrid.min.js"></script>
 <script type="text/javascript" src="JS/jsgrid/i18n/jsgrid-zh-tw.js"></script>
 
+
+<link rel="stylesheet" href="CSS/profileForm.css">
+
 <style>
     html, body, h1, h2, h3, h4, h5 {
         font-family: "Open Sans", sans-serif
