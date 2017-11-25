@@ -158,8 +158,7 @@ public class QuizController extends HttpServlet {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
-
-                session.setAttribute("currentquiz", quizDB.getQuiz());
+                session.setAttribute("currentQuiz", quizDB.getQuizByID(quizID));
 
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/QuizEdit.jsp");

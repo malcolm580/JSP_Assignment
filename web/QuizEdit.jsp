@@ -1,8 +1,6 @@
-<%@ page import="elearning.bean.Module" %>
 <%@ page import="elearning.bean.Quiz" %>
-<%@ page import="elearning.bean.QuizResult" %>
 <%@ page import="elearning.bean.User" %>
-<%@ page import="java.util.ArrayList" %>
+
 <%
     User user = (User) request.getSession().getAttribute("userInfo");
     if (request.getSession().isNew() || null == user) {
