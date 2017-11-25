@@ -58,9 +58,12 @@
 
 
             <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-                <span class="w3-right w3-opacity"><input type="file" name="file" class="w3-input"/></span>
-                <h4>Module Material</h4><br>
-                <button type="button" class="w3-button w3-theme" style="margin-left: 78.5%">Upload Material</button>
+                <form action="upload" method="post" enctype="multipart/form-data">
+                    <span class="w3-right w3-opacity"><input type="file" name="file" class="w3-input"/></span>
+                    <h4>Module Material</h4><br>
+                    <input type="submit" value="Upload Material" class="w3-button w3-theme" style="margin-left: 78.5%">
+                </form>
+
                 <hr class="w3-clear">
 
             </div>
