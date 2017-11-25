@@ -35,6 +35,9 @@ public class UploadController extends HttpServlet {
 
 
         String moduleID = "";
+        String[] part = new String[2];
+        String name = "";
+        int index = 0;
 
         if(ServletFileUpload.isMultipartContent(request)){
             try {
@@ -47,7 +50,7 @@ public class UploadController extends HttpServlet {
                     try {
                         theDir.mkdir();
                     } catch (SecurityException se) {
-                        //handle it
+                        se.printStackTrace();
                     }
                 }
 
@@ -68,18 +71,21 @@ public class UploadController extends HttpServlet {
                     if(!item.isFormField()){
 
                         String savePath = path + File.separator + ".." + File.separator + "material";
-                        String name = new File(item.getName()).getName();
+                        name = new File(item.getName()).getName();
 
                         item.write( new File(savePath + File.separator + name));
-                        String[] part = name.split(".");
-                        MLdb.addMaterial(Integer.parseInt(moduleID), part[0], part[1]);
 
                     }
 
                 }
+                index = name.indexOf(".");
+                part[0] = name.substring(0,10);
+                part[1] = name.substring(11);
+                MLdb.addMaterial(Integer.parseInt(moduleID), part[0], part[1]);
 
             } catch (Exception ex) {
-
+                System.out.println(name);
+                ex.printStackTrace();
             }
         }
         response.sendRedirect("./"+ "moduleController?action=list&moduleID=" + moduleID + "");
