@@ -45,6 +45,7 @@ public class MaterialDB {
                 metrial.setModuleID(rs.getInt("ModuleID"));
                 metrial.setMaterialID(rs.getInt("MaterialID"));
                 metrial.setContent(rs.getString("Content"));
+                metrial.setContentType(rs.getString("ContentType"));
                 metrialArrayList.add(metrial);
             }
 
@@ -70,7 +71,7 @@ public class MaterialDB {
             cnnct = getConnection();
             String preQueryStatement = "INSERT INTO Metrial(ModuleID, ContentType, Content) VALUES (?,?,?)";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setInt(1, 1);
+            pStmnt.setInt(1, moduleID);
             pStmnt.setString(2, contentType);
             pStmnt.setString(3, content);
             int rowCount = pStmnt.executeUpdate();

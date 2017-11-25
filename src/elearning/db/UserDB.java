@@ -4,6 +4,7 @@ import elearning.bean.User;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class UserDB {
 
@@ -179,6 +180,40 @@ public class UserDB {
             ex.printStackTrace();
         }
         return isSuccess;
+    }
+
+    public ArrayList<User> getAllUser() {
+        User user = null;
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        ArrayList<User> userList = new ArrayList<User>();
+
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "Select * From User";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+
+            ResultSet rs = pStmnt.executeQuery();
+            while (rs.next()) {
+                user = new User();
+                user.setUserID(rs.getInt("UserID"));
+                user.setUsername(rs.getString("Username"));
+                user.setRole(rs.getString("Role"));
+                user.setEmail(rs.getString("Email"));
+                user.setPassword(rs.getString("Password"));
+                userList.add(user);
+            }
+            pStmnt.close();
+            cnnct.close();
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return userList;
     }
 
 }
