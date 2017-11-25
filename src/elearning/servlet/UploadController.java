@@ -21,7 +21,7 @@ public class UploadController extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String moduleID ;//= request.getParameter("module");
+        String moduleID = null;//= request.getParameter("module");
 
         if (ServletFileUpload.isMultipartContent(request)) {
             try {
