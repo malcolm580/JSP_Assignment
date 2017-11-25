@@ -20,36 +20,36 @@ public class UploadController extends HttpServlet {
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        String moduleID = request.getParameter("module");
+        String moduleID = "";
 
         if(ServletFileUpload.isMultipartContent(request)){
             try {
+                String path = (new File(".")).getAbsolutePath();
+
+                File theDir = new File(path + File.separator + ".." + File.separator + "material");
+
+                if (!theDir.exists()) {
+
+                    try {
+                        theDir.mkdir();
+                    } catch (SecurityException se) {
+                        //handle it
+                    }
+                }
+
                 List <FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
                 for(FileItem item : multiparts){
 
-                    String path = (new File(".")).getAbsolutePath();
 
                     if(!item.isFormField()){
 
-                        File theDir = new File(path + File.separator + ".." + File.separator + "material");
-
-                        if (!theDir.exists()) {
-
-                            try{
-                                theDir.mkdir();
-                            }
-                            catch(SecurityException se){
-                                //handle it
-                            }
-
-                        }
                         String savePath = path + File.separator + ".." + File.separator + "material";
                         String name = new File(item.getName()).getName();
 
                         item.write( new File(savePath + File.separator + name));
 
                     }
+
                 }
 
             } catch (Exception ex) {
