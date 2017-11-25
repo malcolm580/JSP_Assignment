@@ -82,8 +82,8 @@ public class UploadController extends HttpServlet {
 
                 }
                 index = name.indexOf(".");
-                part[0] = name.substring(0,10);
-                part[1] = name.substring(11);
+                part[0] = name.substring(0,index);
+                part[1] = name.substring(index+1);
                 MLdb.addMaterial(Integer.parseInt(moduleID), part[0], part[1]);
 
             } catch (Exception ex) {

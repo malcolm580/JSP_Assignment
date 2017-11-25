@@ -45,6 +45,7 @@ public class MaterialDB {
                 metrial.setModuleID(rs.getInt("ModuleID"));
                 metrial.setMaterialID(rs.getInt("MaterialID"));
                 metrial.setContent(rs.getString("Content"));
+                metrial.setContentType(rs.getString("ContentType"));
                 metrialArrayList.add(metrial);
             }
 

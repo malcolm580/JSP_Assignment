@@ -76,7 +76,7 @@
                     for (Object bean : materialList) {
                         Metrial metrial = (Metrial) bean;
                         out.println("<div class=\"w3-container w3-card w3-white w3-round w3-margin\"><br>");
-                        out.println("<h4><a href=''>" + metrial.getContent() + "</a></h4><br />");
+                        out.println("<h4><a href='download?file="+ metrial.getContent()+"."+ metrial.getContentType()+ "&moduleID="+ moduleContent.getModuleID() +"'>" + metrial.getContent() + "</a></h4><br />");
                         out.println("</div>");
                     }
                 }
