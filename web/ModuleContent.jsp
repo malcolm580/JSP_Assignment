@@ -56,14 +56,12 @@
             </div>
 
 
-            <%
-                String id = moduleContent.getModuleID() + "";
-            %>
             <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
                 <form action="upload" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="module" value="<%= moduleContent.getModuleID()%>">
                     <span class="w3-right w3-opacity"><input type="file" name="file" class="w3-input"/></span>
                     <h4>Module Material</h4><br>
-                    <input type="hidden" name="module" value="<%= id%>">
+
                     <input type="submit" value="Upload Material" class="w3-button w3-theme" style="margin-left: 78.5%">
                 </form>
 
