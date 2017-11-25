@@ -56,7 +56,7 @@ public class QuizController extends HttpServlet {
                 User userData = (User) session.getAttribute("userInfo");
                 int userID = userData.getUserID();
                 ArrayList<Quiz> quizList = userQuizDB.getUserQuiz(userID);
-                //session.setAttribute("quizList", quizList);
+                session.setAttribute("quizList", quizList);
 
                 //Return
                 targetURL = request.getParameter("returnto");
@@ -124,7 +124,7 @@ public class QuizController extends HttpServlet {
                     quizList=userQuizDB.getUserQuiz(userID);
                 }
 
-                //session.setAttribute("currentQuiz", quizList);
+                session.setAttribute("currentQuiz", quizList);
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/QuizManagement.jsp");
                 rd.forward(request, response);

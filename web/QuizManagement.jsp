@@ -46,7 +46,57 @@
                 </table>
                 <div id="jsGrid"></div>
                 <script>
-                    var clients = [
+                    $(function () {
+                        $.ajax({
+                            type: "GET",
+                            url: "./QuizJSONController",
+                            dataType: "json"
+                        }).done(function (data) {
+                            console.log(data);
+                            $("#jsGrid").jsGrid({
+                                width: "100%",
+                                height: "400px",
+
+                                filtering: true,
+                                inserting: true,
+                                editing: true,
+                                sorting: true,
+                                paging: true,
+                                autoload: true,
+                                pageSize: 10,
+                                pageButtonCount: 5,
+                                deleteConfirm: "Do you really want to delete this quiz?",
+
+                                data: data,
+
+                                fields: [
+                                    { name: "QuizID", type: "number", width: 70 ,title:"Quiz ID",readOnly: true },
+                                    { name: "ModuleID", type: "number", width: 70 ,title:"Module"},
+                                    { name: "QuizName", type: "text", width: 200 ,title:"Quiz Name"},
+                                    { name: "AttemptLimit", type: "number",title:"Attempt Limit" },
+                                    { name: "TimeLimit", type: "number", title: "Time Limit", sorting: false },
+                                    { name: "TotalQuestion", type: "number", title: "Total Question", sorting: false },
+                                    // { type: "control" },
+                                    { type: "control", width: 100,
+                                        itemTemplate: function(value, item) {
+                                            var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
+
+                                            var $customButton = $("<button>")
+                                                .text("Edit Question")
+                                                .click(function (e) {
+                                                    alert("Age: " + item.Age);
+                                                });
+                                            return $result.add($customButton);
+                                        }
+                                    }
+                                ]
+                            });
+                        })
+                    });
+                    
+                    
+                    
+                  /*  var clients = [
                         { "Name": "Otto Clay", "Age": 25, "Country": 1, "Address": "Ap #897-1459 Quam Avenue", "Married": false },
                         { "Name": "Connor Johnston", "Age": 45, "Country": 2, "Address": "Ap #370-4647 Dis Av.", "Married": true },
                         { "Name": "Lacey Hess", "Age": 29, "Country": 3, "Address": "Ap #365-8835 Integer St.", "Married": false },
@@ -92,7 +142,7 @@
                                 }
                             }
                         ]
-                    });
+                    });*/
                 </script>
                 <br />
 

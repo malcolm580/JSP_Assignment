@@ -27,7 +27,7 @@ public class UserQuizDB {
     }
 
 
-    public ArrayList<Quiz> getUserQuiz(int id) throws Exception {
+    public ArrayList<Quiz> getUserQuiz(int id) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
         Quiz quiz = null;
@@ -53,6 +53,8 @@ public class UserQuizDB {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return quizList;
     }

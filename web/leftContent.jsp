@@ -62,21 +62,21 @@
         <%--<p><strong>Hey!</strong></p>--%>
         <%--<p>People are looking at your profile. Find out who.</p>--%>
     <%--</div>--%>
-    <%--<div class="w3-card w3-round w3-white w3-hide-small">--%>
-        <%--<div class="w3-container">--%>
-            <%--<p>Available Quiz</p>--%>
-            <%--<p id="quizList">--%>
-               <%--<script>--%>
-                   <%--$(function () {--%>
+    <div class="w3-card w3-round w3-white w3-hide-small">
+        <div class="w3-container">
+            <p>Available Quiz</p>
+            <p id="quizList">
+               <script>
+                   $(function () {
 
-                           <%--$.get("./quiz?action=list",function(data,status){--%>
-                               <%--$("#quizList").html(data);--%>
-                           <%--});--%>
-                   <%--});--%>
-               <%--</script>--%>
-            <%--</p>--%>
-        <%--</div>--%>
-    <%--</div>--%>
+                           $.get("./quiz?action=list",function(data,status){
+                               $("#quizList").html(data);
+                           });
+                   });
+               </script>
+            </p>
+        </div>
+    </div>
     <%--<br>--%>
     <%----%>
 
