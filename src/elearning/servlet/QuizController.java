@@ -38,6 +38,11 @@ public class QuizController extends HttpServlet {
         userModuleDB = new UserModuleDB(dbUrl, dbUser, dbPassword);
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req,resp);
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse
             response) throws ServletException, IOException {
         try {
@@ -133,7 +138,7 @@ public class QuizController extends HttpServlet {
             }
             else if ("RequestEdit".equalsIgnoreCase(action)) {
                 if (!checkPermission(request, response)) {//Abort when no permission
-                    response.sendError(HttpServletResponse.SC_ACCEPTED);
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
                 HttpSession session = request.getSession();

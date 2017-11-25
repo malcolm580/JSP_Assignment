@@ -84,7 +84,7 @@
                                             var $customButton = $("<button>")
                                                 .text("Edit Question")
                                                 .click(function (e) {
-                                                    window.location.href = "Quiz?action=RequestEdit&quizid="+item.QuizID;
+                                                    window.location.href = "quiz?action=RequestEdit&quizid="+item.QuizID;
                                                 });
                                             return $result.add($customButton);
                                         }
