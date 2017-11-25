@@ -84,7 +84,7 @@
                                             var $customButton = $("<button>")
                                                 .text("Edit Question")
                                                 .click(function (e) {
-                                                    alert("Not Implement");
+                                                    window.location.href = "quiz?action=RequestEdit&quizid="+item.QuizID;
                                                 });
                                             return $result.add($customButton);
                                         }
@@ -93,6 +93,8 @@
                             });
                         })
                     });
+
+
                 </script>
                 <br />
 

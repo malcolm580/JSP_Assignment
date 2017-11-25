@@ -25,7 +25,7 @@ public class UserDB {
     }
 
 
-    public void createCustTable()throws Exception {
+    public void createCustTable() {
         Connection cnnct = null;
         Statement stmnt = null;
         try{
@@ -45,12 +45,12 @@ public class UserDB {
                 ex.printStackTrace();
                 ex = ex.getNextException();
             }
-        } catch(IOException ex) {
+        } catch(IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
         }
     }
 
-    public User isValidUser(String user, String pwd) throws Exception {
+    public User isValidUser(String user, String pwd)  {
         User userBean=null;
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
@@ -80,13 +80,13 @@ public class UserDB {
                 ex.printStackTrace();
                 ex = ex.getNextException();
             }
-        } catch(IOException ex) {
+        } catch(IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
         }
         return userBean;
     }
 
-    public boolean addUserInfo(String id, String user, String pwd)throws Exception {
+    public boolean addUserInfo(String id, String user, String pwd) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
         boolean isSuccess = false;
@@ -108,13 +108,13 @@ public class UserDB {
                 ex.printStackTrace();
                 ex = ex.getNextException();
             }
-        } catch(IOException ex) {
+        } catch(IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
         }
         return isSuccess;
     }
 
-    public User findUserByID(int id)throws Exception {
+    public User findUserByID(int id) {
 
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
@@ -141,7 +141,7 @@ public class UserDB {
                 ex.printStackTrace();
                 ex = ex.getNextException();
             }
-        } catch(IOException ex) {
+        } catch(IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
         }
         return user;

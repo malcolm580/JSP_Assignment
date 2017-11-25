@@ -58,7 +58,7 @@
                             for (QuizResult quizResult : quizResultList) {
                                 out.print("<tr><td>" + quizResult.getAnsweringQuestionState_JSON() + "</td>");
                                 out.print("<td>" + quizResult.getCorrectCount() + "</td>");
-                                out.print("<td><a  href='./QuizAttempt.jsp?quizid=" + quizResult.getQuizID() + "'><u>" + "Review" + "</u></a></td>");
+                                out.print("<td><a  href='./QuizAttempt.jsp?quizid=" + quizResult.getQuizResultID() + "'><u>" + "Review" + "</u></a></td>");
                                 out.println("</tr>");
                             }
                         }
