@@ -52,8 +52,6 @@ public class ProfileController extends HttpServlet {
                 request.getSession().setAttribute("edited","edited");
             }
 
-
-
             targetURL = "Profile/EditUserProfile.jsp";
         }
 

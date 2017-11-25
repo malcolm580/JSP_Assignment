@@ -20,7 +20,7 @@
 #form label, input, textarea{
     display: block;
 }
-#form input, textarea{
+#form input, textarea , select{
     width: 500px;
     border: none;
     border-radius: 20px;

@@ -35,6 +35,7 @@ public class AccountManagementController extends HttpServlet {
 
         String action = request.getParameter("action");
         String targetURL = "";
+        User viewUser = null;
 
         if("list".equalsIgnoreCase(action)){
 
@@ -43,6 +44,39 @@ public class AccountManagementController extends HttpServlet {
             session.setAttribute("userList" , userList);
 
             targetURL = "AccountManagement/UserList.jsp";
+
+        }else if("view".equalsIgnoreCase(action)){
+
+            String userID = request.getParameter("userID");
+
+            ArrayList allRoles = db.getAllRoles();
+            viewUser = db.findUserByID(Integer.parseInt(userID));
+
+            HttpSession session = request.getSession();
+            session.setAttribute("viewUser" , viewUser);
+            session.setAttribute("allRoles" , allRoles);
+
+            targetURL = "AccountManagement/ViewSpecificUser.jsp";
+
+        }else if("edit".equalsIgnoreCase(action)){
+
+            String userID = request.getParameter("userID");
+            String userName = request.getParameter("userName");
+            String password = request.getParameter("password");
+            String role = request.getParameter("role");
+            String email = request.getParameter("email");
+            Boolean edited = false;
+
+            try{
+                edited = db.editUserInfoAndRole(Integer.parseInt(userID), userName , password , role , email);
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+
+            HttpSession session = request.getSession();
+            session.setAttribute("edited" , edited);
+
+            targetURL = "AccountManagement/ViewSpecificUser.jsp";
 
         }
 

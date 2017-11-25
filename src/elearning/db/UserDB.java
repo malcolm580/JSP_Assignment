@@ -133,7 +133,11 @@ public class UserDB {
 
             if(rs.next()) {
                 user = new User();
+                user.setUserID(rs.getInt("UserID"));
                 user.setUsername(rs.getString("UserName"));
+                user.setPassword(rs.getString("Password"));
+                user.setRole(rs.getString("Role"));
+                user.setEmail(rs.getString("Email"));
             }
 
             pStmnt.close();
@@ -182,6 +186,41 @@ public class UserDB {
         return isSuccess;
     }
 
+    public boolean editUserInfoAndRole(int id, String username, String password , String email , String role) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        boolean isSuccess = false;
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "UPDATE User " +
+                    "SET username = ?, password = ? , email = ? , role = ? " +
+                    "WHERE UserID = ?;";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+
+            pStmnt.setString(1, username);
+            pStmnt.setString(2, password);
+            pStmnt.setString(3, "'" + email + "'");
+            pStmnt.setString(4, role);
+            pStmnt.setInt(5, id);
+
+            int rowCount = pStmnt.executeUpdate();
+            if(rowCount >= 1) {
+                isSuccess = true;
+            }
+
+            pStmnt.close();
+            cnnct.close();
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return isSuccess;
+    }
+
     public ArrayList<User> getAllUser() {
         User user = null;
         Connection cnnct = null;
@@ -201,6 +240,36 @@ public class UserDB {
                 user.setRole(rs.getString("Role"));
                 user.setEmail(rs.getString("Email"));
                 user.setPassword(rs.getString("Password"));
+                userList.add(user);
+            }
+            pStmnt.close();
+            cnnct.close();
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return userList;
+    }
+
+    public ArrayList<User> getAllRoles() {
+        User user = null;
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        ArrayList<User> userList = new ArrayList<User>();
+
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "Select DISTINCT Role From User";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+
+            ResultSet rs = pStmnt.executeQuery();
+            while (rs.next()) {
+                user = new User();
+                user.setRole(rs.getString("Role"));
                 userList.add(user);
             }
             pStmnt.close();
