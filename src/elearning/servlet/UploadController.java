@@ -48,6 +48,9 @@ public class UploadController extends HttpServlet {
 
                         item.write( new File(savePath + File.separator + name));
 
+                    }else {
+                        if ("module".equalsIgnoreCase(item.getFieldName()))
+                            moduleID = item.getString();
                     }
 
                 }
@@ -56,7 +59,7 @@ public class UploadController extends HttpServlet {
 
             }
         }
-        response.sendRedirect("./"+ "moduleController?action=list&moduleID=\"" + moduleID + "\"");
+        response.sendRedirect("./"+ "moduleController?action=list&moduleID=" + moduleID + "");
         //request.getRequestDispatcher("moduleController?action=list&moduleID=\"" + moduleID + "\"").forward(request, response);
 
     }

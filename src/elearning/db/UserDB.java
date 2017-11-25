@@ -73,6 +73,7 @@ public class UserDB {
                 userBean.setUsername(rs.getString("Username"));
                 userBean.setRole(rs.getString("Role"));
                 userBean.setEmail(rs.getString("Email"));
+                userBean.setPassword(rs.getString("Password"));
             }
 
         } catch(SQLException ex) {
@@ -145,6 +146,36 @@ public class UserDB {
             ex.printStackTrace();
         }
         return user;
+    }
+
+    public boolean editUserInfo(String id, String user, String pwd) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        boolean isSuccess = false;
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "UPDATE User " +
+                    "SET column1 = value1, column2 = value2 " +
+                    "WHERE UserID = ?;";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setString(1, id);
+            pStmnt.setString(2, user);
+            pStmnt.setString(3, pwd);
+            int rowCount = pStmnt.executeUpdate();
+            if(rowCount >= 1) {
+                isSuccess = true;
+            }
+            pStmnt.close();
+            cnnct.close();
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return isSuccess;
     }
 
 }
