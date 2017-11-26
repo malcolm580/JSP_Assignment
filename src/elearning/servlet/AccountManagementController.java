@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 
@@ -45,6 +46,8 @@ public class AccountManagementController extends HttpServlet {
 
             targetURL = "AccountManagement/UserList.jsp";
 
+
+
         }else if("view".equalsIgnoreCase(action)){
 
             String userID = request.getParameter("userID");
@@ -58,14 +61,17 @@ public class AccountManagementController extends HttpServlet {
 
             targetURL = "AccountManagement/ViewSpecificUser.jsp";
 
+
+
         }else if("edit".equalsIgnoreCase(action)){
 
             String userID = request.getParameter("userID");
-            String userName = request.getParameter("userName");
+            String userName = request.getParameter("username");
             String password = request.getParameter("password");
             String role = request.getParameter("role");
             String email = request.getParameter("email");
             Boolean edited = false;
+
 
             try{
                 edited = db.editUserInfoAndRole(Integer.parseInt(userID), userName , password , role , email);
@@ -78,11 +84,23 @@ public class AccountManagementController extends HttpServlet {
 
             targetURL = "AccountManagement/ViewSpecificUser.jsp";
 
+        }else if ("viewAdd".equalsIgnoreCase(action)){
+            ArrayList allRoles = db.getAllRoles();
+            HttpSession session = request.getSession();
+            session.setAttribute("allRoles" , allRoles);
+            targetURL = "AccountManagement/addUser.jsp";
+
+        }else if ("add".equalsIgnoreCase(action)){
+
+        }else if ("delete".equalsIgnoreCase(action)){
+
         }
+
 
         RequestDispatcher rd;
         rd = getServletContext().getRequestDispatcher("/" + targetURL);
         rd.forward(request, response);
+
     }
 
 
