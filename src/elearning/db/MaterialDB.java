@@ -94,6 +94,44 @@ public class MaterialDB {
         return isSuccess;
     }
 
+    public boolean delMaterial(int materialID) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        try {
+            //1. get Connection
+            cnnct = getConnection();
+
+            String preQueryStatement = "DELETE FROM Metrial WHERE MaterialID = ?";
+            //2. get the prepare Statement
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            //3. update the placeholder with id
+            pStmnt.setInt(1, materialID);
+
+            //4. execute the query and assign to the result
+            int row = pStmnt.executeUpdate();
+
+            pStmnt.close();
+            cnnct.close();
+
+            if(row > 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 
 }
