@@ -84,6 +84,16 @@ public class AccountManagementController extends HttpServlet {
 
             targetURL = "AccountManagement/ViewSpecificUser.jsp";
 
+        }else if ("viewAdd".equalsIgnoreCase(action)){
+            ArrayList allRoles = db.getAllRoles();
+            HttpSession session = request.getSession();
+            session.setAttribute("allRoles" , allRoles);
+            targetURL = "AccountManagement/addUser.jsp";
+
+        }else if ("add".equalsIgnoreCase(action)){
+
+        }else if ("delete".equalsIgnoreCase(action)){
+
         }
 
 
