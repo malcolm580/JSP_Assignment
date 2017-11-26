@@ -88,11 +88,43 @@ public class AccountManagementController extends HttpServlet {
             ArrayList allRoles = db.getAllRoles();
             HttpSession session = request.getSession();
             session.setAttribute("allRoles" , allRoles);
+            session.removeAttribute("viewUser");
+
             targetURL = "AccountManagement/addUser.jsp";
 
         }else if ("add".equalsIgnoreCase(action)){
+            String userName = request.getParameter("username");
+            String password = request.getParameter("password");
+            String role = request.getParameter("role");
+            String email = request.getParameter("email");
+            Boolean added = false;
+
+            try{
+                added = db.addUser(userName , password , role , email);
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+
+            HttpSession session = request.getSession();
+            session.setAttribute("added" , added);
+
+            targetURL = "AccountManagement/addUser.jsp";
 
         }else if ("delete".equalsIgnoreCase(action)){
+            String userID = request.getParameter("userID");
+            Boolean disable = false;
+
+            try{
+                disable = db.disableUser(Integer.parseInt(userID));
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+
+            HttpSession session = request.getSession();
+            session.setAttribute("disable" , disable);
+            session.setAttribute("disableUserID" , userID);
+
+            targetURL = "accountManagement?action=list";
 
         }
 

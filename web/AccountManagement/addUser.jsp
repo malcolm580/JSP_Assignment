@@ -89,11 +89,11 @@
                                         <input type="submit" value="Submit Your Edit" />
                                         <label>
                                         <%
-                                           if(null != session.getAttribute("edited")){
-                                               if((Boolean) session.getAttribute("edited")){
-                                                   out.print("This user info has been edited");
+                                           if(null != session.getAttribute("added")){
+                                               if((Boolean) session.getAttribute("added")){
+                                                   out.print("This user has been added");
                                                }else {
-                                                   out.print("This user info has not been edited");
+                                                   out.print("This user has not been added");
                                                }
                                            }
                                         %>
