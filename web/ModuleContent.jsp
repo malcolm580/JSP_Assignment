@@ -37,7 +37,7 @@
 
             <div class="w3-container w3-card w3-white w3-round w3-margin" style="text-align: center"><br>
                 <h4>
-                    <jsp:useBean id="moduleContent" scope="request" class="elearning.bean.Module" />
+                    <jsp:useBean id="moduleContent" scope="request" class="elearning.bean.Module"/>
                     <%= moduleContent.getModuleName()%>
 
                 </h4><br>
@@ -48,7 +48,8 @@
                     <div class="w3-card w3-round w3-white">
                         <div class="w3-container w3-padding">
                             <h6 class="w3-opacity">Search Material</h6>
-                            <p contenteditable="true" class="w3-border w3-padding"></p>
+                            <input type="text" class="w3-input" id="search" placeholder="Enter The Material Name">
+                            <%--<p contenteditable="true" class="w3-border w3-padding" id="search"></p>--%>
                             <%--<button type="button" class="w3-button w3-theme" style="margin-left: 88.5%">Search</button>--%>
                         </div>
                     </div>
@@ -69,14 +70,17 @@
 
             </div>
 
-            <jsp:useBean id="materialList" scope="request" class="java.util.ArrayList" />
+            <%--<span class="w3-right w3-opacity"><a href=""><img src="image/x-button.png"></a></span>--%>
+
+            <jsp:useBean id="materialList" scope="request" class="java.util.ArrayList"/>
 
             <%
                 if (null != materialList) {
                     for (Object bean : materialList) {
                         Metrial metrial = (Metrial) bean;
-                        out.println("<div class=\"w3-container w3-card w3-white w3-round w3-margin\"><br>");
-                        out.println("<h4><a href='download?file="+ metrial.getContent()+"."+ metrial.getContentType()+ "&moduleID="+ moduleContent.getModuleID() +"'>" + metrial.getContent() + "</a></h4><br />");
+                        out.println("<div class=\"w3-container w3-card w3-white w3-round w3-margin \"><br>");
+                        out.println(" <span class=\"w3-right w3-opacity\"><a href='delete?file="+ metrial.getContent() + "." + metrial.getContentType() + "&moduleID=" + moduleContent.getModuleID() +"'><img src=\"image/x-button.png\"></a></span>");
+                        out.println("<h6><a href='download?file=" + metrial.getContent() + "." + metrial.getContentType() + "&moduleID=" + moduleContent.getModuleID() + "'>" + metrial.getContent() + "</a></h6><br />");
                         out.println("</div>");
                     }
                 }
@@ -93,6 +97,8 @@
 </div>
 <br>
 <jsp:include page="footer.jsp"/>
+
+
 
 </body>
 </html>
