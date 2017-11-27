@@ -53,4 +53,16 @@ public class Quiz implements Serializable {
     public void setQuizName(String quizName) {
         this.quizName = quizName;
     }
+
+    @Override
+    public String toString() {
+        return "Quiz{" +
+                "quizID=" + quizID +
+                ", moduleID=" + moduleID +
+                ", attemptLimit=" + attemptLimit +
+                ", timeLimit=" + timeLimit +
+                ", totalQuestion=" + totalQuestion +
+                ", quizName='" + quizName + '\'' +
+                '}';
+    }
 }

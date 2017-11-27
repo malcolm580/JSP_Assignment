@@ -38,6 +38,8 @@ public class QuizController extends HttpServlet {
         userModuleDB = new UserModuleDB(dbUrl, dbUser, dbPassword);
     }
 
+
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req,resp);
@@ -136,7 +138,7 @@ public class QuizController extends HttpServlet {
                 rd = getServletContext().getRequestDispatcher("/QuizManagement.jsp");
                 rd.forward(request, response);
             }
-            else if ("RequestEdit".equalsIgnoreCase(action)) {
+            else if ("Edit".equalsIgnoreCase(action)) {
                 if (!checkPermission(request, response)) {//Abort when no permission
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;

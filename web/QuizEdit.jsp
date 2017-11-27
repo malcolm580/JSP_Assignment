@@ -11,8 +11,11 @@
         out.print("<script> window.onload = function() { alert('Please Select the Quiz First'); window.history.back(); }</script >");
     }
 %>
+<jsp:useBean id="Quiz" class="elearning.bean.Quiz" scope="session"/>
+<jsp:setProperty property="*" name="Quiz"/>
 <html>
 <head>
+
     <title>Quiz Edit</title>
 </head>
 <body>
@@ -28,23 +31,73 @@
         <div class="w3-col m7">
             <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
                 <span class="w3-right w3-opacity"></span>
-                <h4><%=currentQuiz.getQuizName()%></h4>
+                <h4>Quiz Name:<%=currentQuiz.getQuizName()%>
+                </h4>
                 <h5>
                 </h5>
                 <br>
                 <hr class="w3-clear">
-                <center>Attempts allowed:
-                </center>
-                <h5><b>Summary of your previous attempts</b></h5>
-                <table width="100%" class="w3-left-align">
-                    <tr>
-                        <th>State</th>
-                        <th>Grade /
-                        </th>
-                        <th>Review</th>
-                    </tr>
 
-                </table>
+
+                <h5><b>Summary of your previous attempts</b></h5>
+                <form action="${pageContext.request.contextPath}/quiz/edit" method="post">
+                    <table width="100%" class="w3-left-align">
+                        <input type="hidden" name="action" value="edit">
+                        <input type="hidden" name="QuizID" value="<%=currentQuiz.getQuizID()%>">
+                        <tr>
+                            <td><label for="QuizID"> Quiz ID: </label></td>
+                            <td>
+                                <input style="display: inline" type="text" min="-1"
+                                       value="<%=currentQuiz.getQuizID()%>" disabled id="QuizID"  title="You cannot modify the id of quiz"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="ModuleID">  Module ID: </label></td>
+                            <td>
+                                <input style="display: inline" type="number" min="0"
+                                       value="<%=currentQuiz.getModuleID()%>" name="ModuleID"
+                                       id="ModuleID"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="QuizName"> Quiz Name: </label></td>
+                            <td>
+                                <input style="display: inline" type="text" min="-1"
+                                       value="<%=currentQuiz.getQuizName()%>" name="QuizNmae"
+                                       id="QuizName"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="AttemptLimit">Attempts allowed: </label></td>
+                            <td>
+                                <input style="display: inline" type="number" min="-1"
+                                       value="<%=currentQuiz.getAttemptLimit()%>"
+                                       name="AttemptLimit" id="AttemptLimit" data-toggle="tooltip"
+                                       data-placement="right"
+                                       title=" Hint: 0 means infinite,-1 means not open this quiz"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="TimeLimit"> Time Limit (Second) (0 means no limitation): </label></td>
+                            <td>
+                                <input style="display: inline" type="number" min="0"
+                                       value="<%=currentQuiz.getTimeLimit()%>" name="TimeLimit"
+                                       id="TimeLimit" data-toggle="tooltip"
+                                       data-placement="right"
+                                       title=" Hint: 0 means infinite, otherwise is the time limit of this quiz">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="TimeLimit"> Total Number Of The Question Extract From Pool (0 means all): </label></td>
+                            <td>
+                                <input style="display: inline" type="number" min="0"
+                                       value="<%=currentQuiz.getTotalQuestion()%>" name="TotalQuestion"
+                                       id="TotalQuestion" data-toggle="tooltip"
+                                       data-placement="right"
+                                       title=" Hint: 0 means all question, otherwise system will pick up the numbers of question from question pool">
+                            </td>
+                        </tr>
+                        <tr><td colspan="2" style="text-align: center;">
+                            <button type="submit">Submit</button> <button type="reset">Reset</button>
+                        </td></tr>
+                    </table>
+                </form>
                 <br/>
 
 
@@ -57,7 +110,7 @@
 </div>
 
 <!-- End Page Container -->
-</div>
+
 <br>
 <jsp:include page="footer.jsp"/>
 

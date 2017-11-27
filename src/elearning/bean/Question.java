@@ -3,8 +3,8 @@ package elearning.bean;
 import java.io.Serializable;
 
 public class Question implements Serializable {
-    int quizID,questionID;
-    String questionType,question,correctAnswer,options_JSON;
+    private int quizID,questionID;
+    private String questionType,question,correctAnswer,options_JSON;
 
     public int getQuizID() {
         return quizID;

@@ -1,8 +1,8 @@
 <%@ page import="elearning.bean.User" %>
 
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="CSS/bootstrap.min.css">
 <link rel="stylesheet" href="CSS/basic.css">
 <link rel="stylesheet" href="CSS/themeBlueGrey.css">
 <link rel='stylesheet' href='CSS/gFont.css'>
@@ -11,8 +11,8 @@
 
 <script type="text/javascript" src="JS/Chart.js"></script>
 
-<link type="text/css" rel="stylesheet" href="JS/jsgrid/jsgrid.min.css" />
-<link type="text/css" rel="stylesheet" href="JS/jsgrid/jsgrid-theme.min.css" />
+<link type="text/css" rel="stylesheet" href="JS/jsgrid/jsgrid.min.css"/>
+<link type="text/css" rel="stylesheet" href="JS/jsgrid/jsgrid-theme.min.css"/>
 
 <script src="JS/jquery.js"></script>
 
@@ -23,6 +23,11 @@
 <link rel="stylesheet" href="CSS/profileForm.css">
 
 
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="JS/bootstrap.min.js">
+</script>
+
 <style>
     html, body, h1, h2, h3, h4, h5 {
         font-family: "Open Sans", sans-serif
@@ -31,10 +36,12 @@
     a {
         text-decoration: none
     }
+
     body {
         /* Margin bottom by footer height */
         margin-bottom: 60px;
     }
+
     html {
         position: relative;
         min-height: 100%;

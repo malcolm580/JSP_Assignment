@@ -10,14 +10,14 @@
         bottom: 0;
         width: 100%;
         /* Set the fixed height of the footer here */
-        height: 60px;
+        /*height: 60px;*/
         background-color: #303e45 !important;
         color: white;
         text-align: center;
     }
 </style>
 
-<footer class="">
+<footer class="navbar-fixed-bottom">
     <p>VTC (Tsing Yi) Software Engineering <a href="https://www.w3schools.com/w3css/default.asp" target="_blank"></a></p>
 </footer>
 
@@ -44,4 +44,7 @@
             x.className = x.className.replace(" w3-show", "");
         }
     }
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 </script>
