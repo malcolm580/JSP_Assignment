@@ -88,17 +88,18 @@ public class UserDB {
         return userBean;
     }
 
-    public boolean addUserInfo(String id, String user, String pwd) {
+    public boolean addUser(String username, String password , String email , String role) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
         boolean isSuccess = false;
         try {
             cnnct = getConnection();
-            String preQueryStatement = "INSERT INTO User VALUES (?,?,?)";
+            String preQueryStatement = "INSERT INTO User VALUES (?,?,?,?,?)";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setString(1, id);
-            pStmnt.setString(2, user);
-            pStmnt.setString(3, pwd);
+            pStmnt.setString(1, username);
+            pStmnt.setString(2, password);
+            pStmnt.setString(3, email);
+            pStmnt.setString(4, role);
             int rowCount = pStmnt.executeUpdate();
             if(rowCount >= 1) {
                 isSuccess = true;
@@ -229,7 +230,7 @@ public class UserDB {
 
         try {
             cnnct = getConnection();
-            String preQueryStatement = "Select * From User";
+            String preQueryStatement = "Select * From User where Disabled = 0 ";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
 
             ResultSet rs = pStmnt.executeQuery();
@@ -283,6 +284,33 @@ public class UserDB {
             ex.printStackTrace();
         }
         return userList;
+    }
+
+    public boolean disableUser(int userID) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        boolean isSuccess = false;
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "Update User Set Disabled = 1 Where UserID = ?";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, userID);
+
+            int rowCount = pStmnt.executeUpdate();
+            if(rowCount >= 1) {
+                isSuccess = true;
+            }
+            pStmnt.close();
+            cnnct.close();
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return isSuccess;
     }
 
 }

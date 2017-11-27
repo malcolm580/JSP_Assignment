@@ -17,6 +17,16 @@
 
 <jsp:include page="../header.jsp"/>
 
+<script>
+    $(document).ready(function () {
+        var deleteMessage = $("#deleteMessage");
+        if(deleteMessage.attr('class') == "disableTrue" ){
+            alert(deleteMessage.html());
+        }
+    })
+</script>
+
+
 <style>
     img {
         width: 20px ;
@@ -72,9 +82,28 @@
 
                     %>
                 </table>
-                <button>Add User</button>
+                <button onclick="location.href='accountManagement?action=viewAdd';">Add User</button>
             </div>
 
+            <p id="deleteMessage" class="<%
+                if(null != session.getAttribute("disable")){
+                    if((Boolean) session.getAttribute("disable")){
+                        out.print("disableTrue");
+                    }else {
+                        out.print("disableFalse");
+                    }
+                }
+            %>" style="display: none;">
+                <%
+                if(null != session.getAttribute("disable")){
+                    if((Boolean) session.getAttribute("disable")){
+                        out.print("This user has been delete");
+                    }else {
+                        out.print("This user has not been delete");
+                    }
+                }
+            %>
+            </p>
 
             <!-- End Middle Column -->
         </div>
