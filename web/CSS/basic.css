@@ -548,7 +548,7 @@ a {
 
 .w3-col, .w3-half, .w3-third, .w3-twothird, .w3-threequarter, .w3-quarter {
     float: left;
-    width: 100%
+    width: 100%;
 }
 
 .w3-col.s1 {
@@ -625,7 +625,7 @@ a {
     }
 
     .w3-col.m7 {
-        width: 58.33333%
+        width: 58.33333%;
     }
 
     .w3-col.m8, .w3-twothird {
@@ -950,7 +950,7 @@ a {
 }
 
 .w3-container, .w3-panel {
-    padding: 0.01em 16px
+    padding: 0.01em 16px;
 }
 
 .w3-panel {

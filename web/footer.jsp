@@ -2,7 +2,7 @@
 <!-- Footer -->
 <style>
     footer {
-        position: fixed;
+        position: relative;
         right: 0;
         bottom: 0;
         left: 0;
