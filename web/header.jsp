@@ -31,6 +31,14 @@
     a {
         text-decoration: none
     }
+    body {
+        /* Margin bottom by footer height */
+        margin-bottom: 60px;
+    }
+    html {
+        position: relative;
+        min-height: 100%;
+    }
 
 </style>
 

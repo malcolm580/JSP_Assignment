@@ -2,14 +2,22 @@
 <!-- Footer -->
 <style>
     footer {
-        position: relative;
+/*        position: relative;
         right: 0;
         bottom: 0;
-        left: 0;
+        left: 0;*/
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        /* Set the fixed height of the footer here */
+        height: 60px;
+        background-color: #303e45 !important;
+        color: white;
+        text-align: center;
     }
 </style>
 
-<footer class="w3-container w3-theme-d5">
+<footer class="">
     <p>VTC (Tsing Yi) Software Engineering <a href="https://www.w3schools.com/w3css/default.asp" target="_blank"></a></p>
 </footer>
 
