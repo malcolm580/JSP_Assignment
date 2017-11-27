@@ -3,9 +3,12 @@ package elearning.servlet;
 import elearning.bean.Quiz;
 import elearning.bean.QuizResult;
 import elearning.bean.User;
-import elearning.db.*;
+import elearning.db.QuizDB;
+import elearning.db.QuizResultDB;
+import elearning.db.UserDB;
+import elearning.db.UserModuleDB;
+import org.json.JSONArray;
 
-import javax.jms.Session;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,8 +19,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
-import org.json.*;
 
 
 @WebServlet(name = "ReportingController", urlPatterns = {"/reportMenu"})

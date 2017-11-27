@@ -5,12 +5,7 @@
   Time: 0:14
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" import=" elearning.bean.Module ,java.util.ArrayList" %>
-<%@ page import="elearning.bean.Module" %>
-<%@ page import="com.sun.org.apache.xpath.internal.operations.Mod" %>
-<%@ page import="elearning.bean.Quiz" %>
-<%@ page import="elearning.bean.User" %>
-<%@ page import="java.util.Objects" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" import=" elearning.bean.User" %>
 <html>
 <head>
     <title>Title</title>
