@@ -80,11 +80,11 @@ public class QuizEditController extends HttpServlet {
                         !isInteger(totalQuestionString)) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 }
-                int QuizID=Integer.parseInt(request.getParameter("QuizID"));
-                int ModuleID=Integer.parseInt(request.getParameter("ModuleID"));
-                int AttemptLimit=Integer.parseInt(request.getParameter("AttemptLimit"));
-                int TimeLimit=Integer.parseInt(request.getParameter("TimeLimit"));
-                int TotalQuestion=Integer.parseInt(request.getParameter("TotalQuestion"));
+                int QuizID = Integer.parseInt(request.getParameter("QuizID"));
+                int ModuleID = Integer.parseInt(request.getParameter("ModuleID"));
+                int AttemptLimit = Integer.parseInt(request.getParameter("AttemptLimit"));
+                int TimeLimit = Integer.parseInt(request.getParameter("TimeLimit"));
+                int TotalQuestion = Integer.parseInt(request.getParameter("TotalQuestion"));
 
                 editingQuiz.setQuizID(QuizID);
                 editingQuiz.setModuleID(ModuleID);
@@ -92,16 +92,14 @@ public class QuizEditController extends HttpServlet {
                 editingQuiz.setAttemptLimit(AttemptLimit);
                 editingQuiz.setTimeLimit(TimeLimit);
                 editingQuiz.setTotalQuestion(TotalQuestion);
-                response.getWriter().println(editingQuiz);
+                response.getWriter().println(quizDB.editQuiz(editingQuiz));
 
 
                 //Return
-                /*targetURL = "QuizManagement.jsp";
+                targetURL = "quiz?action=QuizManagement&msg=Success%20edit%20the%20quiz";
 
                 //Execute Return
-                RequestDispatcher rd;
-                rd = getServletContext().getRequestDispatcher("/" + targetURL);
-                rd.forward(request, response);*/
+                response.sendRedirect("../" + targetURL);
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
             }
@@ -146,7 +144,7 @@ public class QuizEditController extends HttpServlet {
     }
 
     private static boolean isInteger(String s) {
-        if (s==null||s.length()<=0){
+        if (s == null || s.length() <= 0) {
             return false;
         }
         try {

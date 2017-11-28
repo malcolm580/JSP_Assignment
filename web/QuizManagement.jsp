@@ -32,18 +32,18 @@
                 <h4>Quiz Management
                 </h4><br>
                 <hr class="w3-clear">
-                <h5>You can edit the following quiz.</h5>
-                <table width="100%" class="w3-left-align">
-                    <tr>
-                        <th>Quiz ID</th>
-                        <th>Module ID</th>
-                        <th>Review</th>
-                    </tr>
+                <%--                <h5>You can edit the following quiz.</h5>--%>
+                <%--                <table width="100%" class="w3-left-align">
+                                    <tr>
+                                        <th>Quiz ID</th>
+                                        <th>Module ID</th>
+                                        <th>Review</th>
+                                    </tr>
 
 
 
 
-                </table>
+                                </table>--%>
                 <div id="jsGrid"></div>
                 <script>
                     $(function () {
