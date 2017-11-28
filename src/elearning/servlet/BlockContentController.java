@@ -21,10 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet(name="ModuleController", urlPatterns={"/moduleController"})
-public class ModuleController extends HttpServlet {
-    private ModuleDB moduleDB;
-    private MaterialDB materialDB;
+@WebServlet(name="BlockContentController", urlPatterns={"/block"})
+public class BlockContentController extends HttpServlet {
     private UserModuleDB userModule;
     private MetrialUserDB metrialUserDB;
 
@@ -32,8 +30,6 @@ public class ModuleController extends HttpServlet {
         String dbUser = this.getServletContext().getInitParameter("dbUser");
         String dbPassword = this.getServletContext().getInitParameter("dbPassword");
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
-        moduleDB = new ModuleDB(dbUrl, dbUser, dbPassword);
-        materialDB = new MaterialDB(dbUrl, dbUser, dbPassword);
         userModule = new UserModuleDB(dbUrl, dbUser, dbPassword);
         metrialUserDB = new  MetrialUserDB(dbUrl, dbUser, dbPassword);
 
@@ -42,27 +38,33 @@ public class ModuleController extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
+        String metrialID = request.getParameter("materialID");
         String moduleID = request.getParameter("moduleID");
 
         // forward the request to brands
-        if("list".equalsIgnoreCase(action)) {
+
             try {
-                Module module = moduleDB.getModule(moduleID);
-                ArrayList<Metrial> metrialArrayList = materialDB.getMaterial(moduleID);
+                ArrayList<User> userArrayList = userModule.getUser(Integer.parseInt(moduleID));
+
+                if (null != userArrayList) {
+                    for (Object bean : userArrayList) {
+                        User moduleUser = (User) bean;
+
+                        moduleUser.setBlocked(metrialUserDB.isBlockUser(Integer.parseInt(metrialID), moduleUser.getUserID()));
+
+                    }
+                }
+
+                request.setAttribute("userList", userArrayList);
 
 
-                request.setAttribute("materialList",metrialArrayList);
-                request.setAttribute("moduleContent",module);
-                RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/ModuleContent.jsp");
+                RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/ChooseBlock.jsp");
                 rd.forward(request, response);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
-            PrintWriter out = response.getWriter();
-            out.println("NO such action :" + action);
-        }
+
     }
 }
+
 

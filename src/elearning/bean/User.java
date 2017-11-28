@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class User implements Serializable {
     int userID;
     String username, password, role, email;
+    boolean isBlocked;
 
     public User() { }
 
@@ -46,6 +47,14 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
     }
 
     @Override

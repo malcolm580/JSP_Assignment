@@ -1,6 +1,7 @@
 package elearning.db;
 
 import elearning.bean.Module;
+import elearning.bean.User;
 
 import java.io.IOException;
 import java.sql.*;
@@ -60,5 +61,41 @@ public class UserModuleDB {
         }
         return moduleList;
     }
+
+    public ArrayList<User> getUser(int moduleID) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        User user = null;
+        ArrayList<User> userList = new ArrayList<User>();
+
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "Select UM.UserID, Username From UserModule UM, User U  WHERE UM.UserID = U.UserID AND ModuleID = ? ORDER BY UserID ASC";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, moduleID);
+
+            ResultSet rs = pStmnt.executeQuery();
+            while( rs.next() ){
+                user = new User();
+                user.setUserID(rs.getInt("UserID"));
+                user.setUsername(rs.getString("Username"));
+                userList.add(user);
+            }
+
+            pStmnt.close();
+            cnnct.close();
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return userList;
+    }
+
+
+
 
 }

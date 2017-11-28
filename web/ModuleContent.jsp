@@ -20,8 +20,15 @@
             text-decoration: none
         }
 
-        img{
+        img {
             margin-right: 20px;
+        }
+
+        .check{
+            width: 24px;
+            height: 24px;
+            position: relative;
+            top: 24px;
         }
     </style>
 </head>
@@ -84,7 +91,7 @@
                         Metrial metrial = (Metrial) bean;
                         out.println("<div class=\"w3-container w3-card w3-white w3-round w3-margin material\"><br>");
                         out.println(" <span class=\"w3-right w3-opacity\"><a href='delete?file=" + metrial.getContent() + "." + metrial.getContentType() + "&moduleID=" + moduleContent.getModuleID() + "&materialID=" + metrial.getMaterialID() + "'><img src=\"image/x-button.png\"></a></span>");
-                        out.println(" <span class=\"w3-right w3-opacity\"><a href='delete?file=" + metrial.getContent() + "." + metrial.getContentType() + "&moduleID=" + moduleContent.getModuleID() + "&materialID=" + metrial.getMaterialID() + "'><img src=\"image/editer.png\"></a></span>");
+                        out.println(" <span class=\"w3-right w3-opacity\"><a href='block?moduleID=" + moduleContent.getModuleID() + "&materialID=" + metrial.getMaterialID() + "'><img src=\"image/editer.png\"></a></span>");
                         out.println("<h6><a href='download?file=" + metrial.getContent() + "." + metrial.getContentType() + "&moduleID=" + moduleContent.getModuleID() + "'>" + metrial.getContent().toUpperCase() + "</a></h6><br />");
                         out.println("</div>");
                     }

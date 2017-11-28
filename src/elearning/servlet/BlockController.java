@@ -21,48 +21,44 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet(name="ModuleController", urlPatterns={"/moduleController"})
-public class ModuleController extends HttpServlet {
-    private ModuleDB moduleDB;
-    private MaterialDB materialDB;
-    private UserModuleDB userModule;
+@WebServlet(name="BlockController", urlPatterns={"/blockUser"})
+public class BlockController extends HttpServlet {
     private MetrialUserDB metrialUserDB;
 
     public void init() {
         String dbUser = this.getServletContext().getInitParameter("dbUser");
         String dbPassword = this.getServletContext().getInitParameter("dbPassword");
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
-        moduleDB = new ModuleDB(dbUrl, dbUser, dbPassword);
-        materialDB = new MaterialDB(dbUrl, dbUser, dbPassword);
-        userModule = new UserModuleDB(dbUrl, dbUser, dbPassword);
         metrialUserDB = new  MetrialUserDB(dbUrl, dbUser, dbPassword);
-
 
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
+
+        String metrialID = request.getParameter("materialID");
         String moduleID = request.getParameter("moduleID");
+        String[] userID = request.getParameterValues("blockList");
 
         // forward the request to brands
-        if("list".equalsIgnoreCase(action)) {
-            try {
-                Module module = moduleDB.getModule(moduleID);
-                ArrayList<Metrial> metrialArrayList = materialDB.getMaterial(moduleID);
 
+        try {
 
-                request.setAttribute("materialList",metrialArrayList);
-                request.setAttribute("moduleContent",module);
-                RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/ModuleContent.jsp");
-                rd.forward(request, response);
-            } catch (Exception e) {
-                e.printStackTrace();
+            metrialUserDB.delRecord(Integer.parseInt(metrialID));
+
+            if (userID != null) {
+                for (int i = 0; i < userID.length; i++) {
+                    metrialUserDB.addBlock(Integer.parseInt(metrialID), Integer.parseInt(userID[i]));
+                }
             }
-        } else {
-            PrintWriter out = response.getWriter();
-            out.println("NO such action :" + action);
+
+
+            response.sendRedirect("./"+ "moduleController?action=list&moduleID=" + moduleID + "");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 }
+
 
