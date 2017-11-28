@@ -71,13 +71,9 @@
                                         <div class="formgroup" >
                                             <label for="role">Role*</label>
                                             <select name="role" id="role">
-                                                <%
-                                                    for(Object role : allRoles){
-                                                        User userRole = (User)role;
-                                                        String selected = "";
-                                                        out.print("<option value='" + userRole.getRole() + "' "+ selected +">"+ userRole.getRole() +"</option>");
-                                                    }
-                                                %>
+                                                <option value="Teacher"></option>
+                                                <option value="Student"></option>
+                                                <option value="Admin"></option>
                                             </select>
                                         </div>
 
