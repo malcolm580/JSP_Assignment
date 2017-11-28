@@ -70,7 +70,7 @@ public class UserModuleDB {
 
         try {
             cnnct = getConnection();
-            String preQueryStatement = "Select UM.UserID, Username From UserModule UM, User U  WHERE UM.UserID = U.UserID AND ModuleID = ? ORDER BY UserID ASC";
+            String preQueryStatement = "Select UM.UserID, Username From UserModule UM, User U  WHERE UM.UserID = U.UserID AND ModuleID = ? AND Role = 'Student' ORDER BY UserID ASC";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             pStmnt.setInt(1, moduleID);
 
