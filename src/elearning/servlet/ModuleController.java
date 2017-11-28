@@ -19,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 @WebServlet(name="ModuleController", urlPatterns={"/moduleController"})
@@ -48,9 +49,25 @@ public class ModuleController extends HttpServlet {
         // forward the request to brands
         if("list".equalsIgnoreCase(action)) {
             try {
+
+                HttpSession session = request.getSession();
+
+                //Get Current User Data
+                User userData = (User) session.getAttribute("userInfo");
+
                 Module module = moduleDB.getModule(moduleID);
                 ArrayList<Metrial> metrialArrayList = materialDB.getMaterial(moduleID);
 
+                if (null != metrialArrayList) {
+
+                    for (int i = 0; i < metrialArrayList.size(); i++) {
+                        Metrial metrial = (Metrial) metrialArrayList.get(i);
+
+                        if (metrialUserDB.isBlockUser(metrial.getMaterialID(), userData.getUserID()))
+                            metrialArrayList.remove(metrial);
+                    }
+
+                }
 
                 request.setAttribute("materialList",metrialArrayList);
                 request.setAttribute("moduleContent",module);

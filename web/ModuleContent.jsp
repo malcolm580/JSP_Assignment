@@ -116,6 +116,7 @@
                         }catch (NullPointerException e){
                             e.printStackTrace();
                         }
+
                         out.println("<h6><a href='download?file=" + metrial.getContent() + "." + metrial.getContentType() + "&moduleID=" + moduleContent.getModuleID() + "'>" + metrial.getContent().toUpperCase() + "</a></h6><br />");
                         out.println("</div>");
                     }
