@@ -54,6 +54,8 @@ public class ModuleController extends HttpServlet {
 
                 request.setAttribute("materialList",metrialArrayList);
                 request.setAttribute("moduleContent",module);
+
+
                 RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/ModuleContent.jsp");
                 rd.forward(request, response);
             } catch (Exception e) {
