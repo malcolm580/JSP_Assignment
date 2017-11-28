@@ -92,7 +92,6 @@ public class QuizEditController extends HttpServlet {
                 editingQuiz.setAttemptLimit(AttemptLimit);
                 editingQuiz.setTimeLimit(TimeLimit);
                 editingQuiz.setTotalQuestion(TotalQuestion);
-                response.getWriter().println(quizDB.editQuiz(editingQuiz));
 
 
                 //Return

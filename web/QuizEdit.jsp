@@ -1,5 +1,8 @@
+<%@ page import="elearning.bean.Question" %>
+<%@ page import="elearning.bean.QuestionOption" %>
 <%@ page import="elearning.bean.Quiz" %>
 <%@ page import="elearning.bean.User" %>
+<%@ page import="java.util.ArrayList" %>
 
 <%
     User user = (User) request.getSession().getAttribute("userInfo");
@@ -48,10 +51,11 @@
                             <td><label for="QuizID"> Quiz ID: </label></td>
                             <td>
                                 <input style="display: inline" type="text" min="-1"
-                                       value="<%=currentQuiz.getQuizID()%>" disabled id="QuizID"  title="You cannot modify the id of quiz"></td>
+                                       value="<%=currentQuiz.getQuizID()%>" disabled id="QuizID"
+                                       title="You cannot modify the id of quiz"></td>
                         </tr>
                         <tr>
-                            <td><label for="ModuleID">  Module ID: </label></td>
+                            <td><label for="ModuleID"> Module ID: </label></td>
                             <td>
                                 <input style="display: inline" type="number" min="0"
                                        value="<%=currentQuiz.getModuleID()%>" name="ModuleID"
@@ -84,7 +88,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><label for="TimeLimit"> Total Number Of The Question Extract From Pool (0 means all): </label></td>
+                            <td><label for="TimeLimit"> Total Number Of The Question Extract From Pool (0 means
+                                all): </label></td>
                             <td>
                                 <input style="display: inline" type="number" min="0"
                                        value="<%=currentQuiz.getTotalQuestion()%>" name="TotalQuestion"
@@ -93,9 +98,59 @@
                                        title=" Hint: 0 means all question, otherwise system will pick up the numbers of question from question pool">
                             </td>
                         </tr>
-                        <tr><td colspan="2" style="text-align: center;">
-                            <button type="submit">Submit</button> <button type="reset">Reset</button>
-                        </td></tr>
+                        <tr>
+                            <td><br/></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Question:</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <table border="1">
+                                    <tr>
+                                        <td>Question ID:</td>
+                                        <td>Type:</td>
+                                        <td>Question Content:</td>
+                                        <td>Options in Question:</td>
+                                        <td>Correct Answer:</td>
+                                    </tr>
+                                    <%
+                                        for (Question question : (ArrayList<Question>) session.getAttribute("currentQuiz_Question")) {
+                                            out.print("<tr>");
+                                            out.print("<td>" + question.getQuestionID() + "<td>");
+                                            out.print("<td>" + question.getQuestionType() + "<td>");
+                                            out.print("<td>" + question.getQuestion() + "<td>");
+                                            out.print("<td><select>");
+                                            for (QuestionOption questionOption : question.getQuestionOptionArrayList()) {
+                                                out.print("<option value='" + questionOption.getOptionID() + "'>" + questionOption.getOption() + "</option>");
+                                            }
+                                            out.print("</select></td>");
+                                            out.print("<td><select>");
+                                            for (QuestionOption questionOption : question.getQuestionOptionArrayList()) {
+                                                if (question.getCorrectOptionID() == questionOption.getOptionID()) {//Checked if it is correct answer
+                                                    out.print("<option value='" + questionOption.getOptionID() + "' selected>" + questionOption.getOption() + "</option>");
+                                                } else {
+                                                    out.print("<option value='" + questionOption.getOptionID() + "'>" + questionOption.getOption() + "</option>");
+                                                }
+                                            }
+                                            out.print("</select></td>");
+                                            out.print("</tr>");
+                                        }
+                                    %>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br/></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                <button type="submit">Submit</button>
+                                <button type="reset">Reset</button>
+                            </td>
+                        </tr>
                     </table>
                 </form>
                 <br/>
