@@ -60,8 +60,8 @@
                         <tr>
                             <td><label for="QuizName"> Quiz Name: </label></td>
                             <td>
-                                <input style="display: inline" type="text" min="-1"
-                                       value="<%=currentQuiz.getQuizName()%>" name="QuizNmae"
+                                <input style="display: inline" type="text"
+                                       value="<%=currentQuiz.getQuizName()%>" name="QuizName"
                                        id="QuizName"></td>
                         </tr>
                         <tr>
