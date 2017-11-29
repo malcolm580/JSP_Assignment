@@ -135,7 +135,18 @@
         out.print("<div id=\"snackbar\">" + request.getParameter("msg") + "</div>");
     }
 %>
-
+<script>
+    function sec2str(t){
+        var d = Math.floor(t/86400),
+            h = ('0'+Math.floor(t/3600) % 24).slice(-2),
+            m = ('0'+Math.floor(t/60)%60).slice(-2),
+            s = ('0' + t % 60).slice(-2);
+        return (d>0?d+'d ':'')+(h>0?h+':':'')+(m>0?m+':':'')+(t>60?s:s+'s');
+    }
+    $(function () {
+       $(".secondToDuration").text(sec2str($(".secondToDuration").text()));
+    });
+</script>
 
 <!-- Navbar -->
 <div class="w3-top">

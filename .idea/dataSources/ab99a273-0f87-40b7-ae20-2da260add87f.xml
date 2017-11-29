@@ -283,10 +283,10 @@ UserID</ColNames>
     <index id="78" parent="25" name="FKQuizResult219291">
       <ColNames>QuizID</ColNames>
     </index>
-    <index id="79" parent="25" name="UserID">
+    <index id="79" parent="25" name="quizresult_ibfk_1">
       <ColNames>UserID</ColNames>
     </index>
-    <index id="80" parent="25" name="quizresult_ibfk_1">
+    <index id="80" parent="25" name="UserID">
       <ColNames>UserID</ColNames>
     </index>
     <key id="81" parent="25" name="PRIMARY">

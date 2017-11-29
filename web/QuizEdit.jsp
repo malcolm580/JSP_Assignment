@@ -18,7 +18,13 @@
 <jsp:setProperty property="*" name="Quiz"/>
 <html>
 <head>
+<style>
+    img {
+        width: 20px ;
+        height: 20px;
+    }
 
+</style>
     <title>Quiz Edit</title>
 </head>
 <body>
@@ -107,21 +113,23 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <table border="1">
+                                <table border="0" width="auto" id="table">
                                     <tr>
-                                        <td>Question ID:</td>
-                                        <td>Type:</td>
-                                        <td>Question Content:</td>
-                                        <td>Options in Question:</td>
-                                        <td>Correct Answer:</td>
+                                        <th>ID: </th>
+                                        <th>Type: </th>
+                                        <th>Question Content: </th>
+                                        <th>Options in Question: </th>
+                                        <th>Correct Answer: </th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
                                     </tr>
                                     <%
                                         for (Question question : (ArrayList<Question>) session.getAttribute("currentQuiz_Question")) {
                                             out.print("<tr>");
-                                            out.print("<td>" + question.getQuestionID() + "<td>");
-                                            out.print("<td>" + question.getQuestionType() + "<td>");
-                                            out.print("<td>" + question.getQuestion() + "<td>");
-                                            out.print("<td><select>");
+                                            out.print("<td>" + question.getQuestionID() + "</td>");
+                                            out.print("<td>" + question.getQuestionType() + "</td>");
+                                            out.print("<td>" + question.getQuestion() + "</td>");
+                                            out.print("<td><select width='100%'>");
                                             for (QuestionOption questionOption : question.getQuestionOptionArrayList()) {
                                                 out.print("<option value='" + questionOption.getOptionID() + "'>" + questionOption.getOption() + "</option>");
                                             }
@@ -135,6 +143,8 @@
                                                 }
                                             }
                                             out.print("</select></td>");
+                                            out.print("<td><img src='image/edit.png'></td>");
+                                            out.print("<td><img src='image/delete.png'></td>");
                                             out.print("</tr>");
                                         }
                                     %>
