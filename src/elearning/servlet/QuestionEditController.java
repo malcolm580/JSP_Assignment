@@ -117,6 +117,38 @@ public class QuestionEditController extends HttpServlet {
 
                 //Execute Return
                 response.sendRedirect("../" + targetURL);
+            } else if ("add".equalsIgnoreCase(action)) {
+                if (!checkPermission(request, response)) {//Abort when no permission
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
+                }
+                HttpSession session = request.getSession();
+
+                //Get Current User Data
+                User userData = (User) session.getAttribute("userInfo");
+                int userID = userData.getUserID();
+
+                Question question = new Question();
+                String QuizID_String = request.getParameter("id");
+                String QuestionType = "multiple";
+                String Question = request.getParameter("question");
+
+                if (//Checking is the value correct, if not, send bad request
+                        !isInteger(QuizID_String)) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                }
+                int QuizID = Integer.parseInt(QuizID_String);
+
+                question.setQuizID(QuizID);
+                question.setQuestionType(QuestionType);
+                question.setQuestion(Question);
+                questionDB.addQuestion(question);
+
+                //Return
+                targetURL = "quiz?action=edit&quizid=" + QuizID_String + "&msg=Success%20add%20the%20quiz";
+
+                //Execute Return
+                response.sendRedirect("../" + targetURL);
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
             }

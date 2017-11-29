@@ -144,7 +144,13 @@
         return (d>0?d+'d ':'')+(h>0?h+':':'')+(m>0?m+':':'')+(t>60?s:s+'s');
     }
     $(function () {
-       $(".secondToDuration").text(sec2str($(".secondToDuration").text()));
+        // $(".secondToDuration").text(sec2str($(".secondToDuration").text()));
+
+
+        $(".secondToDuration").each(function (index) {
+            $(this).text(sec2str($(this).text()));
+        });
+
     });
 </script>
 

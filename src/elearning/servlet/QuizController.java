@@ -167,8 +167,9 @@ public class QuizController extends HttpServlet {
                 for (Question question : currentQuiz_Question) {
                     question.setQuestionOptionArrayList(questionOptionDB.getOptionByQuestionID(question.getQuestionID()));
                 }
-
-                session.setAttribute("currentQuiz", quizDB.getQuizByID(quizID));
+                Quiz currentQuiz = quizDB.getQuizByID(quizID);
+                currentQuiz.setModule(moduleDB.getModule(currentQuiz.getModuleID() + ""));
+                session.setAttribute("currentQuiz", currentQuiz);
                 session.setAttribute("currentQuiz_Question", currentQuiz_Question);
 
                 RequestDispatcher rd;

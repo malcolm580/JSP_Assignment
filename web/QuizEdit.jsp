@@ -18,13 +18,13 @@
 <jsp:setProperty property="*" name="Quiz"/>
 <html>
 <head>
-<style>
-    img {
-        width: 20px ;
-        height: 20px;
-    }
+    <style>
+        img {
+            width: 20px;
+            height: 20px;
+        }
 
-</style>
+    </style>
     <title>Quiz Edit</title>
 </head>
 <body>
@@ -50,7 +50,7 @@
 
                 <h5><b>Summary of your previous attempts</b></h5>
                 <form action="${pageContext.request.contextPath}/quiz/edit" method="post">
-                    <table width="100%" class="w3-left-align">
+                    <table width="100%" class="w3-left-align" id="table">
                         <input type="hidden" name="action" value="edit">
                         <input type="hidden" name="QuizID" value="<%=currentQuiz.getQuizID()%>">
                         <tr>
@@ -61,9 +61,13 @@
                                        title="You cannot modify the id of quiz"></td>
                         </tr>
                         <tr>
-                            <td><label for="ModuleID"> Module ID: </label></td>
+                            <td><label for="ModuleID"> Module: </label></td>
                             <td>
-                                <input style="display: inline" type="number" min="0"
+                                <select readonly>
+                                    <option><%=currentQuiz.getModule().getModuleName()%>
+                                    </option>
+                                </select>
+                                <input type="hidden"
                                        value="<%=currentQuiz.getModuleID()%>" name="ModuleID"
                                        id="ModuleID"></td>
                         </tr>
@@ -109,17 +113,17 @@
                             <td></td>
                         </tr>
                         <tr>
-                            <th colspan="2">Question:</th>
-                        </tr>
-                        <tr>
                             <td colspan="2">
                                 <table border="0" width="auto" id="table">
                                     <tr>
-                                        <th>ID: </th>
-                                        <th>Type: </th>
-                                        <th>Question Content: </th>
-                                        <th>Options in Question: </th>
-                                        <th>Correct Answer: </th>
+                                        <th colspan="7">Question:</th>
+                                    </tr>
+                                    <tr>
+                                        <th>ID:</th>
+                                        <th>Type:</th>
+                                        <th>Question Content:</th>
+                                        <th>Options in Question:</th>
+                                        <th>Correct Answer:</th>
                                         <th>Edit</th>
                                         <th>Delete</th>
                                     </tr>
@@ -131,10 +135,10 @@
                                             out.print("<td>" + question.getQuestion() + "</td>");
                                             out.print("<td><select width='100%'>");
                                             for (QuestionOption questionOption : question.getQuestionOptionArrayList()) {
-                                                out.print("<option value='" + questionOption.getOptionID() + "'>" + questionOption.getOption() + "</option>");
+                                                out.print("<option  disabled value='" + questionOption.getOptionID() + "'>" + questionOption.getOption() + "</option>");
                                             }
                                             out.print("</select></td>");
-                                            out.print("<td><select>");
+                                            out.print("<td><select disabled>");
                                             for (QuestionOption questionOption : question.getQuestionOptionArrayList()) {
                                                 if (question.getCorrectOptionID() == questionOption.getOptionID()) {//Checked if it is correct answer
                                                     out.print("<option value='" + questionOption.getOptionID() + "' selected>" + questionOption.getOption() + "</option>");
@@ -148,6 +152,30 @@
                                             out.print("</tr>");
                                         }
                                     %>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br/></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <table id="table">
+                                    <tr>
+                                        <th colspan="3">Quick Add Question</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Question Content:</th>
+                                        <td>
+                                            <input type="text" id="addQuestion">
+                                        </td>
+                                        <td>
+                                            <button onclick="addQuestion(<%=currentQuiz.getQuizID()%>,$('#addQuestion'));return false;">
+                                                Add
+                                            </button>
+                                        </td>
+                                    </tr>
                                 </table>
                             </td>
                         </tr>
@@ -177,6 +205,22 @@
         // Disable caching of AJAX responses
         cache: false
     });
+
+    function addQuestion(quizID, question) {
+        $.post("question/edit?action=add&id=" + questionID,
+            {
+                action: "add",
+                id: quizID,
+                question: question.val()
+            },
+            function (data, status) {
+                console.log("Data: " + data + "\nStatus: " + status);
+                if (status = "success") {
+                    //Location.refresh();
+                }
+            });
+    }
+
     function editQuestion(id) {
         $('.modal-body').load('question/edit?action=view&id=' + id, function () {
             $('#myModal').modal({show: true});

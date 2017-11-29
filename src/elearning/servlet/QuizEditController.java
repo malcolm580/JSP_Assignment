@@ -81,11 +81,11 @@ public class QuizEditController extends HttpServlet {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                     return;
                 }
-                int QuizID = Integer.parseInt(request.getParameter("QuizID"));
-                int ModuleID = Integer.parseInt(request.getParameter("ModuleID"));
-                int AttemptLimit = Integer.parseInt(request.getParameter("AttemptLimit"));
-                int TimeLimit = Integer.parseInt(request.getParameter("TimeLimit"));
-                int TotalQuestion = Integer.parseInt(request.getParameter("TotalQuestion"));
+                int QuizID = Integer.parseInt(quizIDString);
+                int ModuleID = Integer.parseInt(moduleIDString);
+                int AttemptLimit = Integer.parseInt(attemptLimitString);
+                int TimeLimit = Integer.parseInt(timeLimitString);
+                int TotalQuestion = Integer.parseInt(totalQuestionString);
 
                 editingQuiz.setQuizID(QuizID);
                 editingQuiz.setModuleID(ModuleID);
@@ -93,6 +93,7 @@ public class QuizEditController extends HttpServlet {
                 editingQuiz.setAttemptLimit(AttemptLimit);
                 editingQuiz.setTimeLimit(TimeLimit);
                 editingQuiz.setTotalQuestion(TotalQuestion);
+                quizDB.editQuiz(editingQuiz);
 
                 //Return
                 targetURL = "quiz?action=QuizManagement&msg=Success%20edit%20the%20quiz";
