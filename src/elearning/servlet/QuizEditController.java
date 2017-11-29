@@ -93,7 +93,6 @@ public class QuizEditController extends HttpServlet {
                 editingQuiz.setTimeLimit(TimeLimit);
                 editingQuiz.setTotalQuestion(TotalQuestion);
 
-
                 //Return
                 targetURL = "quiz?action=QuizManagement&msg=Success%20edit%20the%20quiz";
 

@@ -1,11 +1,9 @@
 package elearning.db;
 
 import elearning.bean.Module;
-import elearning.bean.Quiz;
 
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
 
 public class ModuleDB {
 
@@ -27,7 +25,7 @@ public class ModuleDB {
     }
 
 
-    public Module getModule(String moduleID)throws Exception {
+    public Module getModule(String moduleID) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
         Module module = null;
@@ -52,7 +50,7 @@ public class ModuleDB {
                 ex.printStackTrace();
                 ex = ex.getNextException();
             }
-        } catch(IOException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
         }
         return module;

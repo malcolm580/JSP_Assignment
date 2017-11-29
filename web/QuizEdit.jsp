@@ -143,8 +143,8 @@
                                                 }
                                             }
                                             out.print("</select></td>");
-                                            out.print("<td><img src='image/edit.png'></td>");
-                                            out.print("<td><img src='image/delete.png'></td>");
+                                            out.print("<td><a href='javascript:editQuestion(" + question.getQuestionID() + ");'><img src='image/edit.png'></a></td>");
+                                            out.print("<td><a href='javascript:deleteQuestion(" + question.getQuestionID() + ");'><img src='image/delete.png'></a></td>");
                                             out.print("</tr>");
                                         }
                                     %>

@@ -22,6 +22,7 @@ public class QuizController extends HttpServlet {
     private UserModuleDB userModuleDB;
     private QuestionDB questionDB;
     private QuestionOptionDB questionOptionDB;
+    private ModuleDB moduleDB;
 
     @Override
     public void init() throws ServletException {
@@ -34,6 +35,7 @@ public class QuizController extends HttpServlet {
         userModuleDB = new UserModuleDB(dbUrl, dbUser, dbPassword);
         questionOptionDB = new QuestionOptionDB(dbUrl, dbUser, dbPassword);
         questionDB = new QuestionDB(dbUrl, dbUser, dbPassword);
+        moduleDB = new ModuleDB(dbUrl, dbUser, dbPassword);
     }
 
 
@@ -130,7 +132,9 @@ public class QuizController extends HttpServlet {
                 } else if ("teacher".equalsIgnoreCase(userData.getRole())) {
                     quizList = userQuizDB.getUserQuiz(userID);
                 }
-
+                for (Quiz quiz : quizList) {
+                    quiz.setModule(moduleDB.getModule(quiz.getModuleID() + ""));//When get the quiz from database, get moduleID and take the module in to the quiz for association.
+                }
                 session.setAttribute("currentQuiz", quizList);
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/QuizManagement.jsp");
