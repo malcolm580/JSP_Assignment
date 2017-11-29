@@ -79,6 +79,7 @@ public class QuizEditController extends HttpServlet {
                         !isInteger(timeLimitString) ||
                         !isInteger(totalQuestionString)) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    return;
                 }
                 int QuizID = Integer.parseInt(request.getParameter("QuizID"));
                 int ModuleID = Integer.parseInt(request.getParameter("ModuleID"));

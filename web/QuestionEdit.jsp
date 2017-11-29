@@ -33,11 +33,11 @@
         $("#navDemo").hide();
     });
 </script>
-<form action="${pageContext.request.contextPath}/quiz/edit" method="post">
+<form action="${pageContext.request.contextPath}/question/edit" method="post">
     <table width="100%" class="w3-left-align" id="table">
         <input type="hidden" name="action" value="edit">
         <input type="hidden" name="QuestionID" value="<%=currentQuestion.getQuestionID()%>">
-
+        <input type="hidden" name="QuizID" value="<%=currentQuestion.getQuizID()%>">
         <tr>
             <th>Question ID:</th>
             <td>
@@ -101,7 +101,10 @@
         </tr>
         <tr>
             <th>Add option:</th>
-            <td><input type="text" onblur="addOption($(this),<%=currentQuestion.getQuestionID()%>)"></td>
+            <td><input type="text" id="newOption">
+                <button onclick="addOption($('#newOption'),<%=currentQuestion.getQuestionID()%>);return false;">Add
+                </button>
+            </td>
         </tr>
         <tr>
             <td><br/></td>
@@ -131,7 +134,22 @@
             function (data, status) {
                 console.log("Data: " + data + "\nStatus: " + status);
                 if (status = "success") {
-                    location.reload();
+                    editQuestion(questionID);
+                }
+            });
+        editQuestion(<%=currentQuestion.getQuestionID()%>);
+    }
+
+    function deleteOption(optionID) {
+        $.post("question/option/edit?action=delete",
+            {
+                action: "delete",
+                id: optionID
+            },
+            function (data, status) {
+                console.log("Data: " + data + "\nStatus: " + status);
+                if (status = "success") {
+                    editQuestion(<%=currentQuestion.getQuestionID()%>);
                 }
             });
         editQuestion(<%=currentQuestion.getQuestionID()%>);

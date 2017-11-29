@@ -78,11 +78,28 @@ public class QuestionOptionController extends HttpServlet {
                 QuestionOption questionOption = new QuestionOption();
                 questionOption.setOption(option);
                 questionOption.setQuestionID(questionID);
-                if (questionOptionDB.addQuestion(questionOption)) {
-                    response.sendError(HttpServletResponse.SC_OK);
+                questionOptionDB.addQuestion(questionOption);
+                response.sendError(HttpServletResponse.SC_OK);
+
+
+            } else if ("delete".equalsIgnoreCase(action)) {
+                if (!checkPermission(request, response)) {//Abort when no permission
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                String optionID_String = request.getParameter("id");
+                if (optionID_String == null || optionID_String.length() <= 0 || !isInteger(optionID_String)) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                }
+                HttpSession session = request.getSession();
+
+                //Get Current User Data
+                User userData = (User) session.getAttribute("userInfo");
+                int userID = userData.getUserID();
+
+                int optionID = Integer.parseInt(optionID_String);
+                questionOptionDB.deleteQuestion(optionID);
+                response.sendError(HttpServletResponse.SC_OK);
 
 
             } else {

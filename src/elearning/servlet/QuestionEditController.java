@@ -2,7 +2,6 @@ package elearning.servlet;
 
 import elearning.bean.Module;
 import elearning.bean.Question;
-import elearning.bean.Quiz;
 import elearning.bean.User;
 import elearning.db.QuestionDB;
 import elearning.db.QuestionOptionDB;
@@ -90,36 +89,31 @@ public class QuestionEditController extends HttpServlet {
                 User userData = (User) session.getAttribute("userInfo");
                 int userID = userData.getUserID();
 
-                Quiz editingQuiz = new Quiz();
-                String quizIDString = request.getParameter("QuizID");
-                String moduleIDString = request.getParameter("ModuleID");
-                String QuizName = request.getParameter("QuizName");
-                String attemptLimitString = request.getParameter("AttemptLimit");
-                String timeLimitString = request.getParameter("TimeLimit");
-                String totalQuestionString = request.getParameter("TotalQuestion");
+                Question question = new Question();
+                String QuestionID_String = request.getParameter("QuestionID");
+                String QuizID_String = request.getParameter("QuizID");
+                String QuestionType = request.getParameter("QuestionType");
+                String Question = request.getParameter("Question");
+                String CorrectOptionID_String = request.getParameter("CorrectOptionID");
 
-                if (!isInteger(quizIDString) ||//Checking is the value correct, if not, send bad request
-                        !isInteger(moduleIDString) ||
-                        !isInteger(attemptLimitString) ||
-                        !isInteger(timeLimitString) ||
-                        !isInteger(totalQuestionString)) {
+                if (!isInteger(QuestionID_String) ||//Checking is the value correct, if not, send bad request
+                        !isInteger(QuizID_String) ||
+                        !isInteger(CorrectOptionID_String)) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 }
-                int QuizID = Integer.parseInt(request.getParameter("QuizID"));
-                int ModuleID = Integer.parseInt(request.getParameter("ModuleID"));
-                int AttemptLimit = Integer.parseInt(request.getParameter("AttemptLimit"));
-                int TimeLimit = Integer.parseInt(request.getParameter("TimeLimit"));
-                int TotalQuestion = Integer.parseInt(request.getParameter("TotalQuestion"));
+                int QuestionID = Integer.parseInt(QuizID_String);
+                int QuizID = Integer.parseInt(QuizID_String);
+                int CorrectOptionID = Integer.parseInt(CorrectOptionID_String);
 
-                editingQuiz.setQuizID(QuizID);
-                editingQuiz.setModuleID(ModuleID);
-                editingQuiz.setQuizName(QuizName);
-                editingQuiz.setAttemptLimit(AttemptLimit);
-                editingQuiz.setTimeLimit(TimeLimit);
-                editingQuiz.setTotalQuestion(TotalQuestion);
+                question.setQuestionID(QuestionID);
+                question.setQuizID(QuizID);
+                question.setQuestionType(QuestionType);
+                question.setQuestion(Question);
+                question.setCorrectOptionID(CorrectOptionID);
+                questionDB.editQuestion(question);
 
                 //Return
-                targetURL = "quiz?action=QuizManagement&msg=Success%20edit%20the%20quiz";
+                targetURL = "quiz?action=edit&quizid=" + QuizID_String + "&msg=Success%20edit%20the%20quiz";
 
                 //Execute Return
                 response.sendRedirect("../" + targetURL);

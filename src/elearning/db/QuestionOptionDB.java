@@ -144,4 +144,30 @@ public class QuestionOptionDB {
         }
         return row > 0;
     }
+
+    public boolean deleteQuestion(int optionID) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        int row = 0; //It is the affected row count of the query
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "DELETE FROM `QuestionOption` WHERE OptionID=?";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, optionID);
+            row = pStmnt.executeUpdate();
+
+            pStmnt.close();
+            cnnct.close();
+
+
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return row > 0;
+    }
 }

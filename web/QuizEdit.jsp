@@ -173,6 +173,10 @@
     </div>
 </div>
 <script>
+    $.ajaxSetup({
+        // Disable caching of AJAX responses
+        cache: false
+    });
     function editQuestion(id) {
         $('.modal-body').load('question/edit?action=view&id=' + id, function () {
             $('#myModal').modal({show: true});
