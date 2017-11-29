@@ -118,4 +118,30 @@ public class QuestionOptionDB {
         return row > 0;
     }
 
+    public boolean addQuestion(QuestionOption questionOption) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        int row = 0; //It is the affected row count of the query
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "INSERT INTO `QuestionOption`( `QuestionID`, `Option`) VALUES (?,?)";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, questionOption.getQuestionID());
+            pStmnt.setString(2, questionOption.getOption());
+            row = pStmnt.executeUpdate();
+
+            pStmnt.close();
+            cnnct.close();
+
+
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return row > 0;
+    }
 }
