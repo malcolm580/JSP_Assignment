@@ -1,12 +1,11 @@
 package elearning.servlet;
 
 import elearning.bean.Module;
-import elearning.bean.Quiz;
+import elearning.bean.QuestionOption;
 import elearning.bean.User;
+import elearning.db.QuestionOptionDB;
 import elearning.db.QuizDB;
-import elearning.db.QuizResultDB;
 import elearning.db.UserModuleDB;
-import elearning.db.UserQuizDB;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,23 +16,25 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "QuizEditController", urlPatterns = {"/quiz/edit"})
-public class QuizEditController extends HttpServlet {
+@WebServlet(name = "QuestionOptionController", urlPatterns = {"/question/option/edit"})
+public class QuestionOptionController extends HttpServlet {
 
-    private UserQuizDB userQuizDB;
     private QuizDB quizDB;
-    private QuizResultDB quizResultDB;
+
     private UserModuleDB userModuleDB;
+
+    private QuestionOptionDB questionOptionDB;
+
 
     @Override
     public void init() throws ServletException {
         String dbUser = this.getServletContext().getInitParameter("dbUser");
         String dbPassword = this.getServletContext().getInitParameter("dbPassword");
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
-        userQuizDB = new UserQuizDB(dbUrl, dbUser, dbPassword);
+        questionOptionDB = new QuestionOptionDB(dbUrl, dbUser, dbPassword);
         quizDB = new QuizDB(dbUrl, dbUser, dbPassword);
-        quizResultDB = new QuizResultDB(dbUrl, dbUser, dbPassword);
         userModuleDB = new UserModuleDB(dbUrl, dbUser, dbPassword);
+        questionOptionDB = new QuestionOptionDB(dbUrl, dbUser, dbPassword);
     }
 
     @Override
@@ -53,11 +54,14 @@ public class QuizEditController extends HttpServlet {
             String action = request.getParameter("action");
 
             String targetURL;
-
-            if ("edit".equalsIgnoreCase(action)) {
+            if ("add".equalsIgnoreCase(action)) {
                 if (!checkPermission(request, response)) {//Abort when no permission
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
+                }
+                String questionID_String = request.getParameter("id");
+                if (questionID_String == null || questionID_String.length() <= 0 || !isInteger(questionID_String)) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 }
                 HttpSession session = request.getSession();
 
@@ -65,41 +69,39 @@ public class QuizEditController extends HttpServlet {
                 User userData = (User) session.getAttribute("userInfo");
                 int userID = userData.getUserID();
 
-                Quiz editingQuiz = new Quiz();
-                String quizIDString = request.getParameter("QuizID");
-                String moduleIDString = request.getParameter("ModuleID");
-                String QuizName = request.getParameter("QuizName");
-                String attemptLimitString = request.getParameter("AttemptLimit");
-                String timeLimitString = request.getParameter("TimeLimit");
-                String totalQuestionString = request.getParameter("TotalQuestion");
-
-                if (!isInteger(quizIDString) ||//Checking is the value correct, if not, send bad request
-                        !isInteger(moduleIDString) ||
-                        !isInteger(attemptLimitString) ||
-                        !isInteger(timeLimitString) ||
-                        !isInteger(totalQuestionString)) {
+                int questionID = Integer.parseInt(questionID_String);
+                String option = request.getParameter("option");
+                if (option == null || option.length() <= 0) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                     return;
                 }
-                int QuizID = Integer.parseInt(quizIDString);
-                int ModuleID = Integer.parseInt(moduleIDString);
-                int AttemptLimit = Integer.parseInt(attemptLimitString);
-                int TimeLimit = Integer.parseInt(timeLimitString);
-                int TotalQuestion = Integer.parseInt(totalQuestionString);
+                QuestionOption questionOption = new QuestionOption();
+                questionOption.setOption(option);
+                questionOption.setQuestionID(questionID);
+                questionOptionDB.addQuestion(questionOption);
+                response.sendError(HttpServletResponse.SC_OK);
 
-                editingQuiz.setQuizID(QuizID);
-                editingQuiz.setModuleID(ModuleID);
-                editingQuiz.setQuizName(QuizName);
-                editingQuiz.setAttemptLimit(AttemptLimit);
-                editingQuiz.setTimeLimit(TimeLimit);
-                editingQuiz.setTotalQuestion(TotalQuestion);
-                quizDB.editQuiz(editingQuiz);
 
-                //Return
-                targetURL = "quiz?action=QuizManagement&msg=Success%20edit%20the%20quiz";
+            } else if ("delete".equalsIgnoreCase(action)) {
+                if (!checkPermission(request, response)) {//Abort when no permission
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
+                }
+                String optionID_String = request.getParameter("id");
+                if (optionID_String == null || optionID_String.length() <= 0 || !isInteger(optionID_String)) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                }
+                HttpSession session = request.getSession();
 
-                //Execute Return
-                response.sendRedirect("../" + targetURL);
+                //Get Current User Data
+                User userData = (User) session.getAttribute("userInfo");
+                int userID = userData.getUserID();
+
+                int optionID = Integer.parseInt(optionID_String);
+                questionOptionDB.deleteQuestion(optionID);
+                response.sendError(HttpServletResponse.SC_OK);
+
+
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
             }

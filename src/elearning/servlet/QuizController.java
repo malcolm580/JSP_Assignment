@@ -1,13 +1,7 @@
 package elearning.servlet;
 
-import elearning.bean.Module;
-import elearning.bean.Quiz;
-import elearning.bean.QuizResult;
-import elearning.bean.User;
-import elearning.db.QuizDB;
-import elearning.db.QuizResultDB;
-import elearning.db.UserModuleDB;
-import elearning.db.UserQuizDB;
+import elearning.bean.*;
+import elearning.db.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,6 +20,9 @@ public class QuizController extends HttpServlet {
     private QuizDB quizDB;
     private QuizResultDB quizResultDB;
     private UserModuleDB userModuleDB;
+    private QuestionDB questionDB;
+    private QuestionOptionDB questionOptionDB;
+    private ModuleDB moduleDB;
 
     @Override
     public void init() throws ServletException {
@@ -36,6 +33,9 @@ public class QuizController extends HttpServlet {
         quizDB = new QuizDB(dbUrl, dbUser, dbPassword);
         quizResultDB = new QuizResultDB(dbUrl, dbUser, dbPassword);
         userModuleDB = new UserModuleDB(dbUrl, dbUser, dbPassword);
+        questionOptionDB = new QuestionOptionDB(dbUrl, dbUser, dbPassword);
+        questionDB = new QuestionDB(dbUrl, dbUser, dbPassword);
+        moduleDB = new ModuleDB(dbUrl, dbUser, dbPassword);
     }
 
 
@@ -132,8 +132,12 @@ public class QuizController extends HttpServlet {
                 } else if ("teacher".equalsIgnoreCase(userData.getRole())) {
                     quizList = userQuizDB.getUserQuiz(userID);
                 }
+                for (Quiz quiz : quizList) {
+                    quiz.setModule(moduleDB.getModule(quiz.getModuleID() + ""));//When get the quiz from database, get moduleID and take the module in to the quiz for association.
+                }
 
                 session.setAttribute("currentQuiz", quizList);
+                session.setAttribute("allModule", moduleDB.getModule());
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/QuizManagement.jsp");
                 rd.forward(request, response);
@@ -160,7 +164,15 @@ public class QuizController extends HttpServlet {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
-                session.setAttribute("currentQuiz", quizDB.getQuizByID(quizID));
+
+                ArrayList<Question> currentQuiz_Question = questionDB.getQuestionByQuizID(quizID);
+                for (Question question : currentQuiz_Question) {
+                    question.setQuestionOptionArrayList(questionOptionDB.getOptionByQuestionID(question.getQuestionID()));
+                }
+                Quiz currentQuiz = quizDB.getQuizByID(quizID);
+                currentQuiz.setModule(moduleDB.getModule(currentQuiz.getModuleID() + ""));
+                session.setAttribute("currentQuiz", currentQuiz);
+                session.setAttribute("currentQuiz_Question", currentQuiz_Question);
 
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/QuizEdit.jsp");

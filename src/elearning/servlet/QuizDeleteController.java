@@ -3,10 +3,7 @@ package elearning.servlet;
 import elearning.bean.Module;
 import elearning.bean.Quiz;
 import elearning.bean.User;
-import elearning.db.QuizDB;
-import elearning.db.QuizResultDB;
-import elearning.db.UserModuleDB;
-import elearning.db.UserQuizDB;
+import elearning.db.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,13 +14,14 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "QuizEditController", urlPatterns = {"/quiz/edit"})
-public class QuizEditController extends HttpServlet {
+@WebServlet(name = "QuizDeleteController", urlPatterns = {"/quiz/delete"})
+public class QuizDeleteController extends HttpServlet {
 
     private UserQuizDB userQuizDB;
     private QuizDB quizDB;
     private QuizResultDB quizResultDB;
     private UserModuleDB userModuleDB;
+    private QuestionDB questionDB;
 
     @Override
     public void init() throws ServletException {
@@ -34,6 +32,7 @@ public class QuizEditController extends HttpServlet {
         quizDB = new QuizDB(dbUrl, dbUser, dbPassword);
         quizResultDB = new QuizResultDB(dbUrl, dbUser, dbPassword);
         userModuleDB = new UserModuleDB(dbUrl, dbUser, dbPassword);
+        questionDB=new QuestionDB(dbUrl, dbUser, dbPassword);
     }
 
     @Override
@@ -54,55 +53,36 @@ public class QuizEditController extends HttpServlet {
 
             String targetURL;
 
-            if ("edit".equalsIgnoreCase(action)) {
-                if (!checkPermission(request, response)) {//Abort when no permission
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-                    return;
-                }
-                HttpSession session = request.getSession();
 
-                //Get Current User Data
-                User userData = (User) session.getAttribute("userInfo");
-                int userID = userData.getUserID();
-
-                Quiz editingQuiz = new Quiz();
-                String quizIDString = request.getParameter("QuizID");
-                String moduleIDString = request.getParameter("ModuleID");
-                String QuizName = request.getParameter("QuizName");
-                String attemptLimitString = request.getParameter("AttemptLimit");
-                String timeLimitString = request.getParameter("TimeLimit");
-                String totalQuestionString = request.getParameter("TotalQuestion");
-
-                if (!isInteger(quizIDString) ||//Checking is the value correct, if not, send bad request
-                        !isInteger(moduleIDString) ||
-                        !isInteger(attemptLimitString) ||
-                        !isInteger(timeLimitString) ||
-                        !isInteger(totalQuestionString)) {
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-                    return;
-                }
-                int QuizID = Integer.parseInt(quizIDString);
-                int ModuleID = Integer.parseInt(moduleIDString);
-                int AttemptLimit = Integer.parseInt(attemptLimitString);
-                int TimeLimit = Integer.parseInt(timeLimitString);
-                int TotalQuestion = Integer.parseInt(totalQuestionString);
-
-                editingQuiz.setQuizID(QuizID);
-                editingQuiz.setModuleID(ModuleID);
-                editingQuiz.setQuizName(QuizName);
-                editingQuiz.setAttemptLimit(AttemptLimit);
-                editingQuiz.setTimeLimit(TimeLimit);
-                editingQuiz.setTotalQuestion(TotalQuestion);
-                quizDB.editQuiz(editingQuiz);
-
-                //Return
-                targetURL = "quiz?action=QuizManagement&msg=Success%20edit%20the%20quiz";
-
-                //Execute Return
-                response.sendRedirect("../" + targetURL);
-            } else {
-                response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+            if (!checkPermission(request, response)) {//Abort when no permission
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
+            HttpSession session = request.getSession();
+
+            //Get Current User Data
+            User userData = (User) session.getAttribute("userInfo");
+            int userID = userData.getUserID();
+
+            String quizID_String=request.getParameter("quizid");
+            if(quizID_String==null||quizID_String.length()<=0||!isInteger(quizID_String)){
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+            int quizID=Integer.parseInt(quizID_String);
+            if(!isAuthenticated(request,response,userData,quizID)){
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
+            if(quizDB.deleteQuiz(quizID)){
+                questionDB.resetQuestionOfQuiz(quizID);
+                targetURL = "quiz?action=QuizManagement&msg=Success%20<span style='color:red'>DELETE</span>%20the%20quiz%20And%20Reset%20Question%20To%20Question%20Pool";
+            }else{
+                targetURL = "quiz?action=QuizManagement&msg=Delete%20Failure";
+            }
+
+            //Execute Return
+            response.sendRedirect("../" + targetURL);
 
         } catch (Exception e) {
             e.printStackTrace();

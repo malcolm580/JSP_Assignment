@@ -1,13 +1,15 @@
 package elearning.servlet;
 
 import elearning.bean.Module;
+import elearning.bean.Question;
 import elearning.bean.Quiz;
 import elearning.bean.User;
+import elearning.db.QuestionDB;
+import elearning.db.QuestionOptionDB;
 import elearning.db.QuizDB;
-import elearning.db.QuizResultDB;
 import elearning.db.UserModuleDB;
-import elearning.db.UserQuizDB;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,23 +19,38 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "QuizEditController", urlPatterns = {"/quiz/edit"})
-public class QuizEditController extends HttpServlet {
+@WebServlet(name = "QuestionCreateController", urlPatterns = {"/question/create"})
+public class QuestionCreateController extends HttpServlet {
 
-    private UserQuizDB userQuizDB;
     private QuizDB quizDB;
-    private QuizResultDB quizResultDB;
     private UserModuleDB userModuleDB;
+    private QuestionDB questionDB;
+    private QuestionOptionDB questionOptionDB;
+
+    private static boolean isInteger(String s) {
+        if (s == null || s.length() <= 0) {
+            return false;
+        }
+        try {
+            Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            return false;
+        } catch (NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
 
     @Override
     public void init() throws ServletException {
         String dbUser = this.getServletContext().getInitParameter("dbUser");
         String dbPassword = this.getServletContext().getInitParameter("dbPassword");
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
-        userQuizDB = new UserQuizDB(dbUrl, dbUser, dbPassword);
         quizDB = new QuizDB(dbUrl, dbUser, dbPassword);
-        quizResultDB = new QuizResultDB(dbUrl, dbUser, dbPassword);
         userModuleDB = new UserModuleDB(dbUrl, dbUser, dbPassword);
+        questionDB = new QuestionDB(dbUrl, dbUser, dbPassword);
+        questionOptionDB = new QuestionOptionDB(dbUrl, dbUser, dbPassword);
     }
 
     @Override
@@ -53,8 +70,7 @@ public class QuizEditController extends HttpServlet {
             String action = request.getParameter("action");
 
             String targetURL;
-
-            if ("edit".equalsIgnoreCase(action)) {
+            if ("create".equalsIgnoreCase(action)) {
                 if (!checkPermission(request, response)) {//Abort when no permission
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
@@ -65,38 +81,69 @@ public class QuizEditController extends HttpServlet {
                 User userData = (User) session.getAttribute("userInfo");
                 int userID = userData.getUserID();
 
-                Quiz editingQuiz = new Quiz();
-                String quizIDString = request.getParameter("QuizID");
-                String moduleIDString = request.getParameter("ModuleID");
+                Quiz quiz = new Quiz();
+                String ModuleID_String = request.getParameter("ModuleID");
                 String QuizName = request.getParameter("QuizName");
-                String attemptLimitString = request.getParameter("AttemptLimit");
-                String timeLimitString = request.getParameter("TimeLimit");
-                String totalQuestionString = request.getParameter("TotalQuestion");
-
-                if (!isInteger(quizIDString) ||//Checking is the value correct, if not, send bad request
-                        !isInteger(moduleIDString) ||
-                        !isInteger(attemptLimitString) ||
-                        !isInteger(timeLimitString) ||
-                        !isInteger(totalQuestionString)) {
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                String AttemptLimit_String = request.getParameter("AttemptLimit");
+                String TimeLimit_String = request.getParameter("TimeLimit");
+                String TotalQuestion_String = request.getParameter("TotalQuestion");
+                int ModuleID ;
+                int AttemptLimit;
+                int TimeLimit;
+                int TotalQuestion;
+                try {
+                    ModuleID = Integer.parseInt(ModuleID_String);
+                    AttemptLimit = Integer.parseInt(AttemptLimit_String);
+                    TimeLimit = Integer.parseInt(TimeLimit_String);
+                    TotalQuestion = Integer.parseInt(TotalQuestion_String);
+                } catch (NullPointerException | NumberFormatException ex) {
+                    targetURL = "quiz?action=QuizManagement&msg=Input%20Invalidate%20,Please%20Input again";
+                    //Execute Return
+                    response.sendRedirect("../" + targetURL);
                     return;
                 }
-                int QuizID = Integer.parseInt(quizIDString);
-                int ModuleID = Integer.parseInt(moduleIDString);
-                int AttemptLimit = Integer.parseInt(attemptLimitString);
-                int TimeLimit = Integer.parseInt(timeLimitString);
-                int TotalQuestion = Integer.parseInt(totalQuestionString);
+                quiz.setModuleID(ModuleID);
+                quiz.setQuizName(QuizName);
+                quiz.setAttemptLimit(AttemptLimit);
+                quiz.setTimeLimit(TimeLimit);
+                quiz.setTotalQuestion(TotalQuestion);
 
-                editingQuiz.setQuizID(QuizID);
-                editingQuiz.setModuleID(ModuleID);
-                editingQuiz.setQuizName(QuizName);
-                editingQuiz.setAttemptLimit(AttemptLimit);
-                editingQuiz.setTimeLimit(TimeLimit);
-                editingQuiz.setTotalQuestion(TotalQuestion);
-                quizDB.editQuiz(editingQuiz);
+                quizDB.addQuiz(quiz);
 
                 //Return
                 targetURL = "quiz?action=QuizManagement&msg=Success%20edit%20the%20quiz";
+
+                //Execute Return
+                response.sendRedirect("../" + targetURL);
+            } else if ("add".equalsIgnoreCase(action)) {
+                if (!checkPermission(request, response)) {//Abort when no permission
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
+                }
+                HttpSession session = request.getSession();
+
+                //Get Current User Data
+                User userData = (User) session.getAttribute("userInfo");
+                int userID = userData.getUserID();
+
+                Question question = new Question();
+                String QuizID_String = request.getParameter("id");
+                String QuestionType = "Multiple";
+                String Question = request.getParameter("question");
+
+                if (//Checking is the value correct, if not, send bad request
+                        !isInteger(QuizID_String)) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                }
+                int QuizID = Integer.parseInt(QuizID_String);
+
+                question.setQuizID(QuizID);
+                question.setQuestionType(QuestionType);
+                question.setQuestion(Question);
+                questionDB.addQuestion(question);
+
+                //Return
+                targetURL = "quiz?action=edit&quizid=" + QuizID_String + "&msg=Success%20add%20the%20quiz";
 
                 //Execute Return
                 response.sendRedirect("../" + targetURL);
@@ -141,20 +188,5 @@ public class QuizEditController extends HttpServlet {
             }
         }
         return false;
-    }
-
-    private static boolean isInteger(String s) {
-        if (s == null || s.length() <= 0) {
-            return false;
-        }
-        try {
-            Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-            return false;
-        } catch (NullPointerException e) {
-            return false;
-        }
-        // only got here if we didn't return false
-        return true;
     }
 }

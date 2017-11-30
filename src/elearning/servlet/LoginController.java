@@ -57,7 +57,7 @@ public class LoginController extends HttpServlet {
     }
 
     private void doAuthenticate(HttpServletRequest request,
-                                HttpServletResponse response) throws Exception {
+                                HttpServletResponse response) {
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -83,7 +83,11 @@ public class LoginController extends HttpServlet {
             //RequestDispatcher rd;
             //rd = getServletContext().getRequestDispatcher("/" + targetURL);
            // rd.forward(request, response);
-        response.sendRedirect("./"+targetURL);
+        try {
+            response.sendRedirect("./"+targetURL);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

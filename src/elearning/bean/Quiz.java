@@ -5,6 +5,15 @@ import java.io.Serializable;
 public class Quiz implements Serializable {
     int quizID, moduleID, attemptLimit, timeLimit, totalQuestion;
     String quizName;
+    Module module;
+
+    public Module getModule() {
+        return module;
+    }
+
+    public void setModule(Module module) {
+        this.module = module;
+    }
 
     public int getAttemptLimit() {
         return attemptLimit;
@@ -54,15 +63,5 @@ public class Quiz implements Serializable {
         this.quizName = quizName;
     }
 
-    @Override
-    public String toString() {
-        return "Quiz{" +
-                "quizID=" + quizID +
-                ", moduleID=" + moduleID +
-                ", attemptLimit=" + attemptLimit +
-                ", timeLimit=" + timeLimit +
-                ", totalQuestion=" + totalQuestion +
-                ", quizName='" + quizName + '\'' +
-                '}';
-    }
+
 }

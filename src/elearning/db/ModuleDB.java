@@ -1,7 +1,7 @@
 package elearning.db;
 
 import elearning.bean.Module;
-import elearning.bean.Quiz;
+import elearning.bean.Question;
 
 import java.io.IOException;
 import java.sql.*;
@@ -27,7 +27,7 @@ public class ModuleDB {
     }
 
 
-    public Module getModule(String moduleID)throws Exception {
+    public Module getModule(String moduleID) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
         Module module = null;
@@ -52,10 +52,41 @@ public class ModuleDB {
                 ex.printStackTrace();
                 ex = ex.getNextException();
             }
-        } catch(IOException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
         }
         return module;
     }
+    public ArrayList<Module> getModule() {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        Module module = null;
+        ArrayList<Module> moduleArrayList = new ArrayList<Module>();
+
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "SELECT * FROM Module";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            ResultSet rs = pStmnt.executeQuery();
+            while (rs.next()) {
+                module = new Module();
+                module.setModuleID(rs.getInt("ModuleID"));
+                module.setModuleName(rs.getString("ModuleName"));
+                moduleArrayList.add(module);
+            }
+
+            pStmnt.close();
+            cnnct.close();
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return moduleArrayList;
+    }
+
 
 }

@@ -17,10 +17,10 @@
 
 }
 
-#form label, input, textarea{
+#form label,#form input,#form textarea{
     display: block;
 }
-#form input, textarea , select{
+#form input,#form textarea ,#form select{
     width: 500px;
     border: none;
     border-radius: 20px;
@@ -39,7 +39,7 @@
     box-sizing:border-box;
 
 }
-#form input:focus, textarea:focus{
+#form input:focus,#form textarea:focus{
     border: solid 3px #77bde0;
 }
 

@@ -2,7 +2,6 @@ package elearning.db;
 
 import elearning.bean.Module;
 import elearning.bean.Quiz;
-import elearning.bean.User;
 
 import java.io.IOException;
 import java.sql.*;
@@ -23,7 +22,7 @@ public class QuizDB {
 
     public Connection getConnection() throws SQLException, IOException, ClassNotFoundException {
         //System.setProperty("jdbc.drivers", "com.mysql.jdbc.Driver");
-        Class.forName( "com.mysql.jdbc.Driver");
+        Class.forName("com.mysql.jdbc.Driver");
         return DriverManager.getConnection(dburl, dbUser, dbPassword);
     }
 
@@ -35,11 +34,11 @@ public class QuizDB {
 
         try {
             cnnct = getConnection();
-            String preQueryStatement = "Select * From Quiz";
+            String preQueryStatement = "SELECT * FROM Quiz";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
 
             ResultSet rs = pStmnt.executeQuery();
-            while ( rs.next() ){
+            while (rs.next()) {
                 quiz = new Quiz();
                 quiz.setQuizID(rs.getInt("QuizID"));
                 quiz.setModuleID(rs.getInt("ModuleID"));
@@ -52,19 +51,20 @@ public class QuizDB {
 
             pStmnt.close();
             cnnct.close();
-        } catch(SQLException ex) {
+        } catch (SQLException ex) {
             while (ex != null) {
                 ex.printStackTrace();
                 ex = ex.getNextException();
             }
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return quizList;
     }
-    public ArrayList<Quiz> getModuleQuiz(String moduleID)throws Exception {
+
+    public ArrayList<Quiz> getModuleQuiz(String moduleID) throws Exception {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
         Quiz quiz = null;
@@ -72,12 +72,12 @@ public class QuizDB {
 
         try {
             cnnct = getConnection();
-            String preQueryStatement = "Select * From Quiz WHERE ModuleID=?";
+            String preQueryStatement = "SELECT * FROM Quiz WHERE ModuleID=?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             pStmnt.setString(1, moduleID);
 
             ResultSet rs = pStmnt.executeQuery();
-            while ( rs.next() ){
+            while (rs.next()) {
                 quiz = new Quiz();
                 quiz.setQuizID(rs.getInt("QuizID"));
                 quiz.setModuleID(rs.getInt("ModuleID"));
@@ -90,16 +90,17 @@ public class QuizDB {
 
             pStmnt.close();
             cnnct.close();
-        } catch(SQLException ex) {
+        } catch (SQLException ex) {
             while (ex != null) {
                 ex.printStackTrace();
                 ex = ex.getNextException();
             }
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         return quizList;
     }
+
     public Module getParentModule(Quiz quiz) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
@@ -142,7 +143,7 @@ public class QuizDB {
             cnnct = getConnection();
             String preQueryStatement = "SELECT * FROM Quiz WHERE QuizID=? ";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setInt(1, quizID );
+            pStmnt.setInt(1, quizID);
 
             ResultSet rs = pStmnt.executeQuery();
             if (rs.next()) {
@@ -162,12 +163,95 @@ public class QuizDB {
                 ex.printStackTrace();
                 ex = ex.getNextException();
             }
-        } catch (IOException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
         return quiz;
     }
 
+    public boolean editQuiz(Quiz quiz) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        int row = 0; //It is the affected row count of the query
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "UPDATE `Quiz` SET `ModuleID`=?,`QuizName`=?,`AttemptLimit`=?,`TimeLimit`=?,`TotalQuestion`=? WHERE `QuizID`=? ";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, quiz.getModuleID());
+            pStmnt.setString(2, quiz.getQuizName());
+            pStmnt.setInt(3, quiz.getAttemptLimit());
+            pStmnt.setInt(4, quiz.getTimeLimit());
+            pStmnt.setInt(5, quiz.getTotalQuestion());
+            pStmnt.setInt(6, quiz.getQuizID());
+            row = pStmnt.executeUpdate();
+
+            pStmnt.close();
+            cnnct.close();
+
+
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return row > 0;
+    }
+    public boolean deleteQuiz(int quizID) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        int row = 0; //It is the affected row count of the query
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "DELETE FROM `Quiz` WHERE `QuizID`=?";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1,quizID);
+            row = pStmnt.executeUpdate();
+
+            pStmnt.close();
+            cnnct.close();
+
+
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return row > 0;
+    }
+
+    public boolean addQuiz(Quiz quiz) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        int row = 0; //It is the affected row count of the query
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "INSERT INTO `Quiz`( `ModuleID`, `QuizName`, `AttemptLimit`, `TimeLimit`, `TotalQuestion`) VALUES (?,?,?,?,?)";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, quiz.getModuleID());
+            pStmnt.setString(2, quiz.getQuizName());
+            pStmnt.setInt(3, quiz.getAttemptLimit());
+            pStmnt.setInt(4, quiz.getTimeLimit());
+            pStmnt.setInt(5, quiz.getTotalQuestion());
+            row = pStmnt.executeUpdate();
+
+            pStmnt.close();
+            cnnct.close();
+
+
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return row > 0;
+    }
 }

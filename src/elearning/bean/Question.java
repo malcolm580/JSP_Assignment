@@ -1,11 +1,21 @@
 package elearning.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Question implements Serializable {
-    private int quizID,questionID;
-    private String questionType,question,correctAnswer,options_JSON;
+    private int quizID, questionID, correctOptionID;
+    private String questionType, question;
 
+    public ArrayList<QuestionOption> getQuestionOptionArrayList() {
+        return questionOptionArrayList;
+    }
+
+    public void setQuestionOptionArrayList(ArrayList<QuestionOption> questionOptionArrayList) {
+        this.questionOptionArrayList = questionOptionArrayList;
+    }
+
+    private ArrayList<QuestionOption> questionOptionArrayList;
     public int getQuizID() {
         return quizID;
     }
@@ -38,19 +48,12 @@ public class Question implements Serializable {
         this.question = question;
     }
 
-    public String getCorrectAnswer() {
-        return correctAnswer;
+    public int getCorrectOptionID() {
+        return correctOptionID;
     }
 
-    public void setCorrectAnswer(String correctAnswer) {
-        this.correctAnswer = correctAnswer;
+    public void setCorrectOptionID(int correctOptionID) {
+        this.correctOptionID = correctOptionID;
     }
 
-    public String getOptions_JSON() {
-        return options_JSON;
-    }
-
-    public void setOptions_JSON(String options_JSON) {
-        this.options_JSON = options_JSON;
-    }
 }
