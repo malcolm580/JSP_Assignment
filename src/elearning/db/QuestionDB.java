@@ -181,12 +181,11 @@ public class QuestionDB {
         int row = 0; //It is the affected row count of the query
         try {
             cnnct = getConnection();
-            String preQueryStatement = "INSERT INTO `Question`( `QuizID`, `QuestionType`, `Question`, `CorrectOptionID`) VALUES (?,?,?,?)";
+            String preQueryStatement = "INSERT INTO `Question`( `QuizID`, `QuestionType`, `Question`) VALUES (?,?,?)";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             pStmnt.setString(1, question.getQuizID() + "");
             pStmnt.setString(2, question.getQuestionType());
             pStmnt.setString(3, question.getQuestion());
-            pStmnt.setString(4, question.getCorrectOptionID() + "");
             row = pStmnt.executeUpdate();
 
             pStmnt.close();

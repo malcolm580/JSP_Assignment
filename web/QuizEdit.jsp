@@ -26,9 +26,37 @@
 
     </style>
     <title>Quiz Edit</title>
+
 </head>
 <body>
 <jsp:include page="header.jsp"/>
+<script>
+    $.ajaxSetup({
+        // Disable caching of AJAX responses
+        cache: false
+    });
+
+    function addQuestionFunction(quizID) {
+        $.post("question/edit?action=add",
+            {
+                action: "add",
+                id: quizID,
+                question: $("#addQuestion").val()
+            },
+            function (data, status) {
+                console.log("Data: " + data + "\nStatus: " + status);
+                if (status = "success") {
+                    //Location.refresh();
+                }
+            });
+    }
+
+    function editQuestion(id) {
+        $('.modal-body').load('question/edit?action=view&id=' + id, function () {
+            $('#myModal').modal({show: true});
+        });
+    }
+</script>
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
     <!-- The Grid -->
     <div class="w3-row">
@@ -171,7 +199,7 @@
                                             <input type="text" id="addQuestion">
                                         </td>
                                         <td>
-                                            <button onclick="addQuestion(<%=currentQuiz.getQuizID()%>,$('#addQuestion'));return false;">
+                                            <button onclick="addQuestionFunction(<%=currentQuiz.getQuizID()%>)">
                                                 Add
                                             </button>
                                         </td>
@@ -200,33 +228,33 @@
         <!-- End Middle Column -->
     </div>
 </div>
-<script>
-    $.ajaxSetup({
-        // Disable caching of AJAX responses
-        cache: false
-    });
+<%--<script>--%>
+    <%--$.ajaxSetup({--%>
+        <%--// Disable caching of AJAX responses--%>
+        <%--cache: false--%>
+    <%--});--%>
 
-    function addQuestion(quizID, question) {
-        $.post("question/edit?action=add&id=" + questionID,
-            {
-                action: "add",
-                id: quizID,
-                question: question.val()
-            },
-            function (data, status) {
-                console.log("Data: " + data + "\nStatus: " + status);
-                if (status = "success") {
-                    //Location.refresh();
-                }
-            });
-    }
+    <%--function addQuestion(quizID) {--%>
+        <%--$.post("question/edit?action=add&id=" + questionID,--%>
+            <%--{--%>
+                <%--action: "add",--%>
+                <%--id: quizID,--%>
+                <%--question: $("#addQuestion").val()--%>
+            <%--},--%>
+            <%--function (data, status) {--%>
+                <%--console.log("Data: " + data + "\nStatus: " + status);--%>
+                <%--if (status = "success") {--%>
+                    <%--//Location.refresh();--%>
+                <%--}--%>
+            <%--});--%>
+    <%--}--%>
 
-    function editQuestion(id) {
-        $('.modal-body').load('question/edit?action=view&id=' + id, function () {
-            $('#myModal').modal({show: true});
-        });
-    }
-</script>
+    <%--function editQuestion(id) {--%>
+        <%--$('.modal-body').load('question/edit?action=view&id=' + id, function () {--%>
+            <%--$('#myModal').modal({show: true});--%>
+        <%--});--%>
+    <%--}--%>
+<%--</script>--%>
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">

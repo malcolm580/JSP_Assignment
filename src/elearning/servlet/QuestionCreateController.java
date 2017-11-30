@@ -2,6 +2,7 @@ package elearning.servlet;
 
 import elearning.bean.Module;
 import elearning.bean.Question;
+import elearning.bean.Quiz;
 import elearning.bean.User;
 import elearning.db.QuestionDB;
 import elearning.db.QuestionOptionDB;
@@ -18,13 +19,28 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "QuestionEditController", urlPatterns = {"/question/edit"})
-public class QuestionEditController extends HttpServlet {
+@WebServlet(name = "QuestionCreateController", urlPatterns = {"/question/create"})
+public class QuestionCreateController extends HttpServlet {
 
     private QuizDB quizDB;
     private UserModuleDB userModuleDB;
     private QuestionDB questionDB;
     private QuestionOptionDB questionOptionDB;
+
+    private static boolean isInteger(String s) {
+        if (s == null || s.length() <= 0) {
+            return false;
+        }
+        try {
+            Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            return false;
+        } catch (NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
 
     @Override
     public void init() throws ServletException {
@@ -54,31 +70,7 @@ public class QuestionEditController extends HttpServlet {
             String action = request.getParameter("action");
 
             String targetURL;
-            if ("view".equalsIgnoreCase(action)) {
-                if (!checkPermission(request, response)) {//Abort when no permission
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-                    return;
-                }
-                String questionID_String = request.getParameter("id");
-                if (questionID_String == null || questionID_String.length() <= 0 || !isInteger(questionID_String)) {
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-                }
-                HttpSession session = request.getSession();
-
-                //Get Current User Data
-                User userData = (User) session.getAttribute("userInfo");
-                int userID = userData.getUserID();
-
-                int questionID = Integer.parseInt(questionID_String);
-                Question question = questionDB.getQuestionByQuestionID(questionID);
-                question.setQuestionOptionArrayList(questionOptionDB.getOptionByQuestionID(question.getQuestionID()));
-                session.setAttribute("currentQuestion", question);
-
-                //Execute Return
-                RequestDispatcher rd;
-                rd = getServletContext().getRequestDispatcher("/QuestionEdit.jsp");
-                rd.forward(request, response);
-            } else if ("edit".equalsIgnoreCase(action)) {
+            if ("create".equalsIgnoreCase(action)) {
                 if (!checkPermission(request, response)) {//Abort when no permission
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
@@ -89,31 +81,37 @@ public class QuestionEditController extends HttpServlet {
                 User userData = (User) session.getAttribute("userInfo");
                 int userID = userData.getUserID();
 
-                Question question = new Question();
-                String QuestionID_String = request.getParameter("QuestionID");
-                String QuizID_String = request.getParameter("QuizID");
-                String QuestionType = request.getParameter("QuestionType");
-                String Question = request.getParameter("Question");
-                String CorrectOptionID_String = request.getParameter("CorrectOptionID");
-
-                if (!isInteger(QuestionID_String) ||//Checking is the value correct, if not, send bad request
-                        !isInteger(QuizID_String) ||
-                            !isInteger(CorrectOptionID_String)) {
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                Quiz quiz = new Quiz();
+                String ModuleID_String = request.getParameter("ModuleID");
+                String QuizName = request.getParameter("QuizName");
+                String AttemptLimit_String = request.getParameter("AttemptLimit");
+                String TimeLimit_String = request.getParameter("TimeLimit");
+                String TotalQuestion_String = request.getParameter("TotalQuestion");
+                int ModuleID ;
+                int AttemptLimit;
+                int TimeLimit;
+                int TotalQuestion;
+                try {
+                    ModuleID = Integer.parseInt(ModuleID_String);
+                    AttemptLimit = Integer.parseInt(AttemptLimit_String);
+                    TimeLimit = Integer.parseInt(TimeLimit_String);
+                    TotalQuestion = Integer.parseInt(TotalQuestion_String);
+                } catch (NullPointerException | NumberFormatException ex) {
+                    targetURL = "quiz?action=QuizManagement&msg=Input%20Invalidate%20,Please%20Input again";
+                    //Execute Return
+                    response.sendRedirect("../" + targetURL);
+                    return;
                 }
-                int QuestionID = Integer.parseInt(QuizID_String);
-                int QuizID = Integer.parseInt(QuizID_String);
-                int CorrectOptionID = Integer.parseInt(CorrectOptionID_String);
+                quiz.setModuleID(ModuleID);
+                quiz.setQuizName(QuizName);
+                quiz.setAttemptLimit(AttemptLimit);
+                quiz.setTimeLimit(TimeLimit);
+                quiz.setTotalQuestion(TotalQuestion);
 
-                question.setQuestionID(QuestionID);
-                question.setQuizID(QuizID);
-                question.setQuestionType(QuestionType);
-                question.setQuestion(Question);
-                question.setCorrectOptionID(CorrectOptionID);
-                questionDB.editQuestion(question);
+                quizDB.addQuiz(quiz);
 
                 //Return
-                targetURL = "quiz?action=edit&quizid=" + QuizID_String + "&msg=Success%20edit%20the%20quiz";
+                targetURL = "quiz?action=QuizManagement&msg=Success%20edit%20the%20quiz";
 
                 //Execute Return
                 response.sendRedirect("../" + targetURL);
@@ -190,20 +188,5 @@ public class QuestionEditController extends HttpServlet {
             }
         }
         return false;
-    }
-
-    private static boolean isInteger(String s) {
-        if (s == null || s.length() <= 0) {
-            return false;
-        }
-        try {
-            Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-            return false;
-        } catch (NullPointerException e) {
-            return false;
-        }
-        // only got here if we didn't return false
-        return true;
     }
 }

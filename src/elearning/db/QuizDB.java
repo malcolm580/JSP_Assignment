@@ -225,5 +225,33 @@ public class QuizDB {
         return row > 0;
     }
 
+    public boolean addQuiz(Quiz quiz) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        int row = 0; //It is the affected row count of the query
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "INSERT INTO `Quiz`( `ModuleID`, `QuizName`, `AttemptLimit`, `TimeLimit`, `TotalQuestion`) VALUES (?,?,?,?,?)";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, quiz.getModuleID());
+            pStmnt.setString(2, quiz.getQuizName());
+            pStmnt.setInt(3, quiz.getAttemptLimit());
+            pStmnt.setInt(4, quiz.getTimeLimit());
+            pStmnt.setInt(5, quiz.getTotalQuestion());
+            row = pStmnt.executeUpdate();
 
+            pStmnt.close();
+            cnnct.close();
+
+
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return row > 0;
+    }
 }

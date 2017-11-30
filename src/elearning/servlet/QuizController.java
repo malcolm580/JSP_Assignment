@@ -135,7 +135,9 @@ public class QuizController extends HttpServlet {
                 for (Quiz quiz : quizList) {
                     quiz.setModule(moduleDB.getModule(quiz.getModuleID() + ""));//When get the quiz from database, get moduleID and take the module in to the quiz for association.
                 }
+
                 session.setAttribute("currentQuiz", quizList);
+                session.setAttribute("allModule", moduleDB.getModule());
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/QuizManagement.jsp");
                 rd.forward(request, response);
