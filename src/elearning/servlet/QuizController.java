@@ -41,10 +41,9 @@ public class QuizController extends HttpServlet {
     }
 
 
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req,resp);
+        doGet(req, resp);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse
@@ -144,13 +143,24 @@ public class QuizController extends HttpServlet {
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/QuizManagement.jsp");
                 rd.forward(request, response);
-            }else if ("getStudentList".equalsIgnoreCase(action)) {
+            } else if ("getStudentList".equalsIgnoreCase(action)) {
 
                 HttpSession session = request.getSession();
 
                 Quiz selectedQuiz = (Quiz) session.getAttribute("currentQuiz");
                 String selectedQuizID = String.valueOf(selectedQuiz.getQuizID());
-                ArrayList studentList = userDB.getAllUser();
+                ArrayList<User> studentList = userDB.getAllUser();
+                ArrayList<User> addedStudentList = userQuizDB.getQuizStudentList(selectedQuizID);
+                for (int i = 0; i < studentList.size(); i++) {
+                    for (User user : addedStudentList) {
+                        if (studentList.get(i).getUserID() == user.getUserID()) {
+                            studentList.remove(i);
+                            i++;
+                            break;
+                        }
+                    }
+                }
+
 
                 session.setAttribute("studentList", studentList);
                 session.setAttribute("selectedQuizID", selectedQuizID);
@@ -162,21 +172,20 @@ public class QuizController extends HttpServlet {
                 rd = getServletContext().getRequestDispatcher("/AddStudentToQuiz.jsp");
                 rd.forward(request, response);
 
-            }else if ("addStudentToQuiz".equalsIgnoreCase(action)) {
+            } else if ("addStudentToQuiz".equalsIgnoreCase(action)) {
                 HttpSession session = request.getSession();
 
                 String selectedQuizID = (String) session.getAttribute("selectedQuizID");
                 String[] selectStudentID = request.getParameterValues("target");
 
                 for (String id : selectStudentID) {
-                    userQuizDB.addRecord(selectedQuizID , id);
+                    userQuizDB.addRecord(selectedQuizID, id);
                 }
 
                 RequestDispatcher rd;
-                rd = getServletContext().getRequestDispatcher("/quiz?action=edit&quizid="+selectedQuizID);
+                rd = getServletContext().getRequestDispatcher("/quiz?action=edit&quizid=" + selectedQuizID);
                 rd.forward(request, response);
-            }
-            else if ("Edit".equalsIgnoreCase(action)) {
+            } else if ("Edit".equalsIgnoreCase(action)) {
                 if (!checkPermission(request, response)) {//Abort when no permission
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
@@ -211,7 +220,7 @@ public class QuizController extends HttpServlet {
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/QuizEdit.jsp");
                 rd.forward(request, response);
-            }else {
+            } else {
                 response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
             }
 
