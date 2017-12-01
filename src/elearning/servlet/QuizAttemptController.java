@@ -145,7 +145,7 @@ public class QuizAttemptController extends HttpServlet {
 
                 quizResult.setUserID(userID);
                 quizResult.setQuizID(quizID);
-                quizResult.setDuration(0);//TODO Duration
+                quizResult.setDuration(Integer.parseInt(request.getParameter("duration")));//TODO Duration
                 quizResult.setAnsweringQuestionState_JSON(answeringQuestionState_JSON.toString());
                 quizResult.setCorrectCount(correctCount);
                 quizResultDB.addQuizResult(quizResult);

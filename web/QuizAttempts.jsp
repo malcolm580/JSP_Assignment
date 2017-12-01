@@ -38,7 +38,7 @@
                 <hr>
                 You have answer the following questions:
                 <span class="w3-right">Remaining Time: <span class="secondToDuration" id="timeLabel"></span></span>
-                <form method="post" action="quizAttempt">
+                <form method="post" action="quizAttempt" id="form1">
                     <script type="text/javascript">
                         var c = 0;
                         var t;
@@ -85,9 +85,11 @@
                                     window.location.href = "./quiz?action=EnterQuiz&quizid=" + $("#QuizID").val() + "&msg=You did too long!";
                                     return false;
                                 }
-                                return true;
+                                $("#duration").val(c);
+                                $("#form1").submit();
                             } else {
-                                return true;
+                                $("#duration").val(c);
+                                $("#form1").submit();
                             }
                         }
                     </script>
@@ -102,8 +104,6 @@
                             }
                         %>
                         <input type="hidden" name="QuizID" id="QuizID" value="<%=currentQuiz.getQuizID()%>">
-                        <input type="hidden" name="startTime" id="startTime">
-                        <input type="hidden" name="EndTime" id="EndTime">
                         <input type="hidden" name="duration" id="duration" value="<%=currentQuiz.getTimeLimit()%>">
                         <%
 
@@ -124,7 +124,7 @@
                         <tr>
                             <td colspan="2">
                                 <center>
-                                    <button type="submit" onclick="checkDuration();return false;">Submit</button>
+                                    <button type="button" onclick="checkDuration();return false;">Submit</button>
                                     <button type="reset">Reset</button>
                                 </center>
                             </td>
