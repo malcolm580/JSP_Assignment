@@ -37,7 +37,62 @@
                 </b>
                 <hr>
                 You have answer the following questions:
-                <form method="post" action="quizAttempt">
+                <span class="w3-right">Remaining Time: <span class="secondToDuration" id="timeLabel"></span></span>
+                <form method="post" action="quizAttempt" id="form1">
+                    <script type="text/javascript">
+                        var c = 0;
+                        var t;
+                        var timer_is_on = 0;
+
+                        function timedCount() {
+                            if ($("#duration").val() !== "0") {
+                                $("#timeLabel").text($("#duration").val() - c);
+                                if ($("#timeLabel").text() < 0) {
+                                    $("#timeLabel").css("background-color", "red");
+                                }
+                                $(".secondToDuration").each(function (index) {
+                                    $(this).text(sec2str($(this).text()));
+                                });
+                            } else {
+                                $("#timeLabel").text("Unlimited");
+                                stopCount();
+                            }
+
+                            c = c + 1;
+                            t = setTimeout("timedCount()", 1000);
+                        }
+
+                        function doTimer() {
+                            if (!timer_is_on) {
+                                timer_is_on = 1;
+                                timedCount();
+                            }
+                        }
+
+                        function stopCount() {
+                            clearTimeout(t);
+                            timer_is_on = 0;
+                        }
+
+                        $(function () {
+                            doTimer();
+                        });
+
+                        function checkDuration() {
+                            if ($("#duration").val() != "0") {
+                                stopCount();
+                                if (c > $("#duration").val()) {
+                                    window.location.href = "./quiz?action=EnterQuiz&quizid=" + $("#QuizID").val() + "&msg=You did too long!";
+                                    return false;
+                                }
+                                $("#duration").val(c);
+                                $("#form1").submit();
+                            } else {
+                                $("#duration").val(c);
+                                $("#form1").submit();
+                            }
+                        }
+                    </script>
                     <table width="100%" class="w3-left-align" id="table">
                         <input type="hidden" name="action" value="submit">
                         <%
@@ -48,7 +103,8 @@
                                 out.print("<input type='hidden' name='IDs' value='" + question.getQuestionID() + "'>");
                             }
                         %>
-                        <input type="hidden" name="QuizID" value="<%=currentQuiz.getQuizID()%>">
+                        <input type="hidden" name="QuizID" id="QuizID" value="<%=currentQuiz.getQuizID()%>">
+                        <input type="hidden" name="duration" id="duration" value="<%=currentQuiz.getTimeLimit()%>">
                         <%
 
                             for (int i = 0; i < quizArrayList.size(); i++) {
@@ -64,11 +120,11 @@
                             }
 
                         %>
-                        </tr>
+
                         <tr>
                             <td colspan="2">
                                 <center>
-                                    <button type="submit">Submit</button>
+                                    <button type="button" onclick="checkDuration();return false;">Submit</button>
                                     <button type="reset">Reset</button>
                                 </center>
                             </td>
@@ -84,9 +140,8 @@
         <!-- End Middle Column -->
     </div>
 
-</div>
 
-<!-- End Page Container -->
+    <!-- End Page Container -->
 </div>
 <br>
 <jsp:include page="footer.jsp"/>
