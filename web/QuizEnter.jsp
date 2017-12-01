@@ -45,7 +45,7 @@
                 <center>Attempts allowed: <%=currentQuiz.getAttemptLimit()%>
                 </center>
                 <h5><b>Summary of your previous attempts</b></h5>
-                <table width="100%" class="w3-left-align">
+                <table width="100%" class="w3-left-align" id="table">
                     <tr>
                         <th>State</th>
                         <th>Grade / <%=currentQuiz.getTotalQuestion()%>
@@ -56,10 +56,33 @@
                         ArrayList<QuizResult> quizResultList = (ArrayList<QuizResult>) session.getAttribute("currentQuizResultList");
                         if (quizResultList != null && quizResultList.size() > 0) {
                             for (QuizResult quizResult : quizResultList) {
-                                out.print("<tr><td>" + quizResult.getAnsweringQuestionState_JSON() + "</td>");
-                                out.print("<td>" + quizResult.getCorrectCount() + "</td>");
-                                out.print("<td><a  href='./QuizAttempt.jsp?quizid=" + quizResult.getQuizResultID() + "'><u>" + "Review" + "</u></a></td>");
-                                out.println("</tr>");
+                                String status = "Waiting for attempt";
+                                if (quizResult.getAnsweringQuestionState_JSON() != null) {
+                                    status = "Finished";
+                                }
+                    %>
+                    <tr>
+                        <td>
+                            <%=status%>
+                        </td>
+                        <td>
+                            <%=quizResult.getCorrectCount()%>
+                        </td>
+                        <td>
+                            <%
+                                if (status.equalsIgnoreCase("Waiting for attempt")) {
+                            %>
+                            <a href='./QuizAttempt.jsp?quizid=<%=quizResult.getQuizResultID()%>'><u>Attempt</u></a>
+                            <%
+                            } else {
+                            %>
+                            <a href='./QuizReview.jsp?quizid=<%=quizResult.getQuizResultID()%>'><u>Review</u></a>
+                            <%
+                                }
+                            %>
+                        </td>
+                    </tr>
+                    <%
                             }
                         }
                     %>
