@@ -52,7 +52,18 @@
                                 Question currentQuestion = quizArrayList.get(i);
                                 out.print("<tr>");
                                 out.print("<th>" + (i + 1) + ". " + currentQuestion.getQuestion() + "</th>");
-                                out.print("<td><select name='" + currentQuestion.getQuestionID() + " disabled'>");
+                                out.print("<td><select name='" + currentQuestion.getQuestionID() + "' disabled ");
+                                for(int j =0 ;  j<questionIDList.size() ; j++){
+                                    if(Integer.parseInt(questionIDList.get(j)) == currentQuestion.getQuestionID()){
+                                            if(Integer.parseInt(optionList.get(j)) ==  currentQuestion.getCorrectOptionID()){
+                                                out.print(" style= 'background-color: #00e5ff'");
+                                            }else{
+                                                out.print(" style= 'background-color: red'");
+                                            }
+                                    }
+                                }
+                                out.print(">");
+
                                 for (QuestionOption questionOption : currentQuestion.getQuestionOptionArrayList()) {
                                     out.print("<option value=" + questionOption.getOptionID());
                                     for(int j =0 ;  j<questionIDList.size() ; j++){
@@ -60,6 +71,11 @@
                                             if(Integer.parseInt(optionList.get(j)) == questionOption.getOptionID()){
                                                 out.print(" selected");
                                             }
+//                                            if(Integer.parseInt(optionList.get(j)) ==  currentQuestion.getCorrectOptionID()){
+//                                                out.print(" style= 'background-color: green'");
+//                                            }else{
+//                                                out.print(" style= 'background-color: red'");
+//                                            }
                                         }
                                     }
                                     out.print(">" + questionOption.getOption() + "</option>");
@@ -69,7 +85,7 @@
                             }
 
                         %>
-                        </tr>
+                        </tr >
                     </table>
                 </form>
                 <br/>
