@@ -67,8 +67,8 @@ public class UserQuizDB {
             cnnct = getConnection();
             String preQueryStatement = "INSERT INTO UserQuiz (UserUserID, QuizQuizID) VALUES (?  , ? );";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setString(1, quizID);
-            pStmnt.setString(2, userID);
+            pStmnt.setString(1, userID);
+            pStmnt.setString(2, quizID);
 
 
             pStmnt.executeUpdate();
