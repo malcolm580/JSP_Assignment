@@ -71,11 +71,6 @@
                                             if(Integer.parseInt(optionList.get(j)) == questionOption.getOptionID()){
                                                 out.print(" selected");
                                             }
-//                                            if(Integer.parseInt(optionList.get(j)) ==  currentQuestion.getCorrectOptionID()){
-//                                                out.print(" style= 'background-color: green'");
-//                                            }else{
-//                                                out.print(" style= 'background-color: red'");
-//                                            }
                                         }
                                     }
                                     out.print(">" + questionOption.getOption() + "</option>");
