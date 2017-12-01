@@ -56,6 +56,7 @@ public class QuizResultDB {
         }
         return row > 0;
     }
+
     public ArrayList<QuizResult> getMQuizResult(int userID, int quizID)throws Exception {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
@@ -162,5 +163,38 @@ public class QuizResultDB {
         return AttemptedStudentList;
     }
 
+    public QuizResult getResult(int quizResultID)throws Exception {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        QuizResult quizResult = null;
+
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "Select * From QuizResult WHERE QuizResultID = ?";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, quizResultID);
+
+            ResultSet rs = pStmnt.executeQuery();
+            while ( rs.next() ){
+                quizResult = new QuizResult();
+                quizResult.setUserID(rs.getInt("UserID"));
+                quizResult.setQuizID(rs.getInt("QuizID"));
+                quizResult.setQuizResultID(rs.getInt("QuizResultID"));
+                quizResult.setAnsweringQuestionState_JSON(rs.getString("AnsweringQuestionState_JSON"));
+                quizResult.setCorrectCount(rs.getInt("CorrectCount"));
+            }
+
+            pStmnt.close();
+            cnnct.close();
+        } catch(SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+        return quizResult;
+    }
 
 }

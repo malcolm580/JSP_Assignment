@@ -68,7 +68,7 @@
                             <%=quizResult.getCorrectCount()%>
                         </td>
                         <td>
-                            <a href='./QuizReview.jsp?quizid=<%=quizResult.getQuizResultID()%>'><u>Review</u></a>
+                            <a href='./quizReview?action=review&resultid=<%=quizResult.getQuizResultID()%>&quizid=<%= quizResult.getQuizID()%>'><u>Review</u></a>
                             <%
 
                             %>

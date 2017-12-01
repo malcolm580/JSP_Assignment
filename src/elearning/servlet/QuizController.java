@@ -150,13 +150,13 @@ public class QuizController extends HttpServlet {
 
                 Quiz selectedQuiz = (Quiz) session.getAttribute("currentQuiz");
                 String selectedQuizID = String.valueOf(selectedQuiz.getQuizID());
-
-
                 ArrayList studentList = userDB.getAllUser();
 
                 session.setAttribute("studentList", studentList);
                 session.setAttribute("selectedQuizID", selectedQuizID);
 
+//                PrintWriter out =response.getWriter();
+//                out.println(studentList.size() + " " + selectedQuizID );
 
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/AddStudentToQuiz.jsp");

@@ -13,11 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 
-@WebServlet(name = "QuizAttemptController", urlPatterns = {"/quizAttempt"})
-public class QuizAttemptController extends HttpServlet {
+@WebServlet(name = "QuizReviewController", urlPatterns = {"/quizReview"})
+public class QuizReviewController extends HttpServlet {
     private QuizDB quizDB;
     private UserModuleDB userModuleDB;
     private QuestionDB questionDB;
@@ -57,7 +58,7 @@ public class QuizAttemptController extends HttpServlet {
             String action = request.getParameter("action");
 
             String targetURL;
-            if ("attempt".equalsIgnoreCase(action)) {
+            if("Review".equalsIgnoreCase(action)){
 
                 String quizID_String = request.getParameter("quizid");
                 if (quizID_String == null || quizID_String.length() <= 0 || !isInteger(quizID_String)) {
@@ -99,63 +100,43 @@ public class QuizAttemptController extends HttpServlet {
                 }
                 session.setAttribute("currentQuiz", quiz);
                 session.setAttribute("currentQuestionArrayList", questionArrayList);
-                //Execute Return
-                RequestDispatcher rd;
-                rd = getServletContext().getRequestDispatcher("/QuizAttempts.jsp");
-                rd.forward(request, response);
-            } else if ("submit".equalsIgnoreCase(action)) {
-                String quizID_String = request.getParameter("QuizID");
-                if (quizID_String == null || quizID_String.length() <= 0 || !isInteger(quizID_String)) {
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+
+                // Get Current Result
+                String resultid = request.getParameter("resultid");
+
+                QuizResult quizResult = quizResultDB.getResult(Integer.parseInt(resultid));
+
+                String quizResultAnswer = quizResult.getAnsweringQuestionState_JSON();
+
+                JSONObject quizResultAnswerJson = new JSONObject(quizResultAnswer);
+                JSONArray quizResultAnswerArray =  quizResultAnswerJson.getJSONArray("Question");
+
+                ArrayList<String> optionList = new ArrayList();
+                ArrayList<String> questionIDList = new ArrayList();
+
+                PrintWriter out = response.getWriter();
+                for (int i = 0; i < quizResultAnswerArray.length(); i++) {
+                    JSONArray questionArray = quizResultAnswerArray.getJSONArray(i);
+
+                    JSONObject OptionIDObject = (JSONObject) questionArray.get(0);
+                    String OptionID = (String) OptionIDObject.get("OptionID");
+                    optionList.add(OptionID);
+
+                    JSONObject QuestionIDObject = (JSONObject) questionArray.get(1);
+                    String QuestionID = (String) QuestionIDObject.get("QuestionID");
+                    questionIDList.add(QuestionID);
                 }
-                HttpSession session = request.getSession();
 
-                //Get Current User Data
-                User userData = (User) session.getAttribute("userInfo");
-                int userID = userData.getUserID();
-                int quizID = Integer.parseInt(quizID_String);
-                Quiz currentQuiz = (Quiz) request.getAttribute("currentQuiz");
-
-                String[] ids = request.getParameterValues("IDs");
-                ArrayList<Question> questionArrayList = null;
-                ArrayList<QuestionOption> questionOptionArrayList = new ArrayList<>();
-                QuizResult quizResult = new QuizResult();
-                JSONObject answeringQuestionState_JSON = new JSONObject();
-                JSONArray questionJSON = new JSONArray();
-                int correctCount = 0;
-
-                for (String id : ids) {
-                    JSONArray questionArray = new JSONArray();
-                    JSONObject idJSON = new JSONObject();
-                    JSONObject optionJSON = new JSONObject();
-                    idJSON.put("QuestionID", id);
-                    optionJSON.put("OptionID", request.getParameter(id));
-                    questionArray.put(optionJSON);
-                    questionArray.put(idJSON);
-                    questionJSON.put(questionArray);
-
-
-                    //Check is correct
-                    int correctAnswer = questionDB.getQuestionByQuestionID(Integer.parseInt(id)).getCorrectOptionID();
-                    int userAnswer = Integer.parseInt(request.getParameter(id));
-                    if (correctAnswer == userAnswer) {
-                        correctCount++;
-                    }
-                }
-                answeringQuestionState_JSON.put("Question", questionJSON);
-
-                quizResult.setUserID(userID);
-                quizResult.setQuizID(quizID);
-                quizResult.setDuration(0);//TODO Duration
-                quizResult.setAnsweringQuestionState_JSON(answeringQuestionState_JSON.toString());
-                quizResult.setCorrectCount(correctCount);
-                quizResultDB.addQuizResult(quizResult);
+                session.setAttribute("optionList" , optionList);
+                session.setAttribute("questionIDList" , questionIDList);
 
                 //Execute Return
                 RequestDispatcher rd;
-                rd = getServletContext().getRequestDispatcher("/quiz?action=EnterQuiz&quizid=" + quizID);
+                rd = getServletContext().getRequestDispatcher("/QuizReview.jsp");
                 rd.forward(request, response);
-            } else {
+            }
+
+            else {
                 response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
             }
 
@@ -164,39 +145,6 @@ public class QuizAttemptController extends HttpServlet {
         }
     }
 
-    private boolean checkPermission(HttpServletRequest request, HttpServletResponse
-            response) {
-        HttpSession session = request.getSession();
-
-        if (request.getSession().isNew() ||
-                null == (request.getSession(false).getAttribute("userInfo"))) {//Check Is authorized
-            return false;
-        }
-        //Get Current User Data
-        User userData = (User) session.getAttribute("userInfo");
-        if (("Admin".equalsIgnoreCase(userData.getRole())) || ("teacher".equalsIgnoreCase(userData.getRole()))) {//It means no permission
-            return true;
-        }
-        return false;
-    }
-
-    private boolean isAuthenticated(HttpServletRequest request, HttpServletResponse
-            response, User userinfo, int quizID) {
-        if (userinfo.getRole().equalsIgnoreCase("admin")) {
-            return true;
-        }
-        if (!userinfo.getRole().equalsIgnoreCase("teacher")) {
-            return false;
-        }
-        ArrayList<Module> moduleArrayList = userModuleDB.getUserModule(userinfo.getUserID());
-        Module module = quizDB.getParentModule(quizDB.getQuizByID(quizID));
-        for (Module checkingModule : moduleArrayList) {
-            if (checkingModule.getModuleID() == module.getModuleID()) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     private static boolean isInteger(String s) {
         if (s == null || s.length() <= 0) {
