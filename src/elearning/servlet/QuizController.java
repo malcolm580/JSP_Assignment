@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 @WebServlet(name = "QuizController", urlPatterns = {"/quiz"})
@@ -145,14 +146,17 @@ public class QuizController extends HttpServlet {
                 rd.forward(request, response);
             }else if ("getStudentList".equalsIgnoreCase(action)) {
 
-                String selectedQuizID = (String) request.getAttribute("quizID");
-
                 HttpSession session = request.getSession();
+
+                Quiz selectedQuiz = (Quiz) session.getAttribute("currentQuiz");
+                String selectedQuizID = String.valueOf(selectedQuiz.getQuizID());
+
 
                 ArrayList studentList = userDB.getAllUser();
 
                 session.setAttribute("studentList", studentList);
                 session.setAttribute("selectedQuizID", selectedQuizID);
+
 
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/AddStudentToQuiz.jsp");
