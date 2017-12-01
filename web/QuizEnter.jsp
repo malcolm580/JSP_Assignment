@@ -42,7 +42,9 @@
                 </h5>
                 <br>
                 <hr class="w3-clear">
-                <center>Attempts allowed: <%=currentQuiz.getAttemptLimit()%>
+                <center>Total attempts allowed: <% if (currentQuiz.getAttemptLimit() == 0) {
+                    out.print("Unlimited");
+                } else out.print(currentQuiz.getAttemptLimit());%>
                 </center>
                 <h5><b>Summary of your previous attempts</b></h5>
                 <table width="100%" class="w3-left-align" id="table">
@@ -87,7 +89,20 @@
                         </td>
                     </tr>
                     <%
-                            }
+                        }
+                    } else {
+                    %>
+                    <tr>
+                        <td colspan="2">
+                            <b>Waiting for attempt</b>
+                        </td>
+                        <td>
+
+                            <a href='./QuizAttempt.jsp?quizid=<%=currentQuiz.getQuizID()%>'><u>Attempt</u></a>
+
+                        </td>
+                    </tr>
+                    <%
                         }
                     %>
                 </table>
