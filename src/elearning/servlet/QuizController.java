@@ -23,6 +23,7 @@ public class QuizController extends HttpServlet {
     private QuestionDB questionDB;
     private QuestionOptionDB questionOptionDB;
     private ModuleDB moduleDB;
+    private UserDB userDB;
 
     @Override
     public void init() throws ServletException {
@@ -36,6 +37,7 @@ public class QuizController extends HttpServlet {
         questionOptionDB = new QuestionOptionDB(dbUrl, dbUser, dbPassword);
         questionDB = new QuestionDB(dbUrl, dbUser, dbPassword);
         moduleDB = new ModuleDB(dbUrl, dbUser, dbPassword);
+        userDB = new UserDB(dbUrl, dbUser, dbPassword);
     }
 
 
@@ -140,6 +142,34 @@ public class QuizController extends HttpServlet {
                 session.setAttribute("allModule", moduleDB.getModule());
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/QuizManagement.jsp");
+                rd.forward(request, response);
+            }else if ("getStudentList".equalsIgnoreCase(action)) {
+
+                String selectedQuizID = (String) request.getAttribute("quizID");
+
+                HttpSession session = request.getSession();
+
+                ArrayList studentList = userDB.getAllUser();
+
+                session.setAttribute("studentList", studentList);
+                session.setAttribute("selectedQuizID", selectedQuizID);
+
+                RequestDispatcher rd;
+                rd = getServletContext().getRequestDispatcher("/AddStudentToQuiz.jsp");
+                rd.forward(request, response);
+
+            }else if ("addStudentToQuiz".equalsIgnoreCase(action)) {
+                HttpSession session = request.getSession();
+
+                String selectedQuizID = (String) session.getAttribute("selectedQuizID");
+                String[] selectStudentID = request.getParameterValues("target");
+
+                for (String id : selectStudentID) {
+                    userQuizDB.addRecord(selectedQuizID , id);
+                }
+
+                RequestDispatcher rd;
+                rd = getServletContext().getRequestDispatcher("/quiz?action=edit&quizid="+selectedQuizID);
                 rd.forward(request, response);
             }
             else if ("Edit".equalsIgnoreCase(action)) {

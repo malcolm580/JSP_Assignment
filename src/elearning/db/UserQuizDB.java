@@ -59,6 +59,67 @@ public class UserQuizDB {
         return quizList;
     }
 
+    public void addRecord(String quizID, String userID) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        Quiz quiz = null;
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "INSERT INTO UserQuiz (UserUserID, QuizQuizID) VALUES (?  , ? );";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setString(1, quizID);
+            pStmnt.setString(2, userID);
+
+
+            pStmnt.executeUpdate();
+
+            pStmnt.close();
+            cnnct.close();
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<User> getQuizStudentList(String id) throws Exception {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        User user = null;
+        ArrayList<User> studentList = new ArrayList<User>();
+
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "SELECT UserUserID ,UserName FROM UserQuiz ,User WHERE UserUserID = UserID AND QuizQuizID = ?";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setString(1, id);
+
+            ResultSet rs = pStmnt.executeQuery();
+            while (rs.next()) {
+                user = new User();
+                user.setUserID(rs.getInt("UserUserID"));
+                user.setUsername(rs.getString("UserName"));
+                studentList.add(user);
+            }
+
+            pStmnt.close();
+            cnnct.close();
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return studentList;
+    }
+
     public Quiz getQuiz(int quizID) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
@@ -93,39 +154,6 @@ public class UserQuizDB {
             e.printStackTrace();
         }
         return quiz;
-    }
-
-    public ArrayList<User> getQuizStudentList(String id) throws Exception {
-        Connection cnnct = null;
-        PreparedStatement pStmnt = null;
-        User user = null;
-        ArrayList<User> studentList = new ArrayList<User>();
-
-        try {
-            cnnct = getConnection();
-            String preQueryStatement = "SELECT UserUserID ,UserName FROM UserQuiz ,User WHERE UserUserID = UserID AND QuizQuizID = ?";
-            pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setString(1, id);
-
-            ResultSet rs = pStmnt.executeQuery();
-            while (rs.next()) {
-                user = new User();
-                user.setUserID(rs.getInt("UserUserID"));
-                user.setUsername(rs.getString("UserName"));
-                studentList.add(user);
-            }
-
-            pStmnt.close();
-            cnnct.close();
-        } catch (SQLException ex) {
-            while (ex != null) {
-                ex.printStackTrace();
-                ex = ex.getNextException();
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return studentList;
     }
 
 }

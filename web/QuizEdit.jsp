@@ -212,11 +212,19 @@
                             <td></td>
                         </tr>
                         <tr>
+                            <td colspan="6"><a href="quiz?action=getStudentList&quizID=<%= currentQuiz.getQuizID() %>">Add Students to this quiz</a></td>
+                        </tr>
+                        <tr>
+                            <td><br/></td>
+                            <td></td>
+                        </tr>
+                        <tr>
                             <td colspan="2" style="text-align: center;">
                                 <button type="submit">Submit</button>
                                 <button type="reset">Reset</button>
                             </td>
                         </tr>
+
                     </table>
                 </form>
                 <br/>
