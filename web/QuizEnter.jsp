@@ -84,7 +84,7 @@
                         </td>
                         <td>
 
-                            <a href='./QuizAttempt.jsp?quizid=<%=currentQuiz.getQuizID()%>'><u>Attempt</u></a>
+                            <a href='${pageContext.request.contextPath}/quizAttempt?action=attempt&quizid=<%=currentQuiz.getQuizID()%>'><u>Attempt</u></a>
 
                         </td>
                     </tr>
@@ -98,7 +98,7 @@
                         </td>
                         <td>
 
-                            <a href='./QuizAttempt.jsp?quizid=<%=currentQuiz.getQuizID()%>'><u>Attempt</u></a>
+                            <a href='QuizAttempts.jsp?quizid=<%=currentQuiz.getQuizID()%>'><u>Attempt</u></a>
 
                         </td>
                     </tr>

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Question implements Serializable {
     private int quizID, questionID, correctOptionID;
     private String questionType, question;
+    private ArrayList<QuestionOption> questionOptionArrayList;
 
     public ArrayList<QuestionOption> getQuestionOptionArrayList() {
         return questionOptionArrayList;
@@ -15,7 +16,6 @@ public class Question implements Serializable {
         this.questionOptionArrayList = questionOptionArrayList;
     }
 
-    private ArrayList<QuestionOption> questionOptionArrayList;
     public int getQuizID() {
         return quizID;
     }

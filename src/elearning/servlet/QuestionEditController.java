@@ -101,7 +101,7 @@ public class QuestionEditController extends HttpServlet {
                             !isInteger(CorrectOptionID_String)) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 }
-                int QuestionID = Integer.parseInt(QuizID_String);
+                int QuestionID = Integer.parseInt(QuestionID_String);
                 int QuizID = Integer.parseInt(QuizID_String);
                 int CorrectOptionID = Integer.parseInt(CorrectOptionID_String);
 

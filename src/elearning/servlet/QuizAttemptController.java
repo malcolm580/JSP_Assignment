@@ -1,27 +1,27 @@
 package elearning.servlet;
 
-import elearning.bean.Module;
-import elearning.bean.Question;
-import elearning.bean.User;
-import elearning.db.QuestionDB;
-import elearning.db.QuestionOptionDB;
-import elearning.db.QuizDB;
-import elearning.db.UserModuleDB;
+import elearning.bean.*;
+import elearning.db.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class QuizAttempt extends HttpServlet {
+@WebServlet(name = "QuizAttemptController", urlPatterns = {"/quizAttempt"})
+public class QuizAttemptController extends HttpServlet {
     private QuizDB quizDB;
     private UserModuleDB userModuleDB;
     private QuestionDB questionDB;
     private QuestionOptionDB questionOptionDB;
+    private UserQuizDB userQuizDB;
+    private ModuleDB moduleDB;
 
     @Override
     public void init() throws ServletException {
@@ -32,6 +32,8 @@ public class QuizAttempt extends HttpServlet {
         userModuleDB = new UserModuleDB(dbUrl, dbUser, dbPassword);
         questionDB = new QuestionDB(dbUrl, dbUser, dbPassword);
         questionOptionDB = new QuestionOptionDB(dbUrl, dbUser, dbPassword);
+        userQuizDB = new UserQuizDB(dbUrl, dbUser, dbPassword);
+        moduleDB = new ModuleDB(dbUrl, dbUser, dbPassword);
     }
 
     @Override
@@ -52,8 +54,8 @@ public class QuizAttempt extends HttpServlet {
 
             String targetURL;
             if ("attempt".equalsIgnoreCase(action)) {
-                String questionID_String = request.getParameter("id");
-                if (questionID_String == null || questionID_String.length() <= 0 || !isInteger(questionID_String)) {
+                String quizID_String = request.getParameter("quizid");
+                if (quizID_String == null || quizID_String.length() <= 0 || !isInteger(quizID_String)) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 }
                 HttpSession session = request.getSession();
@@ -61,15 +63,41 @@ public class QuizAttempt extends HttpServlet {
                 //Get Current User Data
                 User userData = (User) session.getAttribute("userInfo");
                 int userID = userData.getUserID();
+                int quizID = Integer.parseInt(quizID_String);
+                boolean isValid = false;
+                for (Quiz checkingQuiz : userQuizDB.getUserQuiz(userID)) {
+                    if (checkingQuiz.getQuizID() == quizID) {
+                        isValid = true;
+                        break;
+                    }
+                }
+                if (!isValid) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    return;
+                }
+                Quiz quiz = quizDB.getQuizByID(quizID);
+                quiz.setModule(quizDB.getParentModule(quiz));
+                ArrayList<Question> questionArrayList = questionDB.getQuestionByQuizID(quizID);
 
-                int questionID = Integer.parseInt(questionID_String);
-                Question question = questionDB.getQuestionByQuestionID(questionID);
-                question.setQuestionOptionArrayList(questionOptionDB.getOptionByQuestionID(question.getQuestionID()));
-                session.setAttribute("currentQuestion", question);
+                for (Question question : questionArrayList) {
+                    ArrayList<QuestionOption> questionOptionArrayList = questionOptionDB.getOptionByQuestionID(question.getQuestionID());
+                    Collections.shuffle(questionOptionArrayList);
+                    question.setQuestionOptionArrayList(questionOptionArrayList);
+                }
+                Collections.shuffle(questionArrayList);
 
+                int totalQuestionsNeeds = quiz.getTotalQuestion();
+                if (totalQuestionsNeeds > 0) {
+                    for (int i = totalQuestionsNeeds; i < questionArrayList.size(); i--) {
+                        questionArrayList.remove(i);
+                    }
+                }
+
+                session.setAttribute("currentQuiz", quiz);
+                session.setAttribute("currentQuestionArrayList", questionArrayList);
                 //Execute Return
                 RequestDispatcher rd;
-                rd = getServletContext().getRequestDispatcher("/QuestionEdit.jsp");
+                rd = getServletContext().getRequestDispatcher("/QuizAttempts.jsp");
                 rd.forward(request, response);
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);

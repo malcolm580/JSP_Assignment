@@ -106,7 +106,7 @@ public class QuestionDB {
             pStmnt.setString(2, question.getQuestionType());
             pStmnt.setString(3, question.getQuestion());
             pStmnt.setInt(4, question.getCorrectOptionID());
-            pStmnt.setInt(5, question.getQuizID());
+            pStmnt.setInt(5, question.getQuestionID());
             row = pStmnt.executeUpdate();
 
             pStmnt.close();
