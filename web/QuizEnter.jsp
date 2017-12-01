@@ -56,30 +56,34 @@
                         ArrayList<QuizResult> quizResultList = (ArrayList<QuizResult>) session.getAttribute("currentQuizResultList");
                         if (quizResultList != null && quizResultList.size() > 0) {
                             for (QuizResult quizResult : quizResultList) {
-                                String status = "Waiting for attempt";
-                                if (quizResult.getAnsweringQuestionState_JSON() != null) {
-                                    status = "Finished";
-                                }
+
                     %>
                     <tr>
                         <td>
-                            <%=status%>
+                            Finished
                         </td>
                         <td>
                             <%=quizResult.getCorrectCount()%>
                         </td>
                         <td>
-                            <%
-                                if (status.equalsIgnoreCase("Waiting for attempt")) {
-                            %>
-                            <a href='./QuizAttempt.jsp?quizid=<%=quizResult.getQuizResultID()%>'><u>Attempt</u></a>
-                            <%
-                            } else {
-                            %>
                             <a href='./QuizReview.jsp?quizid=<%=quizResult.getQuizResultID()%>'><u>Review</u></a>
                             <%
-                                }
+
                             %>
+                        </td>
+                    </tr>
+                    <%
+                        }
+                        if (currentQuiz.getAttemptLimit() > quizResultList.size() || currentQuiz.getAttemptLimit() == 0) {
+                    %>
+                    <tr>
+                        <td colspan="2">
+                            <b>Waiting for attempt</b>
+                        </td>
+                        <td>
+
+                            <a href='./QuizAttempt.jsp?quizid=<%=currentQuiz.getQuizID()%>'><u>Attempt</u></a>
+
                         </td>
                     </tr>
                     <%

@@ -110,6 +110,7 @@ public class QuizController extends HttpServlet {
                 }
                 Module currentModule = quizDB.getParentModule(currentQuiz);
                 ArrayList<QuizResult> currentQuizResultList = quizResultDB.getMQuizResult(userID, quizID);
+                int AttemptLimitCount = currentQuizResultList.size();
 
                 session.setAttribute("currentModule", currentModule);
                 session.setAttribute("currentQuiz", currentQuiz);
