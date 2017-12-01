@@ -1,7 +1,5 @@
 package elearning.db;
 
-import elearning.bean.Module;
-import elearning.bean.Quiz;
 import elearning.bean.QuizResult;
 import elearning.bean.User;
 
@@ -29,6 +27,35 @@ public class QuizResultDB {
     }
 
 
+    public boolean addQuizResult(QuizResult quizResult) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        int row = 0; //It is the affected row count of the query
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "INSERT INTO `QuizResult`(`UserID`, `QuizID`, `Duration`, `AnsweringQuestionState_JSON`, `CorrectCount`) VALUES (?,?,?,?,?)";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setInt(1, quizResult.getUserID());
+            pStmnt.setInt(2, quizResult.getQuizID());
+            pStmnt.setInt(3, quizResult.getDuration());
+            pStmnt.setString(4, quizResult.getAnsweringQuestionState_JSON());
+            pStmnt.setInt(5, quizResult.getCorrectCount());
+            row = pStmnt.executeUpdate();
+
+            pStmnt.close();
+            cnnct.close();
+
+
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return row > 0;
+    }
     public ArrayList<QuizResult> getMQuizResult(int userID, int quizID)throws Exception {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;

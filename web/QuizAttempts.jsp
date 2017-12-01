@@ -6,12 +6,10 @@
 <%
     User user = (User) request.getSession().getAttribute("userInfo");
     if (null == user) {
-        request.getRequestDispatcher("/login.jsp").forward(request,response);
+        request.getRequestDispatcher("/login.jsp").forward(request, response);
     }
     Quiz currentQuiz = (Quiz) session.getAttribute("currentQuiz");
-
 %>
-
 <html>
 <head>
     <title>Quiz</title>
@@ -39,15 +37,25 @@
                 </b>
                 <hr>
                 You have answer the following questions:
-                <form>
+                <form method="post" action="quizAttempt">
                     <table width="100%" class="w3-left-align" id="table">
+                        <input type="hidden" name="action" value="submit">
                         <%
                             ArrayList<Question> quizArrayList = (ArrayList<Question>) session.getAttribute("currentQuestionArrayList");
+                            //雖然可恥但是有用
+                            // Storing the question id which user is answering
+                            for (Question question : quizArrayList) {
+                                out.print("<input type='hidden' name='IDs' value='" + question.getQuestionID() + "'>");
+                            }
+                        %>
+                        <input type="hidden" name="QuizID" value="<%=currentQuiz.getQuizID()%>">
+                        <%
+
                             for (int i = 0; i < quizArrayList.size(); i++) {
                                 Question currentQuestion = quizArrayList.get(i);
                                 out.print("<tr>");
-                                out.print("<th>" + currentQuestion.getQuestion() + "</th>");
-                                out.print("<td><select>");
+                                out.print("<th>" + (i + 1) + ". " + currentQuestion.getQuestion() + "</th>");
+                                out.print("<td><select name='" + currentQuestion.getQuestionID() + "'>");
                                 for (QuestionOption questionOption : currentQuestion.getQuestionOptionArrayList()) {
                                     out.print("<option value=" + questionOption.getOptionID() + ">" + questionOption.getOption() + "</option>");
                                 }
@@ -57,10 +65,17 @@
 
                         %>
                         </tr>
-
+                        <tr>
+                            <td colspan="2">
+                                <center>
+                                    <button type="submit">Submit</button>
+                                    <button type="reset">Reset</button>
+                                </center>
+                            </td>
+                        </tr>
                     </table>
                 </form>
-                <br />
+                <br/>
 
 
                 <center><a href="javascript: window.history.back();">Back</a></center>

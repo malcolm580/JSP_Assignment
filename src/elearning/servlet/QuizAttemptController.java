@@ -2,6 +2,8 @@ package elearning.servlet;
 
 import elearning.bean.*;
 import elearning.db.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,6 +24,7 @@ public class QuizAttemptController extends HttpServlet {
     private QuestionOptionDB questionOptionDB;
     private UserQuizDB userQuizDB;
     private ModuleDB moduleDB;
+    private QuizResultDB quizResultDB;
 
     @Override
     public void init() throws ServletException {
@@ -34,6 +37,7 @@ public class QuizAttemptController extends HttpServlet {
         questionOptionDB = new QuestionOptionDB(dbUrl, dbUser, dbPassword);
         userQuizDB = new UserQuizDB(dbUrl, dbUser, dbPassword);
         moduleDB = new ModuleDB(dbUrl, dbUser, dbPassword);
+        quizResultDB = new QuizResultDB(dbUrl, dbUser, dbPassword);
     }
 
     @Override
@@ -88,16 +92,67 @@ public class QuizAttemptController extends HttpServlet {
 
                 int totalQuestionsNeeds = quiz.getTotalQuestion();
                 if (totalQuestionsNeeds > 0) {
-                    for (int i = totalQuestionsNeeds; i < questionArrayList.size(); i--) {
-                        questionArrayList.remove(i);
+                    for (int i = totalQuestionsNeeds; i < questionArrayList.size(); i = totalQuestionsNeeds) {
+                        questionArrayList.remove(0);
                     }
                 }
-
                 session.setAttribute("currentQuiz", quiz);
                 session.setAttribute("currentQuestionArrayList", questionArrayList);
                 //Execute Return
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/QuizAttempts.jsp");
+                rd.forward(request, response);
+            } else if ("submit".equalsIgnoreCase(action)) {
+                String quizID_String = request.getParameter("QuizID");
+                if (quizID_String == null || quizID_String.length() <= 0 || !isInteger(quizID_String)) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                }
+                HttpSession session = request.getSession();
+
+                //Get Current User Data
+                User userData = (User) session.getAttribute("userInfo");
+                int userID = userData.getUserID();
+                int quizID = Integer.parseInt(quizID_String);
+                Quiz currentQuiz = (Quiz) request.getAttribute("currentQuiz");
+
+                String[] ids = request.getParameterValues("IDs");
+                ArrayList<Question> questionArrayList = null;
+                ArrayList<QuestionOption> questionOptionArrayList = new ArrayList<>();
+                QuizResult quizResult = new QuizResult();
+                JSONObject answeringQuestionState_JSON = new JSONObject();
+                JSONArray questionJSON = new JSONArray();
+                int correctCount = 0;
+
+                for (String id : ids) {
+                    JSONArray questionArray = new JSONArray();
+                    JSONObject idJSON = new JSONObject();
+                    JSONObject optionJSON = new JSONObject();
+                    idJSON.put("QuestionID", id);
+                    optionJSON.put("OptionID", request.getParameter(id));
+                    questionArray.put(optionJSON);
+                    questionArray.put(idJSON);
+                    questionJSON.put(questionArray);
+
+
+                    //Check is correct
+                    int correctAnswer = questionDB.getQuestionByQuestionID(Integer.parseInt(id)).getCorrectOptionID();
+                    int userAnswer = Integer.parseInt(request.getParameter(id));
+                    if (correctAnswer == userAnswer) {
+                        correctCount++;
+                    }
+                }
+                answeringQuestionState_JSON.put("Question", questionJSON);
+
+                quizResult.setUserID(userID);
+                quizResult.setQuizID(quizID);
+                quizResult.setDuration(0);//TODO Duration
+                quizResult.setAnsweringQuestionState_JSON(answeringQuestionState_JSON.toString());
+                quizResult.setCorrectCount(correctCount);
+                quizResultDB.addQuizResult(quizResult);
+
+                //Execute Return
+                RequestDispatcher rd;
+                rd = getServletContext().getRequestDispatcher("/quiz?action=EnterQuiz&quizid=" + quizID);
                 rd.forward(request, response);
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
