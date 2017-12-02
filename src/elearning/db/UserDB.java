@@ -230,7 +230,7 @@ public class UserDB {
 
         try {
             cnnct = getConnection();
-            String preQueryStatement = "Select * From User where Disabled = 0 ";
+            String preQueryStatement = "Select * From User where Disabled = 0 and Role != 'Admin' ";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
 
             ResultSet rs = pStmnt.executeQuery();

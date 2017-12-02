@@ -211,7 +211,7 @@
                             <td><br/></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr style="font-size: 15px;color: white;background-color: #4d636f">
                             <td colspan="6"><a href="quiz?action=getStudentList&quizID=<%= currentQuiz.getQuizID() %>">Add Students to this quiz</a></td>
                         </tr>
                         <tr>
