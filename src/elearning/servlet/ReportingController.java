@@ -119,14 +119,17 @@ public class ReportingController extends HttpServlet {
                         QuizResult userHighestResult = quizResultList.get(0);
 
                         for (QuizResult quizResult : quizResultList) {
+
                             //Select the highest quiz result for this user
                             if (quizResult.getCorrectCount() > userHighestResult.getCorrectCount()) {
                                 userHighestResult = quizResult;
                             }
+
                             //Set the highest result in all student
                             if(userHighestResult.getCorrectCount() > highestResult.getCorrectCount()){
                                 highestResult = quizResult;
                             }
+
                             //Set the lowest result in all student
                             if(userHighestResult.getCorrectCount() < lowestResult.getCorrectCount()){
                                 lowestResult = quizResult;
