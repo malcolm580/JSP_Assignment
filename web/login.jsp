@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" href="CSS/login.css">
     <link rel="stylesheet" href="CSS/login_2.css">
-
+    <script src="JS/jquery.js"></script>
     <style>
         .signup{
             margin-top: -30px;
@@ -52,7 +52,7 @@
                 <div class="row">
                     <div class="switch col s6">
                         <label>
-                            <input type="checkbox">
+                            <input id="changeType" type="checkbox">
                             <span class="lever"></span>
                             Show Password
                         </label>
@@ -89,6 +89,18 @@
 
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#changeType").change(function () {
+            if($("#changeType").is(":checked")){
+                $("#pass").attr("type" , "text");
+            }else{
+                $("#pass").attr("type" , "password");
+            }
+        })
+    })
+</script>
 
 </body>
 </html>
