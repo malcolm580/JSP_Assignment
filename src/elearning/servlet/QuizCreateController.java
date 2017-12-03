@@ -109,7 +109,7 @@ public class QuizCreateController extends HttpServlet {
                 quizDB.addQuiz(quiz);
 
                 //Add current user to new Quiz (FKY)
-                int newQuizid = quizDB.getLastRecordID();
+                    int newQuizid = quizDB.getLastRecordID();
 
 //                PrintWriter out = response.getWriter();
 //                out.print(newQuizid + " "  +userID);
