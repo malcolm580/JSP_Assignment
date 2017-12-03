@@ -76,11 +76,13 @@
                 <hr class="w3-clear">
 
 
-                <h5><b>Summary of your previous attempts</b></h5>
                 <form action="${pageContext.request.contextPath}/quiz/edit" method="post">
                     <table width="100%" class="w3-left-align" id="table">
                         <input type="hidden" name="action" value="edit">
                         <input type="hidden" name="QuizID" value="<%=currentQuiz.getQuizID()%>">
+                        <tr>
+                            <th colspan="2">Edit Quiz Information</th>
+                        </tr>
                         <tr>
                             <td><label for="QuizID"> Quiz ID: </label></td>
                             <td>
@@ -137,131 +139,135 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><br/></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <table border="0" width="auto" id="table">
-                                    <tr>
-                                        <th colspan="7">Question:</th>
-                                    </tr>
-                                    <tr>
-                                        <th>ID:</th>
-                                        <th>Type:</th>
-                                        <th>Question Content:</th>
-                                        <th>Options in Question:</th>
-                                        <th>Correct Answer:</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                    <%
-                                        for (Question question : (ArrayList<Question>) session.getAttribute("currentQuiz_Question")) {
-                                            out.print("<tr>");
-                                            out.print("<td>" + question.getQuestionID() + "</td>");
-                                            out.print("<td>" + question.getQuestionType() + "</td>");
-                                            out.print("<td>" + question.getQuestion() + "</td>");
-                                            out.print("<td><select width='100%'>");
-                                            for (QuestionOption questionOption : question.getQuestionOptionArrayList()) {
-                                                out.print("<option  disabled value='" + questionOption.getOptionID() + "'>" + questionOption.getOption() + "</option>");
-                                            }
-                                            out.print("</select></td>");
-                                            out.print("<td><select disabled>");
-                                            for (QuestionOption questionOption : question.getQuestionOptionArrayList()) {
-                                                if (question.getCorrectOptionID() == questionOption.getOptionID()) {//Checked if it is correct answer
-                                                    out.print("<option value='" + questionOption.getOptionID() + "' selected>" + questionOption.getOption() + "</option>");
-                                                } else {
-                                                    out.print("<option value='" + questionOption.getOptionID() + "'>" + questionOption.getOption() + "</option>");
-                                                }
-                                            }
-                                            out.print("</select></td>");
-                                            out.print("<td><a href='javascript:editQuestion(" + question.getQuestionID() + ");'><img src='image/edit.png'></a></td>");
-                                            out.print("<td><a href='javascript:deleteQuestion(" + question.getQuestionID() + ");'><img src='image/delete.png'></a></td>");
-                                            out.print("</tr>");
-                                        }
-                                    %>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><br/></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <table id="table">
-                                    <tr>
-                                        <th colspan="3">Quick Add Question</th>
-                                    </tr>
-                                    <tr>
-                                        <th>Question Content:</th>
-                                        <td>
-                                            <input type="text" id="addQuestion">
-                                        </td>
-                                        <td>
-                                            <button onclick="addQuestionFunction(<%=currentQuiz.getQuizID()%>)">
-                                                Add
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><br/></td>
-                            <td></td>
-                        </tr>
-                        <tr style="font-size: 15px;color: white;background-color: #4d636f">
-                            <td colspan="6"><a href="quiz?action=getStudentList&quizID=<%= currentQuiz.getQuizID() %>">Add Students to this quiz</a></td>
-                        </tr>
-                        <tr>
-                            <td><br/></td>
-                            <td></td>
-                        </tr>
-                        <tr>
                             <td colspan="2" style="text-align: center;">
                                 <button type="submit">Submit</button>
                                 <button type="reset">Reset</button>
                             </td>
                         </tr>
-
                     </table>
                 </form>
-                <br/>
+                <hr/>
+                <table id="table">
 
 
-                <center><a href="javascript: window.history.back();">Back</a></center>
+                    <table border="0" width="auto" id="table">
+                        <tr>
+                            <th colspan="7">Question:</th>
+                        </tr>
+                        <tr>
+                            <th>ID:</th>
+                            <th>Type:</th>
+                            <th>Question Content:</th>
+                            <th>Options in Question:</th>
+                            <th>Correct Answer:</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                        <%
+                            for (Question question : (ArrayList<Question>) session.getAttribute("currentQuiz_Question")) {
+                                out.print("<tr>");
+                                out.print("<td>" + question.getQuestionID() + "</td>");
+                                out.print("<td>" + question.getQuestionType() + "</td>");
+                                out.print("<td>" + question.getQuestion() + "</td>");
+                                out.print("<td><select width='100%'>");
+                                for (QuestionOption questionOption : question.getQuestionOptionArrayList()) {
+                                    out.print("<option  disabled value='" + questionOption.getOptionID() + "'>" + questionOption.getOption() + "</option>");
+                                }
+                                out.print("</select></td>");
+                                out.print("<td><select disabled>");
+                                for (QuestionOption questionOption : question.getQuestionOptionArrayList()) {
+                                    if (question.getCorrectOptionID() == questionOption.getOptionID()) {//Checked if it is correct answer
+                                        out.print("<option value='" + questionOption.getOptionID() + "' selected>" + questionOption.getOption() + "</option>");
+                                    } else {
+                                        out.print("<option value='" + questionOption.getOptionID() + "'>" + questionOption.getOption() + "</option>");
+                                    }
+                                }
+                                out.print("</select></td>");
+                                out.print("<td><a href='javascript:editQuestion(" + question.getQuestionID() + ");'><img src='image/edit.png'></a></td>");
+                                out.print("<td><a href='javascript:deleteQuestion(" + question.getQuestionID() + ");'><img src='image/delete.png'></a></td>");
+                                out.print("</tr>");
+                            }
+                        %>
+                    </table>
+                    <hr/>
+                    <table id="table">
+                        <tr>
+                            <th colspan="3">Quick Add Question</th>
+                        </tr>
+                        <tr>
+                            <th>Question Content:</th>
+                            <td>
+                                <input type="text" id="addQuestion">
+                            </td>
+                            <td>
+                                <button onclick="addQuestionFunction(<%=currentQuiz.getQuizID()%>)">
+                                    Add
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                    <hr/>
+                    <table id="table">
+                        <tr>
+                            <th colspan="2"><a
+                                    href="quiz?action=getStudentList&quizID=<%= currentQuiz.getQuizID() %>">Add
+                                Students to this quiz<span class="w3-right">Add</span></a></th>
+                        </tr>
+                    </table>
+                    <hr/>
+                    <table id="table">
+                        <tr>
+                            <th colspan="6">Student List</th>
+                        </tr>
+                        <%
+                            ArrayList<User> studentList = (ArrayList<User>) session.getAttribute("currentQuiz_StudentList");
+                            for (int i = 0; i < studentList.size(); i++) {
+                                out.print("<tr>");
+                                out.print("<td colspan='1'>" + i + "</td>");
+                                out.print("<td  colspan='5'>" + studentList.get(i).getUsername() + "</td>");
+                                out.print("</tr>");
+                            }
+
+                        %>
+                    </table>
+                    </td>
+
+
+                    <br/>
+
+
+                    <center><a href="javascript: window.history.back();">Back</a></center>
             </div>
         </div>
         <!-- End Middle Column -->
     </div>
 </div>
 <%--<script>--%>
-    <%--$.ajaxSetup({--%>
-        <%--// Disable caching of AJAX responses--%>
-        <%--cache: false--%>
-    <%--});--%>
+<%--$.ajaxSetup({--%>
+<%--// Disable caching of AJAX responses--%>
+<%--cache: false--%>
+<%--});--%>
 
-    <%--function addQuestion(quizID) {--%>
-        <%--$.post("question/edit?action=add&id=" + questionID,--%>
-            <%--{--%>
-                <%--action: "add",--%>
-                <%--id: quizID,--%>
-                <%--question: $("#addQuestion").val()--%>
-            <%--},--%>
-            <%--function (data, status) {--%>
-                <%--console.log("Data: " + data + "\nStatus: " + status);--%>
-                <%--if (status = "success") {--%>
-                    <%--//Location.refresh();--%>
-                <%--}--%>
-            <%--});--%>
-    <%--}--%>
+<%--function addQuestion(quizID) {--%>
+<%--$.post("question/edit?action=add&id=" + questionID,--%>
+<%--{--%>
+<%--action: "add",--%>
+<%--id: quizID,--%>
+<%--question: $("#addQuestion").val()--%>
+<%--},--%>
+<%--function (data, status) {--%>
+<%--console.log("Data: " + data + "\nStatus: " + status);--%>
+<%--if (status = "success") {--%>
+<%--//Location.refresh();--%>
+<%--}--%>
+<%--});--%>
+<%--}--%>
 
-    <%--function editQuestion(id) {--%>
-        <%--$('.modal-body').load('question/edit?action=view&id=' + id, function () {--%>
-            <%--$('#myModal').modal({show: true});--%>
-        <%--});--%>
-    <%--}--%>
+<%--function editQuestion(id) {--%>
+<%--$('.modal-body').load('question/edit?action=view&id=' + id, function () {--%>
+<%--$('#myModal').modal({show: true});--%>
+<%--});--%>
+<%--}--%>
 <%--</script>--%>
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">

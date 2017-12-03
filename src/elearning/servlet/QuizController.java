@@ -212,10 +212,16 @@ public class QuizController extends HttpServlet {
                 for (Question question : currentQuiz_Question) {
                     question.setQuestionOptionArrayList(questionOptionDB.getOptionByQuestionID(question.getQuestionID()));
                 }
+
                 Quiz currentQuiz = quizDB.getQuizByID(quizID);
+                ArrayList<User> currentQuiz_StudentList = userQuizDB.getQuizStudentList(quizID + "");
+
                 currentQuiz.setModule(moduleDB.getModule(currentQuiz.getModuleID() + ""));
                 session.setAttribute("currentQuiz", currentQuiz);
                 session.setAttribute("currentQuiz_Question", currentQuiz_Question);
+                session.setAttribute("currentQuiz_StudentList", currentQuiz_StudentList);
+
+
 
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/QuizEdit.jsp");
