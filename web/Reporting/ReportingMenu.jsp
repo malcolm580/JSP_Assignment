@@ -33,7 +33,7 @@
                         <div class="w3-container w3-padding">
                             <h3>Module Quiz Report -- Module Selection</h3>
                             <h6 class="w3-opacity">Search Module</h6>
-                            <p contenteditable="true" class="w3-border w3-padding"></p>
+                            <input style="width: 100%;" id="search" class="w3-border w3-padding" />
                             <h5>Please select one module</h5>
                             <%--<button type="button" class="w3-button w3-theme" style="margin-left: 88.5%">Search</button>--%>
                         </div>
@@ -46,7 +46,7 @@
 
                 for (Object bean : moduleList) {
                     Module module = (Module) bean;
-                    out.println("<div class=\"w3-container w3-card w3-white w3-round w3-margin\"><br>");
+                    out.println("<div class=\"moduleColumn w3-container w3-card w3-white w3-round w3-margin\"><br>");
                     out.println("<h4><a href='reportMenu?action=getModuleQuiz&moduleID="+ module.getModuleID()+"'>" +  module.getModuleName()+"</a></h4><br />");
                     out.println("</div>");
                 }
@@ -79,6 +79,17 @@
 
     <!-- End Page Container -->
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#search").keyup(function () {
+            $(".moduleColumn").hide();
+            var input = $('#search').val();
+            $(".moduleColumn:contains(" + input + ")").show();
+
+        });
+    });
+</script>
 
 
 <jsp:include page="../footer.jsp"/>
