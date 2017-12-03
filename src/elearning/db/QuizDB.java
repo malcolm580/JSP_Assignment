@@ -255,5 +255,33 @@ public class QuizDB {
         return row > 0;
     }
 
+    public int getLastRecordID() {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        int id = 0; //It is the affected row count of the query
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "SELECT QuizID FROM Quiz ORDER BY QuizID DESC LIMIT 1";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+
+            ResultSet rs = pStmnt.executeQuery();
+            while ( rs.next() ){
+                id = rs.getInt("QuizID");
+            }
+
+            pStmnt.close();
+            cnnct.close();
+
+
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return id;
+    }
 
 }

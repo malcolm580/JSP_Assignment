@@ -70,7 +70,6 @@ public class UserQuizDB {
             pStmnt.setString(1, userID);
             pStmnt.setString(2, quizID);
 
-
             pStmnt.executeUpdate();
 
             pStmnt.close();

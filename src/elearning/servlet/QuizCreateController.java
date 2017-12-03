@@ -4,10 +4,7 @@ import elearning.bean.Module;
 import elearning.bean.Question;
 import elearning.bean.Quiz;
 import elearning.bean.User;
-import elearning.db.QuestionDB;
-import elearning.db.QuestionOptionDB;
-import elearning.db.QuizDB;
-import elearning.db.UserModuleDB;
+import elearning.db.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,12 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 @WebServlet(name = "QuizCreateController", urlPatterns = {"/quiz/create"})
 public class QuizCreateController extends HttpServlet {
 
     private QuizDB quizDB;
+    private UserQuizDB userQuizDB;
     private UserModuleDB userModuleDB;
     private QuestionDB questionDB;
     private QuestionOptionDB questionOptionDB;
@@ -108,6 +107,14 @@ public class QuizCreateController extends HttpServlet {
                 quiz.setTotalQuestion(TotalQuestion);
 
                 quizDB.addQuiz(quiz);
+
+                //Add current user to new Quiz (FKY)
+                int newQuizid = quizDB.getLastRecordID();
+
+//                PrintWriter out = response.getWriter();
+//                out.print(newQuizid + " "  +userID);
+
+                //userQuizDB.addRecord( Integer.toString(newQuizid) , Integer.toString(userID) );
 
                 //Return
                 targetURL = "quiz?action=QuizManagement&msg=Success%20edit%20the%20quiz";
