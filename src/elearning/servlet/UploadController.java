@@ -54,6 +54,17 @@ public class UploadController extends HttpServlet {
 
                 String path = (new File(".")).getAbsolutePath();
 
+                File theDirL = new File(path + File.separator + ".." + File.separator + "material");
+
+                if (!theDirL.exists()) {
+
+                    try {
+                        theDirL.mkdir();
+                    } catch (SecurityException se) {
+                        se.printStackTrace();
+                    }
+                }
+
                 File theDir = new File(path + File.separator + ".." + File.separator + "material" + File.separator  + moduleID);
 
                 if (!theDir.exists()) {
