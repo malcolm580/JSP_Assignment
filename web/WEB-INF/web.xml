@@ -6,15 +6,15 @@
 
     <context-param>
         <param-name>dbUrl</param-name>
-        <param-value>jdbc:mysql://ivefyp.ml:3306/jsp</param-value>
+	    <param-value>jdbc:mysql://127.0.0.1/jsp</param-value>
     </context-param>
     <context-param>
         <param-name>dbUser</param-name>
-        <param-value>jsp</param-value>
+	    <param-value>root</param-value>
     </context-param>
     <context-param>
         <param-name>dbPassword</param-name>
-        <param-value>1357924680_</param-value>
+	    <param-value></param-value>
     </context-param>
 
     <session-config>
