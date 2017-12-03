@@ -23,7 +23,6 @@
 <link rel="stylesheet" href="CSS/profileForm.css">
 
 
-
 <!-- Latest compiled and minified JavaScript -->
 <script src="JS/bootstrap.min.js">
 </script>
@@ -138,13 +137,14 @@
     }
 %>
 <script>
-    function sec2str(t){
-        var d = Math.floor(t/86400),
-            h = ('0'+Math.floor(t/3600) % 24).slice(-2),
-            m = ('0'+Math.floor(t/60)%60).slice(-2),
+    function sec2str(t) {
+        var d = Math.floor(t / 86400),
+            h = ('0' + Math.floor(t / 3600) % 24).slice(-2),
+            m = ('0' + Math.floor(t / 60) % 60).slice(-2),
             s = ('0' + t % 60).slice(-2);
-        return (d>0?d+'d ':'')+(h>0?h+':':'')+(m>0?m+':':'')+(t>60?s:s+'s');
+        return (d > 0 ? d + 'd ' : '') + (h > 0 ? h + ':' : '') + (m > 0 ? m + ':' : '') + (t > 60 ? s : s + 's');
     }
+
     $(function () {
         // $(".secondToDuration").text(sec2str($(".secondToDuration").text()));
 
@@ -166,35 +166,21 @@
            href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
         <a href="login.jsp" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"></i>Home Page</a>
         <%--<a href="http://ivefyp.ml/phpmyadmin"--%>
-           <%--class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i--%>
-                <%--class="fa fa-globe"></i>PhpMyAdmin</a>--%>
-
-       <%
-
-           if(userRole.equals("Teacher")){
-               out.print("<a href=\"quiz?action=QuizManagement\" class=\"w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white\"\n" +
-                       "           title=\"Account Settings\"><i class=\"fa fa-user\"></i>Quiz Management</a>");
-           }
-
-           if(userRole.equals("Teacher")){
-               out.print( " <a href=\"reportMenu?action=getModuleList\"\n" +
-               "           class=\"w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white\" title=\"Module Quiz Reporting\"><i\n" +
-               "                class=\"fa fa-envelope\"></i>Module Quiz Reporting</a>" );
-           }
-
-           if(userRole.equals("Admin")){
-               out.print("<a href=\"accountManagement?action=list\"\n" +
-                       "           class=\"w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white\" title=\"User Management\"><i\n" +
-                       "                class=\"fa fa-envelope\"></i>User Management</a>");
-           }
-
-       %>
+        <%--class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i--%>
+        <%--class="fa fa-globe"></i>PhpMyAdmin</a>--%>
+        <%@taglib prefix="checkPermission" uri="/WEB-INF/tlds/permissionCheck.tld" %>
+        <checkPermission:permissionCheck requiredPermission="Teacher"
+                                         outputHTML=" <a href='quiz?action=QuizManagement' class='w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white' title='Account Settings'><i class='fa fa-user'></i>Quiz Management</a>"/>
+        <checkPermission:permissionCheck requiredPermission="Teacher"
+                                         outputHTML="<a href='reportMenu?action=getModuleList' class='w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white'  title='Module Quiz Reporting'><i class='fa fa-envelope'></i>Module Quiz Reporting</a>"/>
+        <checkPermission:permissionCheck requiredPermission="Admin"
+                                         outputHTML="<a href='accountManagement?action=list' class='w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white' title='User Management'><i class='fa fa-envelope'></i>User Management</a>"/>
 
         <%--<div class="w3-dropdown-hover w3-hide-small">--%>
-            <%--<button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span--%>
-                    <%--class="w3-badge w3-right w3-small w3-green">3</span></button>--%>
-            <%--<div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">--%>
-            <%--</div>--%>
+        <%--<button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span--%>
+        <%--class="w3-badge w3-right w3-small w3-green">3</span></button>--%>
+        <%--<div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">--%>
+        <%--</div>--%>
         <%--</div>--%>
         <div class="w3-dropdown-hover w3-hide-small w3-right">
             <a href="#" class="w3-button w3-padding-large  "

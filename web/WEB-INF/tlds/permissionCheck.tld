@@ -7,13 +7,24 @@
 	
 	<tlib-version>1.0</tlib-version>
 	<short-name>quiz</short-name>
-	<uri>/WEB-INF/tlds/quizEnterTag.tld</uri>
+	<uri>/WEB-INF/tlds/permissionCheck.tld</uri>
 	<tag>
-		<name>quizEnterTag</name>
-		<tag-class>elearning.tag.quizEnterTag</tag-class>
+		<name>permissionCheck</name>
+		<tag-class>elearning.tag.permissionCheck</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
-			<name>quizList</name>
+			<name>user</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		
+		</attribute>
+		<attribute>
+			<name>requiredPermission</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>outputHTML</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>

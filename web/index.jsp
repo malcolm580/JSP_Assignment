@@ -3,11 +3,12 @@
 <%@ page import="java.util.ArrayList" %>
 <%@page buffer="16kb" autoFlush="false" %>
 <%
-    User user = (User) request.getSession(false).getAttribute("userInfo");
-    if (user == null) {
-        //response.sendRedirect("login.jsp");
+    User user = (User) request.getSession().getAttribute("userInfo");
+    if (request.getSession().isNew() || null == user) {
         request.getRequestDispatcher("/login.jsp").forward(request, response);
+        return;
     }
+
 %>
 
 <!DOCTYPE html>
@@ -41,7 +42,8 @@
                     <div class="w3-card w3-round w3-white">
                         <div class="w3-container w3-padding">
                             <h6 class="w3-opacity">Search Module</h6>
-                            <input type="text" class="w3-input" id="search" placeholder="Enter The Module Name Or Module ID">
+                            <input type="text" class="w3-input" id="search"
+                                   placeholder="Enter The Module Name Or Module ID">
                             <%--<p contenteditable="true" class="w3-border w3-padding"></p>--%>
                             <%--<button type="button" class="w3-button w3-theme" style="margin-left: 88.5%">Search</button>--%>
                         </div>
