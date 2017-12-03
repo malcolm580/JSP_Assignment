@@ -18,7 +18,6 @@
         rd.forward(request, response);
     }
 %>
-<%@ taglib uri="/WEB-INF/tlds/quizEnterTag.tld" prefix="quiz" %>
 <html>
 <head>
     <title>Quiz</title>

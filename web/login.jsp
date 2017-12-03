@@ -52,7 +52,7 @@
                 <div class="row">
                     <div class="switch col s6">
                         <label>
-                            <input type="checkbox">
+                            <input type="checkbox" onclick="showPassword();">
                             <span class="lever"></span>
                             Show Password
                         </label>
@@ -89,7 +89,18 @@
 
     </div>
 </div>
+<script src="JS/jquery.js">
 
+</script>
+<script>
+    function showPassword() {
+        if ("password" === document.getElementById('pass').type) {
+            document.getElementById('pass').type = 'text';
+        } else {
+            document.getElementById('pass').type = 'password';
+        }
+    }
+</script>
 </body>
 </html>
 
