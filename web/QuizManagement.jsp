@@ -69,7 +69,7 @@
                 <br/>
                 <hr />
                 <table width="100%" class="w3-left-align" id="table">
-                    <form method="post" action="${pageContext.request.contextPath}/question/create">
+                    <form method="post" action="${pageContext.request.contextPath}/quiz/create">
                         <input type="hidden" name="action" value="create">
                         <tr>
                             <th colspan="2">Add New Quiz:</th>

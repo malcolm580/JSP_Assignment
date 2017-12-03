@@ -9,7 +9,6 @@ import elearning.db.QuestionOptionDB;
 import elearning.db.QuizDB;
 import elearning.db.UserModuleDB;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +18,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "QuestionCreateController", urlPatterns = {"/question/create"})
-public class QuestionCreateController extends HttpServlet {
+@WebServlet(name = "QuizCreateController", urlPatterns = {"/quiz/create"})
+public class QuizCreateController extends HttpServlet {
 
     private QuizDB quizDB;
     private UserModuleDB userModuleDB;
@@ -70,7 +69,7 @@ public class QuestionCreateController extends HttpServlet {
             String action = request.getParameter("action");
 
             String targetURL;
-            if ("add".equalsIgnoreCase(action)) {
+            if ("create".equalsIgnoreCase(action)) {
                 if (!checkPermission(request, response)) {//Abort when no permission
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
@@ -81,28 +80,41 @@ public class QuestionCreateController extends HttpServlet {
                 User userData = (User) session.getAttribute("userInfo");
                 int userID = userData.getUserID();
 
-                Question question = new Question();
-                String QuizID_String = request.getParameter("id");
-                String QuestionType = "Multiple";
-                String Question = request.getParameter("question");
-
-                if (//Checking is the value correct, if not, send bad request
-                        !isInteger(QuizID_String)) {
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                Quiz quiz = new Quiz();
+                String ModuleID_String = request.getParameter("ModuleID");
+                String QuizName = request.getParameter("QuizName");
+                String AttemptLimit_String = request.getParameter("AttemptLimit");
+                String TimeLimit_String = request.getParameter("TimeLimit");
+                String TotalQuestion_String = request.getParameter("TotalQuestion");
+                int ModuleID ;
+                int AttemptLimit;
+                int TimeLimit;
+                int TotalQuestion;
+                try {
+                    ModuleID = Integer.parseInt(ModuleID_String);
+                    AttemptLimit = Integer.parseInt(AttemptLimit_String);
+                    TimeLimit = Integer.parseInt(TimeLimit_String);
+                    TotalQuestion = Integer.parseInt(TotalQuestion_String);
+                } catch (NullPointerException | NumberFormatException ex) {
+                    targetURL = "quiz?action=QuizManagement&msg=Input%20Invalidate%20,Please%20Input again";
+                    //Execute Return
+                    response.sendRedirect("../" + targetURL);
+                    return;
                 }
-                int QuizID = Integer.parseInt(QuizID_String);
+                quiz.setModuleID(ModuleID);
+                quiz.setQuizName(QuizName);
+                quiz.setAttemptLimit(AttemptLimit);
+                quiz.setTimeLimit(TimeLimit);
+                quiz.setTotalQuestion(TotalQuestion);
 
-                question.setQuizID(QuizID);
-                question.setQuestionType(QuestionType);
-                question.setQuestion(Question);
-                questionDB.addQuestion(question);
+                quizDB.addQuiz(quiz);
 
                 //Return
-                targetURL = "quiz?action=edit&quizid=" + QuizID_String + "&msg=Success%20add%20the%20quiz";
+                targetURL = "quiz?action=QuizManagement&msg=Success%20edit%20the%20quiz";
 
                 //Execute Return
                 response.sendRedirect("../" + targetURL);
-            } else {
+            }  else {
                 response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
             }
 
@@ -127,21 +139,5 @@ public class QuestionCreateController extends HttpServlet {
         return false;
     }
 
-    private boolean isAuthenticated(HttpServletRequest request, HttpServletResponse
-            response, User userinfo, int quizID) {
-        if (userinfo.getRole().equalsIgnoreCase("admin")) {
-            return true;
-        }
-        if (!userinfo.getRole().equalsIgnoreCase("teacher")) {
-            return false;
-        }
-        ArrayList<Module> moduleArrayList = userModuleDB.getUserModule(userinfo.getUserID());
-        Module module = quizDB.getParentModule(quizDB.getQuizByID(quizID));
-        for (Module checkingModule : moduleArrayList) {
-            if (checkingModule.getModuleID() == module.getModuleID()) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 }
