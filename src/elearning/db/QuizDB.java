@@ -125,10 +125,8 @@ public class QuizDB {
                 ex.printStackTrace();
                 ex = ex.getNextException();
             }
-        } catch (IOException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
         return module;
     }
